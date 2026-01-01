@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: If you use ThibEquation Framework, please cite it as below.
+authors:
+  - family-names: Thibodeau
+    given-names: Pascal
+    orcid: https://orcid.org/0009-0003-3515-9088
+    affiliation: Thibodeau Innovations
+    country: CA
+title: ThibEquation Framework v5.0 - Analyse Scientifique d'Objets Interstellaires
+version: 5.0.0
+license: MIT
+keywords:
+  - astrophysics
+  - interstellar objects
+  - scientific framework
+  - citizen science
+url: https://thibequation.com/
+repository-code: https://github.com/Thib4204/Thib-Equation-Framework
+date-released: 2025-01-01
