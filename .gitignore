@@ -1,0 +1,46 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.c9/
+
+# Dependencies
+node_modules/
+.yarn/
+
+# Build
+dist/
+build/
+out/
+*.egg-info/
+.eggs/
+__pycache__/
+*.pyc
+*.pyo
+
+# Environment
+.env
+.env.local
+.env.*.local
+.venv/
+venv/
+
+# Testing
+.coverage
+.pytest_cache/
+.nyc_output/
+
+# Temporary
+*.log
+*.tmp
+.tmp/
+*.bak
+*.swp
