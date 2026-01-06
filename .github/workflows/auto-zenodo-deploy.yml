@@ -1,0 +1,375 @@
+name: Auto Zenodo Deploy — ThibEquation
+
+on:
+  # TRIGGER 1: Push automatique sur main
+  push:
+    branches:
+      - main
+    paths:
+      - 'REGISTRE_MAITRE_DSN-01_v5.0_FINAL_CONSOLIDE.html'
+      - '.zenodo.json'
+      - 'RTGS_Manifest_ThibEquation_v5.0.json'
+  
+  # TRIGGER 2: Création de tags (releases manuelles)
+  push:
+    tags:
+      - 'v*.*.*'
+  
+  # TRIGGER 3: Déclenchement planifié quotidien (optionnel)
+  schedule:
+    - cron: '0 0 * * *'  # Tous les jours à minuit UTC
+  
+  # TRIGGER 4: Déclenchement manuel via interface GitHub
+  workflow_dispatch:
+    inputs:
+      version_increment:
+        description: 'Type de version (patch/minor/major)'
+        required: false
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+env:
+  THIBEQUATION_SITE: 'https://thibequation.com'
+  LOGO_URL: 'https://www.genspark.ai/api/files/s/ztTPlT9r'
+
+jobs:
+  auto-deploy-zenodo:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # ═══════════════════════════════════════════════════════════════
+      # ÉTAPE 1: Checkout du code
+      # ═══════════════════════════════════════════════════════════════
+      - name: 📦 Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      # ═══════════════════════════════════════════════════════════════
+      # ÉTAPE 2: Déterminer la version automatiquement
+      # ═══════════════════════════════════════════════════════════════
+      - name: 🏷️ Auto-generate version number
+        id: version
+        run: |
+          # Récupérer le dernier tag
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v5.0.0")
+          echo "Dernier tag: $LAST_TAG"
+          
+          # Extraire les numéros de version
+          VERSION=${LAST_TAG#v}
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+          
+          # Incrémenter selon le type
+          INCREMENT="${{ github.event.inputs.version_increment || 'patch' }}"
+          
+          if [ "$INCREMENT" = "major" ]; then
+            MAJOR=$((MAJOR + 1))
+            MINOR=0
+            PATCH=0
+          elif [ "$INCREMENT" = "minor" ]; then
+            MINOR=$((MINOR + 1))
+            PATCH=0
+          else
+            PATCH=$((PATCH + 1))
+          fi
+          
+          NEW_VERSION="v${MAJOR}.${MINOR}.${PATCH}"
+          echo "Nouvelle version: $NEW_VERSION"
+          echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "version_number=${MAJOR}.${MINOR}.${PATCH}" >> $GITHUB_OUTPUT
+      
+      # ═══════════════════════════════════════════════════════════════
+      # ÉTAPE 3: Télécharger le logo ThibEquation automatiquement
+      # ═══════════════════════════════════════════════════════════════
+      - name: 🖼️ Download ThibEquation Logo
+        run: |
+          echo "📥 Téléchargement du logo depuis ${{ env.LOGO_URL }}..."
+          
+          # Tentative 1: téléchargement direct
+          curl -L -o ThibEquation_Logo.png "${{ env.LOGO_URL }}" || true
+          
+          # Vérifier la taille
+          if [ -f "ThibEquation_Logo.png" ]; then
+            SIZE=$(stat -c%s ThibEquation_Logo.png)
+            if [ "$SIZE" -lt 50000 ]; then
+              echo "⚠️  Logo téléchargé invalide ($SIZE bytes)"
+              rm ThibEquation_Logo.png
+              
+              # Tentative 2: depuis thibequation.com
+              echo "📥 Tentative depuis thibequation.com..."
+              curl -L -o ThibEquation_Logo.png "${{ env.THIBEQUATION_SITE }}/logo.png" || true
+            fi
+          fi
+          
+          # Vérification finale
+          if [ -f "ThibEquation_Logo.png" ]; then
+            SIZE=$(stat -c%s ThibEquation_Logo.png)
+            if [ "$SIZE" -gt 50000 ]; then
+              echo "✅ Logo téléchargé: $(numfmt --to=iec-i --suffix=B $SIZE)"
+            else
+              echo "❌ Échec téléchargement logo"
+              echo "   Le workflow continuera sans logo (à corriger)"
+            fi
+          else
+            echo "⚠️  Logo non disponible, création d'un placeholder..."
+            # Créer un fichier placeholder pour éviter l'erreur
+            touch ThibEquation_Logo_PLACEHOLDER.txt
+          fi
+      
+      # ═══════════════════════════════════════════════════════════════
+      # ÉTAPE 4: Validation automatique des fichiers
+      # ═══════════════════════════════════════════════════════════════
+      - name: ✅ Validate files automatically
+        run: |
+          echo "🔍 Validation automatique des fichiers..."
+          
+          ERRORS=0
+          
+          # Vérifier REGISTRE_MAITRE
+          if [ -f "REGISTRE_MAITRE_DSN-01_v5.0_FINAL_CONSOLIDE.html" ]; then
+            SIZE=$(stat -c%s REGISTRE_MAITRE_DSN-01_v5.0_FINAL_CONSOLIDE.html)
+            if [ "$SIZE" -gt 10000 ]; then
+              echo "✅ REGISTRE_MAITRE: $(numfmt --to=iec-i --suffix=B $SIZE)"
+            else
+              echo "❌ REGISTRE_MAITRE trop petit: $SIZE bytes"
+              ((ERRORS++))
+            fi
+          else
+            echo "❌ REGISTRE_MAITRE manquant"
+            ((ERRORS++))
+          fi
+          
+          # Vérifier .zenodo.json
+          if [ -f ".zenodo.json" ]; then
+            echo "✅ .zenodo.json présent"
+          else
+            echo "❌ .zenodo.json manquant"
+            ((ERRORS++))
+          fi
+          
+          if [ $ERRORS -gt 0 ]; then
+            echo "❌ $ERRORS erreur(s) détectée(s)"
+            exit 1
+          fi
+          
+          echo "✅ Tous les fichiers validés"
+      
+      # ═══════════════════════════════════════════════════════════════
+      # ÉTAPE 5: Créer le bundle ZIP automatiquement
+      # ═══════════════════════════════════════════════════════════════
+      - name: 📦 Create Zenodo bundle automatically
+        run: |
+          echo "🔄 Création du bundle ZIP automatique..."
+          
+          VERSION="${{ steps.version.outputs.version }}"
+          
+          # Liste des fichiers à inclure
+          FILES=(
+            "REGISTRE_MAITRE_DSN-01_v5.0_FINAL_CONSOLIDE.html"
+            ".zenodo.json"
+            "README.md"
+          )
+          
+          # Ajouter fichiers optionnels s'ils existent
+          OPTIONAL_FILES=(
+            "ThibEquation_Logo.png"
+            "RTGS_Manifest_ThibEquation_v5.0.json"
+            "ThibEquation_SYNTHESE_3_PRIORITES.md"
+            "GUIDE_HORODATAGE_OPENTIMESTAMPS.md"
+            "JWST_Proposal_Template_3I-ATLAS.md"
+            "Resume_Executif_DSN-01_v5.0.md"
+            "GITHUB_RELEASE_DESCRIPTION.md"
+          )
+          
+          for file in "${OPTIONAL_FILES[@]}"; do
+            if [ -f "$file" ]; then
+              FILES+=("$file")
+              echo "  + $file"
+            fi
+          done
+          
+          # Créer le ZIP
+          zip -r "ThibEquation_DSN-01_${VERSION}_BUNDLE.zip" "${FILES[@]}"
+          
+          BUNDLE_SIZE=$(stat -c%s "ThibEquation_DSN-01_${VERSION}_BUNDLE.zip")
+          echo "✅ Bundle créé: $(numfmt --to=iec-i --suffix=B $BUNDLE_SIZE)"
+          
+          # Lister le contenu
+          echo ""
+          echo "📋 Contenu du bundle:"
+          unzip -l "ThibEquation_DSN-01_${VERSION}_BUNDLE.zip"
+      
+      # ═══════════════════════════════════════════════════════════════
+      # ÉTAPE 6: Créer tag Git automatiquement
+      # ═══════════════════════════════════════════════════════════════
+      - name: 🏷️ Create Git tag automatically
+        id: create_tag
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          
+          # Vérifier si le tag existe déjà
+          if git rev-parse "$VERSION" >/dev/null 2>&1; then
+            echo "ℹ️  Tag $VERSION existe déjà, utilisation d'un timestamp"
+            TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+            VERSION="${VERSION}-${TIMESTAMP}"
+          fi
+          
+          echo "tag=$VERSION" >> $GITHUB_OUTPUT
+          
+          # Créer le tag
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "ThibEquation Bot"
+          
+          git tag -a "$VERSION" -m "Auto-deploy: REGISTRE MAÎTRE DSN-01 $VERSION"
+          git push origin "$VERSION"
+          
+          echo "✅ Tag créé: $VERSION"
+      
+      # ═══════════════════════════════════════════════════════════════
+      # ÉTAPE 7: Créer GitHub Release automatiquement
+      # ═══════════════════════════════════════════════════════════════
+      - name: 🚀 Create GitHub Release automatically
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.create_tag.outputs.tag }}
+          name: "REGISTRE MAÎTRE DSN-01 ${{ steps.create_tag.outputs.tag }}"
+          body: |
+            ## 📦 ThibEquation DSN-01 — Dépôt Automatique
+            
+            **Version**: ${{ steps.create_tag.outputs.tag }}  
+            **Date**: ${{ github.event.head_commit.timestamp }}  
+            **Commit**: ${{ github.sha }}
+            
+            ### 📄 Contenu
+            - REGISTRE MAÎTRE DSN-01 v5.0 FINAL CONSOLIDÉ
+            - Métadonnées Zenodo (.zenodo.json)
+            - Manifest RTGS (hashes SHA-256)
+            - Documentation complète
+            
+            ### 🌐 Zenodo
+            DOI permanent généré automatiquement via API Zenodo.
+            
+            **Sans mensonge, Rigueur, Transparence.**
+          files: |
+            ThibEquation_DSN-01_${{ steps.create_tag.outputs.tag }}_BUNDLE.zip
+            REGISTRE_MAITRE_DSN-01_v5.0_FINAL_CONSOLIDE.html
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      # ═══════════════════════════════════════════════════════════════
+      # ÉTAPE 8: Upload vers Zenodo automatiquement
+      # ═══════════════════════════════════════════════════════════════
+      - name: 🌐 Auto-upload to Zenodo
+        id: zenodo_upload
+        run: |
+          echo "🚀 Upload automatique vers Zenodo..."
+          
+          # Créer dépôt Zenodo
+          RESPONSE=$(curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.ZENODO_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            https://zenodo.org/api/deposit/depositions)
+          
+          DEPOSITION_ID=$(echo $RESPONSE | jq -r '.id')
+          BUCKET_URL=$(echo $RESPONSE | jq -r '.links.bucket')
+          
+          if [ "$DEPOSITION_ID" = "null" ]; then
+            echo "❌ Échec création dépôt Zenodo"
+            echo "Response: $RESPONSE"
+            exit 1
+          fi
+          
+          echo "deposition_id=$DEPOSITION_ID" >> $GITHUB_OUTPUT
+          echo "✅ Dépôt Zenodo créé: ID $DEPOSITION_ID"
+          
+          # Upload bundle
+          VERSION="${{ steps.create_tag.outputs.tag }}"
+          BUNDLE="ThibEquation_DSN-01_${VERSION}_BUNDLE.zip"
+          
+          curl -X PUT \
+            -H "Authorization: Bearer ${{ secrets.ZENODO_TOKEN }}" \
+            --upload-file "$BUNDLE" \
+            "$BUCKET_URL/$BUNDLE"
+          
+          echo "✅ Bundle uploadé vers Zenodo"
+          
+          # Mettre à jour métadonnées
+          VERSION_NUMBER="${{ steps.version.outputs.version_number }}"
+          METADATA=$(cat .zenodo.json | jq --arg ver "$VERSION_NUMBER" '.version = $ver')
+          
+          curl -X PUT \
+            -H "Authorization: Bearer ${{ secrets.ZENODO_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d "$METADATA" \
+            "https://zenodo.org/api/deposit/depositions/$DEPOSITION_ID"
+          
+          echo "✅ Métadonnées mises à jour"
+          
+          # Publier
+          PUBLISH_RESPONSE=$(curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.ZENODO_TOKEN }}" \
+            "https://zenodo.org/api/deposit/depositions/$DEPOSITION_ID/actions/publish")
+          
+          DOI=$(echo $PUBLISH_RESPONSE | jq -r '.doi')
+          ZENODO_ID=$(echo $PUBLISH_RESPONSE | jq -r '.record_id')
+          
+          if [ "$DOI" = "null" ]; then
+            echo "❌ Échec publication Zenodo"
+            echo "Response: $PUBLISH_RESPONSE"
+            exit 1
+          fi
+          
+          echo "doi=$DOI" >> $GITHUB_OUTPUT
+          echo "zenodo_id=$ZENODO_ID" >> $GITHUB_OUTPUT
+          
+          echo "✅ DOI généré: $DOI"
+          echo "✅ Zenodo ID: $ZENODO_ID"
+      
+      # ═══════════════════════════════════════════════════════════════
+      # ÉTAPE 9: Mettre à jour README automatiquement
+      # ═══════════════════════════════════════════════════════════════
+      - name: 🔄 Auto-update README with DOI
+        run: |
+          DOI="${{ steps.zenodo_upload.outputs.doi }}"
+          
+          # Mettre à jour le badge DOI
+          sed -i "s|10\.5281/zenodo\.[0-9]*|$DOI|g" README.md
+          
+          # Commit et push
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "ThibEquation Bot"
+          
+          git add README.md
+          git commit -m "🔖 Auto-update: Zenodo DOI $DOI" || echo "Rien à committer"
+          git push || echo "Push échoué (normal si rien à committer)"
+          
+          echo "✅ README mis à jour avec DOI: $DOI"
+      
+      # ═══════════════════════════════════════════════════════════════
+      # ÉTAPE 10: Notification de succès
+      # ═══════════════════════════════════════════════════════════════
+      - name: 🎉 Success notification
+        run: |
+          echo ""
+          echo "═══════════════════════════════════════════════════════════════════"
+          echo "✅ DÉPLOIEMENT AUTOMATIQUE ZENODO RÉUSSI"
+          echo "═══════════════════════════════════════════════════════════════════"
+          echo ""
+          echo "📦 Version: ${{ steps.create_tag.outputs.tag }}"
+          echo "🔗 GitHub Release: https://github.com/${{ github.repository }}/releases/tag/${{ steps.create_tag.outputs.tag }}"
+          echo "🌐 Zenodo Record: https://zenodo.org/record/${{ steps.zenodo_upload.outputs.zenodo_id }}"
+          echo "📎 DOI permanent: ${{ steps.zenodo_upload.outputs.doi }}"
+          echo ""
+          echo "🎯 Workflow déclenché par: ${{ github.event_name }}"
+          echo "👤 Auteur: ${{ github.actor }}"
+          echo "📅 Date: $(date -u +"%Y-%m-%d %H:%M:%S UTC")"
+          echo ""
+          echo "Sans mensonge, Rigueur, Transparence."
+          echo "═══════════════════════════════════════════════════════════════════"
