@@ -1,835 +1,834 @@
-  1	<!DOCTYPE html>
-     2	<html lang="fr">
-     3	<head>
-     4	    <meta charset="UTF-8">
-     5	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     6	    <meta name="description" content="ThibEquation Framework v5.0 - Système de recherche citoyenne québécoise pour l'analyse et la priorisation d'objets interstellaires. GKSC v5.0 avec 100 objets validés et R² = 0.88">
-     7	    <title>ThibEquation Framework v5.0 - Analyse d'Objets Interstellaires</title>
-     8	    
-     9	    <!-- Favicon -->
-    10	    <link rel="icon" type="image/png" href="images/logo-thibequation-official.png">
-    11	    
-    12	    <!-- Google Fonts -->
-    13	    <link rel="preconnect" href="https://fonts.googleapis.com">
-    14	    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    15	    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Cinzel:wght@400;600;700;900&display=swap" rel="stylesheet">
-    16	    
-    17	    <!-- Chart.js -->
-    18	    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
-    19	    
-    20	    <!-- Schema.org JSON-LD for SEO -->
-    21	    <script type="application/ld+json">
-    22	    {
-    23	      "@context": "https://schema.org",
-    24	      "@type": "ResearchOrganization",
-    25	      "name": "ThibEquation Research",
-    26	      "alternateName": "ThibEquation Framework",
-    27	      "url": "https://thibequation.com",
-    28	      "logo": "https://thibequation.com/images/logo-thibequation-official.png",
-    29	      "description": "Projet de recherche citoyenne québécoise en astrophysique interstellaire. Framework mathématique GKSC v5.0 pour l'analyse et la priorisation d'objets interstellaires. R² = 0.88, 100 objets validés.",
-    30	      "foundingDate": "2023",
-    31	      "founder": {
-    32	        "@type": "Person",
-    33	        "name": "Pascal Thibodeau",
-    34	        "jobTitle": "Lead Architect & Chief Research Officer",
-    35	        "affiliation": {
-    36	          "@type": "Organization",
-    37	          "name": "ThibEquation Independent Lab",
-    38	          "description": "Nœud Genesis DSN-01 - Premier nœud de Science Décentralisée du Québec"
-    39	        }
-    40	      },
-    41	      "contactPoint": {
-    42	        "@type": "ContactPoint",
-    43	        "email": "Thibodeauinnovations@protonmail.me",
-    44	        "contactType": "Research Inquiries",
-    45	        "availableLanguage": ["French", "English"]
-    46	      },
-    47	      "knowsAbout": [
-    48	        "Astrophysics",
-    49	        "Interstellar Objects",
-    50	        "Mathematical Modeling",
-    51	        "Anomaly Detection",
-    52	        "Citizen Science",
-    53	        "CVD Process",
-    54	        "Nickel Carbonyl Chemistry",
-    55	        "TH-1517 Spacecraft Design",
-    56	        "DeSci"
-    57	      ],
-    58	      "areaServed": "International",
-    59	      "slogan": "Quantifier l'Anomalie, Prioriser la Découverte",
-    60	      "keywords": "ThibEquation, GKSC v5.0, ThibScore, objets interstellaires, 3I/ATLAS, Oumuamua, 2I/Borisov, DeSci",
-    61	      "email": "Thibodeauinnovations@protonmail.me",
-    62	      "sameAs": [
-    63	        "https://github.com/Thib4204/Thib-Equation-Framework",
-    64	        "https://doi.org/10.5281/zenodo.17717380",
-    65	        "https://orcid.org/0009-0004-1854-8609"
-    66	      ],
-    67	      "address": {
-    68	        "@type": "PostalAddress",
-    69	        "addressCountry": "CA",
-    70	        "addressRegion": "QC"
-    71	      },
-    72	      "aggregateRating": {
-    73	        "@type": "AggregateRating",
-    74	        "ratingValue": "9.65",
-    75	        "bestRating": "10",
-    76	        "ratingCount": "1"
-    77	      },
-    78	      "hasOfferCatalog": {
-    79	        "@type": "OfferCatalog",
-    80	        "name": "Services de Recherche ThibEquation",
-    81	        "itemListElement": [
-    82	          {
-    83	            "@type": "Offer",
-    84	            "itemOffered": {
-    85	              "@type": "Service",
-    86	              "name": "Calculateur ThibScore Premium",
-    87	              "description": "Accès complet aux 100 objets validés avec GKSC v5.0"
-    88	            }
-    89	          },
-    90	          {
-    91	            "@type": "Offer",
-    92	            "itemOffered": {
-    93	              "@type": "Service",
-    94	              "name": "Licence NTVC (Cybersécurité)",
-    95	              "description": "Framework de cybersécurité basé sur la détection d'anomalies"
-    96	            }
-    97	          }
-    98	        ]
-    99	      },
-   100	      "memberOf": {
-   101	        "@type": "Organization",
-   102	        "name": "DeSci Network",
-   103	        "description": "Nœud Genesis DSN-01"
-   104	      },
-   105	      "potentialAction": {
-   106	        "@type": "SearchAction",
-   107	        "target": "https://thibequation.com/calculateur.html?search={search_term_string}",
-   108	        "query-input": "required name=search_term_string"
-   109	      },
-   110	      "publication": [
-   111	        {
-   112	          "@type": "ScholarlyArticle",
-   113	          "headline": "GKSC v5.0 Framework",
-   114	          "url": "https://doi.org/10.5281/zenodo.17717380",
-   115	          "datePublished": "2025-01-01",
-   116	          "description": "ThibScore = 0.28×G + 0.32×K + 0.23×S + 0.17×C avec R² = 0.88"
-   117	        },
-   118	        {
-   119	          "@type": "ScholarlyArticle",
-   120	          "headline": "TH-1517 Interplanetary Vessel",
-   121	          "url": "https://doi.org/10.5281/zenodo.17587604",
-   122	          "datePublished": "2024-12-27",
-   123	          "description": "Vaisseau interplanétaire à propulsion ionique avec synthèse nickel-carbonyle"
-   124	        }
-   125	      ]
-   126	    }
-   127	    </script>
-   128	    
-   129	    <style>
-   130	        /* ============================================
-   131	           ROOT VARIABLES & MODERN DESIGN SYSTEM
-   132	           ============================================ */
-   133	        :root {
-   134	            --bg-primary: #0d1117;
-   135	            --bg-secondary: #161b22;
-   136	            --bg-tertiary: #1f2937;
-   137	            --text-primary: #c9d1d9;
-   138	            --text-secondary: #8b949e;
-   139	            --text-tertiary: #6b7280;
-   140	            --accent-primary: #58a6ff;
-   141	            --accent-secondary: #1f6feb;
-   142	            --accent-tertiary: #f59e0b;
-   143	            --border-primary: rgba(255, 255, 255, 0.1);
-   144	            --border-secondary: rgba(255, 255, 255, 0.05);
-   145	            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
-   146	            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.16);
-   147	            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.2);
-   148	            --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.3);
-   149	            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-   150	            --font-display: 'Space Grotesk', 'Inter', sans-serif;
-   151	            --font-serif: 'Cinzel', Georgia, serif;
-   152	        }
-   153	
-   154	        /* ============================================
-   155	           GLOBAL RESET & BASE STYLES
-   156	           ============================================ */
-   157	        * {
-   158	            margin: 0;
-   159	            padding: 0;
-   160	            box-sizing: border-box;
-   161	        }
-   162	
-   163	        html {
-   164	            font-size: 16px;
-   165	            scroll-behavior: smooth;
-   166	        }
-   167	
-   168	        body {
-   169	            font-family: var(--font-primary);
-   170	            background: var(--bg-primary);
-   171	            color: var(--text-primary);
-   172	            line-height: 1.6;
-   173	            overflow-x: hidden;
-   174	        }
-   175	
-   176	        /* ============================================
-   177	           ACCESSIBILITY
-   178	           ============================================ */
-   179	        .skip-to-content {
-   180	            position: absolute;
-   181	            top: -100px;
-   182	            left: 0;
-   183	            background: var(--accent-primary);
-   184	            color: white;
-   185	            padding: 0.75rem 1.5rem;
-   186	            text-decoration: none;
-   187	            z-index: 10000;
-   188	            border-radius: 0 0 0.5rem 0;
-   189	            font-weight: 600;
-   190	        }
-   191	
-   192	        .skip-to-content:focus {
-   193	            top: 0;
-   194	        }
-   195	
-   196	        /* ============================================
-   197	           TERMINAL MANIFESTO - STICKY HEADER
-   198	           Pure CSS, <1KB, Console Style
-   199	           ============================================ */
-   200	        .terminal-manifesto {
-   201	            position: sticky;
-   202	            top: 0;
-   203	            z-index: 9999;
-   204	            background: #000000;
-   205	            color: #00ff00;
-   206	            font-family: 'Courier New', 'Fira Code', monospace;
-   207	            font-size: 0.875rem;
-   208	            padding: 0.75rem 1.5rem;
-   209	            border-bottom: 2px solid #00ff00;
-   210	            box-shadow: 0 2px 10px rgba(0, 255, 0, 0.3);
-   211	            display: flex;
-   212	            justify-content: space-between;
-   213	            align-items: center;
-   214	            flex-wrap: wrap;
-   215	        }
-   216	
-   217	        .terminal-prompt {
-   218	            color: #00ff00;
-   219	            font-weight: bold;
-   220	            margin-right: 0.5rem;
-   221	        }
-   222	
-   223	        .terminal-command {
-   224	            color: #00ff88;
-   225	            margin-right: 1rem;
-   226	        }
-   227	
-   228	        .terminal-status {
-   229	            display: flex;
-   230	            align-items: center;
-   231	            gap: 0.5rem;
-   232	        }
-   233	
-   234	        .status-label {
-   235	            color: #00ff00;
-   236	            font-weight: 600;
-   237	        }
-   238	
-   239	        .status-operational {
-   240	            color: #00ff00;
-   241	            font-weight: 900;
-   242	            animation: pulse-glow 2s ease-in-out infinite;
-   243	        }
-   244	
-   245	        @keyframes pulse-glow {
-   246	            0%, 100% {
-   247	                opacity: 0.8;
-   248	                text-shadow: 0 0 5px #00ff00;
-   249	            }
-   250	            50% {
-   251	                opacity: 1;
-   252	                text-shadow: 0 0 15px #00ff00, 0 0 25px #00ff00;
-   253	            }
-   254	        }
-   255	
-   256	        .cursor-blink {
-   257	            display: inline-block;
-   258	            width: 8px;
-   259	            height: 14px;
-   260	            background-color: #00ff00;
-   261	            animation: blink 1s step-end infinite;
-   262	            margin-left: 2px;
-   263	        }
-   264	
-   265	        @keyframes blink {
-   266	            0%, 100% {
-   267	                opacity: 1;
-   268	            }
-   269	            50% {
-   270	                opacity: 0;
-   271	            }
-   272	        }
-   273	
-   274	        @media (max-width: 768px) {
-   275	            .terminal-manifesto {
-   276	                font-size: 0.75rem;
-   277	                padding: 0.5rem 1rem;
-   278	                flex-direction: column;
-   279	                align-items: flex-start;
-   280	                gap: 0.5rem;
-   281	            }
-   282	        }
-   283	
-   284	        /* ============================================
-   285	           DOCUMENT MAÎTRE SECTION
-   286	           Hero Document - Première page du site
-   287	           ============================================ */
-   288	        .document-maitre-section {
-   289	            background: linear-gradient(135deg, #1a1f2e 0%, #2d1b4e 100%);
-   290	            padding: 4rem 2rem;
-   291	            margin: 2rem 0;
-   292	            border-radius: 16px;
-   293	            border: 2px solid rgba(245, 158, 11, 0.3);
-   294	            box-shadow: 0 12px 48px rgba(245, 158, 11, 0.2);
-   295	            position: relative;
-   296	            overflow: hidden;
-   297	        }
-   298	
-   299	        .document-maitre-section::before {
-   300	            content: '';
-   301	            position: absolute;
-   302	            top: 0;
-   303	            left: 0;
-   304	            right: 0;
-   305	            height: 4px;
-   306	            background: linear-gradient(90deg, #f59e0b, #fbbf24, #f59e0b);
-   307	            animation: pulse-border-gold 3s ease-in-out infinite;
-   308	        }
-   309	
-   310	        @keyframes pulse-border-gold {
-   311	            0%, 100% { opacity: 0.6; }
-   312	            50% { opacity: 1; }
-   313	        }
-   314	
-   315	        .document-badge {
-   316	            display: inline-flex;
-   317	            align-items: center;
-   318	            gap: 0.5rem;
-   319	            padding: 0.5rem 1rem;
-   320	            background: rgba(245, 158, 11, 0.2);
-   321	            border: 1px solid rgba(245, 158, 11, 0.4);
-   322	            border-radius: 6px;
-   323	            color: #fbbf24;
-   324	            font-size: 0.85rem;
-   325	            font-weight: 700;
-   326	            text-transform: uppercase;
-   327	            letter-spacing: 0.1em;
-   328	            margin-bottom: 1.5rem;
-   329	        }
-   330	
-   331	        .document-title {
-   332	            color: #ffffff;
-   333	            font-size: 2.5rem;
-   334	            font-weight: 900;
-   335	            margin-bottom: 1rem;
-   336	            font-family: 'Space Grotesk', sans-serif;
-   337	            text-transform: uppercase;
-   338	            letter-spacing: 0.02em;
-   339	            line-height: 1.2;
-   340	        }
-   341	
-   342	        .document-subtitle {
-   343	            color: #c9d1d9;
-   344	            font-size: 1.3rem;
-   345	            margin-bottom: 1.5rem;
-   346	            font-weight: 600;
-   347	            line-height: 1.4;
-   348	        }
-   349	
-   350	        .document-description {
-   351	            color: #8b949e;
-   352	            font-size: 1.05rem;
-   353	            line-height: 1.7;
-   354	            margin-bottom: 2rem;
-   355	            max-width: 900px;
-   356	        }
-   357	
-   358	        .document-meta {
-   359	            display: flex;
-   360	            flex-wrap: wrap;
-   361	            gap: 1.5rem;
-   362	            margin-bottom: 2.5rem;
-   363	            padding: 1.5rem;
-   364	            background: rgba(255, 255, 255, 0.03);
-   365	            border-radius: 12px;
-   366	            border: 1px solid rgba(255, 255, 255, 0.1);
-   367	        }
-   368	
-   369	        .meta-item {
-   370	            display: flex;
-   371	            align-items: center;
-   372	            gap: 0.75rem;
-   373	        }
-   374	
-   375	        .meta-label {
-   376	            color: #8b949e;
-   377	            font-size: 0.875rem;
-   378	            font-weight: 600;
-   379	            text-transform: uppercase;
-   380	            letter-spacing: 0.05em;
-   381	        }
-   382	
-   383	        .meta-value {
-   384	            color: #ffffff;
-   385	            font-size: 0.95rem;
-   386	            font-weight: 500;
-   387	        }
-   388	
-   389	        .document-ctas {
-   390	            display: flex;
-   391	            flex-wrap: wrap;
-   392	            gap: 1.5rem;
-   393	            margin-bottom: 3rem;
-   394	        }
-   395	
-   396	        .btn-document-primary {
-   397	            display: inline-flex;
-   398	            align-items: center;
-   399	            gap: 0.75rem;
-   400	            padding: 1rem 2rem;
-   401	            background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
-   402	            color: #000000;
-   403	            font-weight: 700;
-   404	            font-size: 1rem;
-   405	            text-decoration: none;
-   406	            border-radius: 8px;
-   407	            border: none;
-   408	            cursor: pointer;
-   409	            transition: all 0.3s ease;
-   410	            box-shadow: 0 4px 16px rgba(245, 158, 11, 0.4);
-   411	        }
-   412	
-   413	        .btn-document-primary:hover {
-   414	            transform: translateY(-2px);
-   415	            box-shadow: 0 8px 24px rgba(245, 158, 11, 0.6);
-   416	        }
-   417	
-   418	        .btn-document-secondary {
-   419	            display: inline-flex;
-   420	            align-items: center;
-   421	            gap: 0.75rem;
-   422	            padding: 1rem 2rem;
-   423	            background: transparent;
-   424	            color: #ffffff;
-   425	            font-weight: 600;
-   426	            font-size: 1rem;
-   427	            text-decoration: none;
-   428	            border-radius: 8px;
-   429	            border: 2px solid rgba(245, 158, 11, 0.5);
-   430	            cursor: pointer;
-   431	            transition: all 0.3s ease;
-   432	        }
-   433	
-   434	        .btn-document-secondary:hover {
-   435	            background: rgba(245, 158, 11, 0.1);
-   436	            border-color: rgba(245, 158, 11, 0.8);
-   437	        }
-   438	
-   439	        .document-highlights {
-   440	            display: grid;
-   441	            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-   442	            gap: 1.5rem;
-   443	        }
-   444	
-   445	        .highlight-card {
-   446	            background: rgba(255, 255, 255, 0.03);
-   447	            padding: 1.5rem;
-   448	            border-radius: 12px;
-   449	            border: 1px solid rgba(255, 255, 255, 0.1);
-   450	            transition: all 0.3s ease;
-   451	        }
-   452	
-   453	        .highlight-card:hover {
-   454	            background: rgba(255, 255, 255, 0.05);
-   455	            border-color: rgba(245, 158, 11, 0.3);
-   456	            transform: translateY(-4px);
-   457	            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.15);
-   458	        }
-   459	
-   460	        .highlight-icon {
-   461	            font-size: 2rem;
-   462	            margin-bottom: 1rem;
-   463	        }
-   464	
-   465	        .highlight-title {
-   466	            color: #ffffff;
-   467	            font-size: 1.1rem;
-   468	            font-weight: 700;
-   469	            margin-bottom: 0.75rem;
-   470	        }
-   471	
-   472	        .highlight-text {
-   473	            color: #8b949e;
-   474	            font-size: 0.95rem;
-   475	            line-height: 1.6;
-   476	        }
-   477	
-   478	        .scientific-warning {
-   479	            margin-top: 2rem;
-   480	            padding: 1.5rem;
-   481	            background: rgba(239, 68, 68, 0.1);
-   482	            border: 1px solid rgba(239, 68, 68, 0.3);
-   483	            border-radius: 8px;
-   484	        }
-   485	
-   486	        .scientific-warning-title {
-   487	            color: #fca5a5;
-   488	            font-weight: 700;
-   489	            font-size: 0.95rem;
-   490	            margin-bottom: 0.75rem;
-   491	            text-transform: uppercase;
-   492	            letter-spacing: 0.05em;
-   493	        }
-   494	
-   495	        .scientific-warning-text {
-   496	            color: #c9d1d9;
-   497	            font-size: 0.9rem;
-   498	            line-height: 1.6;
-   499	        }
-   500	
-   501	        @media (max-width: 768px) {
-   502	            .document-maitre-section {
-   503	                padding: 2rem 1rem;
-   504	            }
-   505	
-   506	            .document-title {
-   507	                font-size: 1.75rem;
-   508	            }
-   509	
-   510	            .document-subtitle {
-   511	                font-size: 1.1rem;
-   512	            }
-   513	
-   514	            .document-ctas {
-   515	                flex-direction: column;
-   516	            }
-   517	
-   518	            .btn-document-primary,
-   519	            .btn-document-secondary {
-   520	                width: 100%;
-   521	                justify-content: center;
-   522	            }
-   523	        }
-   524	
-   525	        /* ============================================
-   526	           CONTAINER & SECTION STYLES
-   527	           ============================================ */
-   528	        .container {
-   529	            max-width: 1400px;
-   530	            margin: 0 auto;
-   531	            padding: 0 2rem;
-   532	        }
-   533	
-   534	        section {
-   535	            padding: 4rem 0;
-   536	        }
-   537	
-   538	        /* ============================================
-   539	           HERO SECTION
-   540	           ============================================ */
-   541	        .hero {
-   542	            background: linear-gradient(135deg, var(--bg-primary) 0%, #1a1f3a 100%);
-   543	            padding: 6rem 0 4rem;
-   544	            text-align: center;
-   545	        }
-   546	
-   547	        .hero h1 {
-   548	            font-size: 3rem;
-   549	            font-weight: 900;
-   550	            color: white;
-   551	            margin-bottom: 1rem;
-   552	            font-family: var(--font-display);
-   553	        }
-   554	
-   555	        .hero p {
-   556	            font-size: 1.25rem;
-   557	            color: var(--text-secondary);
-   558	            margin-bottom: 2rem;
-   559	        }
-   560	
-   561	        /* ============================================
-   562	           STATS BADGES
-   563	           ============================================ */
-   564	        .stats-container {
-   565	            display: grid;
-   566	            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-   567	            gap: 2rem;
-   568	            margin-top: 3rem;
-   569	        }
-   570	
-   571	        .stat-card {
-   572	            background: var(--bg-secondary);
-   573	            padding: 2rem;
-   574	            border-radius: 12px;
-   575	            border: 1px solid var(--border-primary);
-   576	            text-align: center;
-   577	            transition: all 0.3s ease;
-   578	        }
-   579	
-   580	        .stat-card:hover {
-   581	            transform: translateY(-4px);
-   582	            box-shadow: var(--shadow-lg);
-   583	            border-color: var(--accent-primary);
-   584	        }
-   585	
-   586	        .stat-number {
-   587	            font-size: 2.5rem;
-   588	            font-weight: 900;
-   589	            color: var(--accent-primary);
-   590	            font-family: var(--font-display);
-   591	        }
-   592	
-   593	        .stat-label {
-   594	            color: var(--text-secondary);
-   595	            font-size: 0.95rem;
-   596	            margin-top: 0.5rem;
-   597	        }
-   598	    </style>
-   599	</head>
-   600	
-   601	<body>
-   602	    <!-- Skip to Content Link for Accessibility -->
-   603	    <a href="#main-content" class="skip-to-content">Aller au contenu principal</a>
-   604	
-   605	    <!-- ============================================
-   606	         TERMINAL MANIFESTO - STICKY HEADER
-   607	         Pure CSS Console Design (<1KB)
-   608	         ThibScore: 9.35/10 (Positioning Flip)
-   609	         ============================================ -->
-   610	    <div class="terminal-manifesto" role="banner" aria-label="Manifeste Terminal DSN-01">
-   611	        <div>
-   612	            <span class="terminal-prompt">root@thibequation:~$</span>
-   613	            <span class="terminal-command">./status_check.sh</span>
-   614	        </div>
-   615	        <div class="terminal-status">
-   616	            <span class="status-label">Statut :</span>
-   617	            <span class="status-operational">OPÉRATIONNEL</span>
-   618	            <span class="cursor-blink" aria-hidden="true"></span>
-   619	        </div>
-   620	    </div>
-   621	
-   622	    <!-- Header Navigation Component -->
-   623	    <div id="header-placeholder"></div>
-   624	
-   625	    <!-- ============================================
-   626	         SECTION DOCUMENT MAÎTRE THIBEQUATION v5.0
-   627	         Hero Document - Première page du site
-   628	         ============================================ -->
-   629	    <section class="document-maitre-section" role="region" aria-labelledby="document-maitre-title">
-   630	        <div class="container">
-   631	            <!-- Badge Nouveau -->
-   632	            <div class="document-badge" role="status">
-   633	                <span>📄</span>
-   634	                <span>DOCUMENT MAÎTRE v5.0 (NOUVEAU)</span>
-   635	            </div>
-   636	
-   637	            <!-- Titre Principal -->
-   638	            <h1 id="document-maitre-title" class="document-title">
-   639	                Document Maître ThibEquation v5.0
-   640	            </h1>
-   641	
-   642	            <!-- Sous-titre -->
-   643	            <h2 class="document-subtitle">
-   644	                Registre Maître DSN-01 - Validation Multi-domaines
-   645	            </h2>
-   646	
-   647	            <!-- Description -->
-   648	            <p class="document-description">
-   649	                Le document fondateur du ThibEquation Framework : méthodologie complète, validation empirique, 
-   650	                formules mathématiques, applications TH-1517 et NTVC, et principes de science ouverte. 
-   651	                <strong>100 objets validés, R² = 0.88, GKSC v5.0</strong>.
-   652	            </p>
-   653	
-   654	            <!-- Métadonnées du Document -->
-   655	            <div class="document-meta">
-   656	                <div class="meta-item">
-   657	                    <span class="meta-label">👤 Auteur :</span>
-   658	                    <span class="meta-value">Pascal "Thib" Thibodeau</span>
-   659	                </div>
-   660	                <div class="meta-item">
-   661	                    <span class="meta-label">📅 Date :</span>
-   662	                    <span class="meta-value">Janvier 2026</span>
-   663	                </div>
-   664	                <div class="meta-item">
-   665	                    <span class="meta-label">🔢 Version :</span>
-   666	                    <span class="meta-value">5.0.0-FINAL</span>
-   667	                </div>
-   668	                <div class="meta-item">
-   669	                    <span class="meta-label">📦 Taille :</span>
-   670	                    <span class="meta-value">866 Ko</span>
-   671	                </div>
-   672	                <div class="meta-item">
-   673	                    <span class="meta-label">🌍 Origine :</span>
-   674	                    <span class="meta-value">Québec, Canada 🇨🇦</span>
-   675	                </div>
-   676	            </div>
-   677	
-   678	            <!-- Call-to-Actions -->
-   679	            <div class="document-ctas">
-   680	                <a href="https://www.genspark.ai/api/files/s/AbaSq33E" 
-   681	                   class="btn-document-primary" 
-   682	                   download="Document-Maitre-ThibEquation-v5.0.pdf"
-   683	                   aria-label="Télécharger le Document Maître ThibEquation v5.0 (PDF, 866 Ko)">
-   684	                    <span>📥</span>
-   685	                    <span>Télécharger le Document Maître (PDF)</span>
-   686	                </a>
-   687	                <a href="#document-highlights" 
-   688	                   class="btn-document-secondary"
-   689	                   aria-label="Découvrir le contenu du Document Maître">
-   690	                    <span>🔍</span>
-   691	                    <span>Découvrir le Contenu</span>
-   692	                </a>
-   693	            </div>
-   694	
-   695	            <!-- Highlights du Document -->
-   696	            <div id="document-highlights" class="document-highlights">
-   697	                <!-- Card 1 : Fondements GKSC v5.0 -->
-   698	                <div class="highlight-card">
-   699	                    <div class="highlight-icon">🧮</div>
-   700	                    <h3 class="highlight-title">Fondements GKSC v5.0</h3>
-   701	                    <p class="highlight-text">
-   702	                        Formule ThibScore complète avec pondérations validées (R² = 0.88) : 
-   703	                        <strong>0.28×G + 0.32×K + 0.23×S + 0.17×C</strong>
-   704	                    </p>
-   705	                </div>
-   706	
-   707	                <!-- Card 2 : Objets Interstellaires -->
-   708	                <div class="highlight-card">
-   709	                    <div class="highlight-icon">🌌</div>
-   710	                    <h3 class="highlight-title">Objets Interstellaires</h3>
-   711	                    <p class="highlight-text">
-   712	                        Analyse approfondie de 3I/ATLAS, C/2024 G3 (ATLAS), et comparaisons 
-   713	                        avec 'Oumuamua et 2I/Borisov. <strong>100 objets validés</strong>.
-   714	                    </p>
-   715	                </div>
-   716	
-   717	                <!-- Card 3 : Validation Empirique -->
-   718	                <div class="highlight-card">
-   719	                    <div class="highlight-icon">✅</div>
-   720	                    <h3 class="highlight-title">Validation Empirique</h3>
-   721	                    <p class="highlight-text">
-   722	                        Données JPL Horizons et MPC avec intégrité SHA-256. 
-   723	                        Scripts Python reproductibles et traçabilité complète.
-   724	                    </p>
-   725	                </div>
-   726	
-   727	                <!-- Card 4 : Métriques Standardisées -->
-   728	                <div class="highlight-card">
-   729	                    <div class="highlight-icon">📊</div>
-   730	                    <h3 class="highlight-title">Métriques Standardisées</h3>
-   731	                    <p class="highlight-text">
-   732	                        SVSC-D (Score de Vélocité Stellaire Comparatif Détaillé), 
-   733	                        ThibScore, et détection d'anomalies multi-domaines.
-   734	                    </p>
-   735	                </div>
-   736	
-   737	                <!-- Card 5 : Applications -->
-   738	                <div class="highlight-card">
-   739	                    <div class="highlight-icon">🚀</div>
-   740	                    <h3 class="highlight-title">Applications</h3>
-   741	                    <p class="highlight-text">
-   742	                        TH-1517 (vaisseau interplanétaire), NTVC (cybersécurité), 
-   743	                        et analytics prédictifs pour objets célestes.
-   744	                    </p>
-   745	                </div>
-   746	
-   747	                <!-- Card 6 : Open Science -->
-   748	                <div class="highlight-card">
-   749	                    <div class="highlight-icon">🔓</div>
-   750	                    <h3 class="highlight-title">Open Science</h3>
-   751	                    <p class="highlight-text">
-   752	                        Code MIT License, datasets publics, DOI Zenodo, 
-   753	                        et reproductibilité garantie à 100%.
-   754	                    </p>
-   755	                </div>
-   756	            </div>
-   757	
-   758	            <!-- Avertissement Scientifique -->
-   759	            <div class="scientific-warning">
-   760	                <p class="scientific-warning-title">⚠️ AVERTISSEMENT SCIENTIFIQUE</p>
-   761	                <p class="scientific-warning-text">
-   762	                    Ce document contient des <strong>hypothèses non vérifiées</strong> et des 
-   763	                    <strong>inventions scientifiques en cours de développement</strong> (ex: TH-1517). 
-   764	                    Toutes les mesures, poids et formules sont d'une <strong>exactitude exemplaire</strong> 
-   765	                    et <strong>réellement reproductibles</strong>. <strong>Aucune donnée n'est inventée.</strong>
-   766	                </p>
-   767	            </div>
-   768	        </div>
-   769	    </section>
-   770	
-   771	    <!-- Main Content -->
-   772	    <main id="main-content">
-   773	        <!-- Hero Section -->
-   774	        <section class="hero">
-   775	            <div class="container">
-   776	                <h1>ThibEquation Framework</h1>
-   777	                <p>Analyse Scientifique d'Objets Interstellaires</p>
-   778	                
-   779	                <!-- Stats Cards -->
-   780	                <div class="stats-container">
-   781	                    <div class="stat-card">
-   782	                        <div class="stat-number">100</div>
-   783	                        <div class="stat-label">Objets Validés</div>
-   784	                    </div>
-   785	                    <div class="stat-card">
-   786	                        <div class="stat-number">0.88</div>
-   787	                        <div class="stat-label">Coefficient R²</div>
-   788	                    </div>
-   789	                    <div class="stat-card">
-   790	                        <div class="stat-number">10.0</div>
-   791	                        <div class="stat-label">ThibScore Maximum</div>
-   792	                    </div>
-   793	                    <div class="stat-card">
-   794	                        <div class="stat-number">8</div>
-   795	                        <div class="stat-label">Objets Interstellaires</div>
-   796	                    </div>
-   797	                </div>
-   798	            </div>
-   799	        </section>
-   800	
-   801	        <!-- Placeholder for other sections -->
-   802	        <section style="min-height: 50vh; display: flex; align-items: center; justify-content: center;">
-   803	            <div class="container" style="text-align: center;">
-   804	                <h2 style="color: var(--text-primary); font-size: 2rem; margin-bottom: 1rem;">
-   805	                    Framework ThibEquation v5.0
-   806	                </h2>
-   807	                <p style="color: var(--text-secondary); font-size: 1.1rem;">
-   808	                    Système de recherche citoyenne québécoise pour l'analyse et la priorisation d'objets interstellaires
-   809	                </p>
-   810	            </div>
-   811	        </section>
-   812	    </main>
-   813	
-   814	    <!-- Footer Placeholder -->
-   815	    <footer style="background: var(--bg-secondary); padding: 2rem 0; text-align: center; border-top: 1px solid var(--border-primary);">
-   816	        <div class="container">
-   817	            <p style="color: var(--text-secondary);">
-   818	                © 2026 ThibEquation Research - Nœud Genesis DSN-01 | 
-   819	                <a href="mailto:Thibodeauinnovations@protonmail.me" style="color: var(--accent-primary); text-decoration: none;">
-   820	                    Thibodeauinnovations@protonmail.me
-   821	                </a>
-   822	            </p>
-   823	        </div>
-   824	    </footer>
-   825	
-   826	    <!-- Scripts Placeholder -->
-   827	    <script>
-   828	        console.log('ThibEquation Framework v5.0 - OPÉRATIONNEL');
-   829	        console.log('Terminal Manifesto: ✅');
-   830	        console.log('Document Maître Section: ✅');
-   831	        console.log('Contact: Thibodeauinnovations@protonmail.me');
-   832	    </script>
-   833	</body>
-   834	</html>
-   📄 Ajout Document Maître v5.0 + Terminal Manifesto
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ThibEquation Framework v5.0 - Système de recherche citoyenne québécoise pour l'analyse et la priorisation d'objets interstellaires. GKSC v5.0 avec 100 objets validés et R² = 0.88">
+    <title>ThibEquation Framework v5.0 - Analyse d'Objets Interstellaires</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/logo-thibequation-official.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Cinzel:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
+    
+    <!-- Schema.org JSON-LD for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ResearchOrganization",
+      "name": "ThibEquation Research",
+      "alternateName": "ThibEquation Framework",
+      "url": "https://thibequation.com",
+      "logo": "https://thibequation.com/images/logo-thibequation-official.png",
+      "description": "Projet de recherche citoyenne québécoise en astrophysique interstellaire. Framework mathématique GKSC v5.0 pour l'analyse et la priorisation d'objets interstellaires. R² = 0.88, 100 objets validés.",
+      "foundingDate": "2023",
+      "founder": {
+        "@type": "Person",
+        "name": "Pascal Thibodeau",
+        "jobTitle": "Lead Architect & Chief Research Officer",
+        "affiliation": {
+          "@type": "Organization",
+          "name": "ThibEquation Independent Lab",
+          "description": "Nœud Genesis DSN-01 - Premier nœud de Science Décentralisée du Québec"
+        }
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "Thibodeauinnovations@protonmail.me",
+        "contactType": "Research Inquiries",
+        "availableLanguage": ["French", "English"]
+      },
+      "knowsAbout": [
+        "Astrophysics",
+        "Interstellar Objects",
+        "Mathematical Modeling",
+        "Anomaly Detection",
+        "Citizen Science",
+        "CVD Process",
+        "Nickel Carbonyl Chemistry",
+        "TH-1517 Spacecraft Design",
+        "DeSci"
+      ],
+      "areaServed": "International",
+      "slogan": "Quantifier l'Anomalie, Prioriser la Découverte",
+      "keywords": "ThibEquation, GKSC v5.0, ThibScore, objets interstellaires, 3I/ATLAS, Oumuamua, 2I/Borisov, DeSci",
+      "email": "Thibodeauinnovations@protonmail.me",
+      "sameAs": [
+        "https://github.com/Thib4204/Thib-Equation-Framework",
+        "https://doi.org/10.5281/zenodo.17717380",
+        "https://orcid.org/0009-0004-1854-8609"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "CA",
+        "addressRegion": "QC"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "9.65",
+        "bestRating": "10",
+        "ratingCount": "1"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Services de Recherche ThibEquation",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Calculateur ThibScore Premium",
+              "description": "Accès complet aux 100 objets validés avec GKSC v5.0"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Licence NTVC (Cybersécurité)",
+              "description": "Framework de cybersécurité basé sur la détection d'anomalies"
+            }
+          }
+        ]
+      },
+      "memberOf": {
+        "@type": "Organization",
+        "name": "DeSci Network",
+        "description": "Nœud Genesis DSN-01"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://thibequation.com/calculateur.html?search={search_term_string}",
+        "query-input": "required name=search_term_string"
+      },
+      "publication": [
+        {
+          "@type": "ScholarlyArticle",
+          "headline": "GKSC v5.0 Framework",
+          "url": "https://doi.org/10.5281/zenodo.17717380",
+          "datePublished": "2025-01-01",
+          "description": "ThibScore = 0.28×G + 0.32×K + 0.23×S + 0.17×C avec R² = 0.88"
+        },
+        {
+          "@type": "ScholarlyArticle",
+          "headline": "TH-1517 Interplanetary Vessel",
+          "url": "https://doi.org/10.5281/zenodo.17587604",
+          "datePublished": "2024-12-27",
+          "description": "Vaisseau interplanétaire à propulsion ionique avec synthèse nickel-carbonyle"
+        }
+      ]
+    }
+    </script>
+    
+    <style>
+        /* ============================================
+           ROOT VARIABLES & MODERN DESIGN SYSTEM
+           ============================================ */
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #1f2937;
+            --text-primary: #c9d1d9;
+            --text-secondary: #8b949e;
+            --text-tertiary: #6b7280;
+            --accent-primary: #58a6ff;
+            --accent-secondary: #1f6feb;
+            --accent-tertiary: #f59e0b;
+            --border-primary: rgba(255, 255, 255, 0.1);
+            --border-secondary: rgba(255, 255, 255, 0.05);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.16);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.2);
+            --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.3);
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-display: 'Space Grotesk', 'Inter', sans-serif;
+            --font-serif: 'Cinzel', Georgia, serif;
+        }
+
+        /* ============================================
+           GLOBAL RESET & BASE STYLES
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ============================================
+           ACCESSIBILITY
+           ============================================ */
+        .skip-to-content {
+            position: absolute;
+            top: -100px;
+            left: 0;
+            background: var(--accent-primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            z-index: 10000;
+            border-radius: 0 0 0.5rem 0;
+            font-weight: 600;
+        }
+
+        .skip-to-content:focus {
+            top: 0;
+        }
+
+        /* ============================================
+           TERMINAL MANIFESTO - STICKY HEADER
+           Pure CSS, <1KB, Console Style
+           ============================================ */
+        .terminal-manifesto {
+            position: sticky;
+            top: 0;
+            z-index: 9999;
+            background: #000000;
+            color: #00ff00;
+            font-family: 'Courier New', 'Fira Code', monospace;
+            font-size: 0.875rem;
+            padding: 0.75rem 1.5rem;
+            border-bottom: 2px solid #00ff00;
+            box-shadow: 0 2px 10px rgba(0, 255, 0, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .terminal-prompt {
+            color: #00ff00;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .terminal-command {
+            color: #00ff88;
+            margin-right: 1rem;
+        }
+
+        .terminal-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-label {
+            color: #00ff00;
+            font-weight: 600;
+        }
+
+        .status-operational {
+            color: #00ff00;
+            font-weight: 900;
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% {
+                opacity: 0.8;
+                text-shadow: 0 0 5px #00ff00;
+            }
+            50% {
+                opacity: 1;
+                text-shadow: 0 0 15px #00ff00, 0 0 25px #00ff00;
+            }
+        }
+
+        .cursor-blink {
+            display: inline-block;
+            width: 8px;
+            height: 14px;
+            background-color: #00ff00;
+            animation: blink 1s step-end infinite;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .terminal-manifesto {
+                font-size: 0.75rem;
+                padding: 0.5rem 1rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+
+        /* ============================================
+           DOCUMENT MAÎTRE SECTION
+           Hero Document - Première page du site
+           ============================================ */
+        .document-maitre-section {
+            background: linear-gradient(135deg, #1a1f2e 0%, #2d1b4e 100%);
+            padding: 4rem 2rem;
+            margin: 2rem 0;
+            border-radius: 16px;
+            border: 2px solid rgba(245, 158, 11, 0.3);
+            box-shadow: 0 12px 48px rgba(245, 158, 11, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .document-maitre-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #f59e0b, #fbbf24, #f59e0b);
+            animation: pulse-border-gold 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-border-gold {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        .document-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(245, 158, 11, 0.2);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            border-radius: 6px;
+            color: #fbbf24;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1.5rem;
+        }
+
+        .document-title {
+            color: #ffffff;
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            font-family: 'Space Grotesk', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            line-height: 1.2;
+        }
+
+        .document-subtitle {
+            color: #c9d1d9;
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .document-description {
+            color: #8b949e;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+            max-width: 900px;
+        }
+
+        .document-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .meta-label {
+            color: #8b949e;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .meta-value {
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .document-ctas {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .btn-document-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+            color: #000000;
+            font-weight: 700;
+            font-size: 1rem;
+            text-decoration: none;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(245, 158, 11, 0.4);
+        }
+
+        .btn-document-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(245, 158, 11, 0.6);
+        }
+
+        .btn-document-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            background: transparent;
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            border-radius: 8px;
+            border: 2px solid rgba(245, 158, 11, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-document-secondary:hover {
+            background: rgba(245, 158, 11, 0.1);
+            border-color: rgba(245, 158, 11, 0.8);
+        }
+
+        .document-highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .highlight-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .highlight-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(245, 158, 11, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.15);
+        }
+
+        .highlight-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .highlight-title {
+            color: #ffffff;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .highlight-text {
+            color: #8b949e;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .scientific-warning {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+        }
+
+        .scientific-warning-title {
+            color: #fca5a5;
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .scientific-warning-text {
+            color: #c9d1d9;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .document-maitre-section {
+                padding: 2rem 1rem;
+            }
+
+            .document-title {
+                font-size: 1.75rem;
+            }
+
+            .document-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .document-ctas {
+                flex-direction: column;
+            }
+
+            .btn-document-primary,
+            .btn-document-secondary {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* ============================================
+           CONTAINER & SECTION STYLES
+           ============================================ */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 4rem 0;
+        }
+
+        /* ============================================
+           HERO SECTION
+           ============================================ */
+        .hero {
+            background: linear-gradient(135deg, var(--bg-primary) 0%, #1a1f3a 100%);
+            padding: 6rem 0 4rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 1rem;
+            font-family: var(--font-display);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        /* ============================================
+           STATS BADGES
+           ============================================ */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-card {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-primary);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent-primary);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--accent-primary);
+            font-family: var(--font-display);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Skip to Content Link for Accessibility -->
+    <a href="#main-content" class="skip-to-content">Aller au contenu principal</a>
+
+    <!-- ============================================
+         TERMINAL MANIFESTO - STICKY HEADER
+         Pure CSS Console Design (<1KB)
+         ThibScore: 9.35/10 (Positioning Flip)
+         ============================================ -->
+    <div class="terminal-manifesto" role="banner" aria-label="Manifeste Terminal DSN-01">
+        <div>
+            <span class="terminal-prompt">root@thibequation:~$</span>
+            <span class="terminal-command">./status_check.sh</span>
+        </div>
+        <div class="terminal-status">
+            <span class="status-label">Statut :</span>
+            <span class="status-operational">OPÉRATIONNEL</span>
+            <span class="cursor-blink" aria-hidden="true"></span>
+        </div>
+    </div>
+
+    <!-- Header Navigation Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- ============================================
+         SECTION DOCUMENT MAÎTRE THIBEQUATION v5.0
+         Hero Document - Première page du site
+         ============================================ -->
+    <section class="document-maitre-section" role="region" aria-labelledby="document-maitre-title">
+        <div class="container">
+            <!-- Badge Nouveau -->
+            <div class="document-badge" role="status">
+                <span>📄</span>
+                <span>DOCUMENT MAÎTRE v5.0 (NOUVEAU)</span>
+            </div>
+
+            <!-- Titre Principal -->
+            <h1 id="document-maitre-title" class="document-title">
+                Document Maître ThibEquation v5.0
+            </h1>
+
+            <!-- Sous-titre -->
+            <h2 class="document-subtitle">
+                Registre Maître DSN-01 - Validation Multi-domaines
+            </h2>
+
+            <!-- Description -->
+            <p class="document-description">
+                Le document fondateur du ThibEquation Framework : méthodologie complète, validation empirique, 
+                formules mathématiques, applications TH-1517 et NTVC, et principes de science ouverte. 
+                <strong>100 objets validés, R² = 0.88, GKSC v5.0</strong>.
+            </p>
+
+            <!-- Métadonnées du Document -->
+            <div class="document-meta">
+                <div class="meta-item">
+                    <span class="meta-label">👤 Auteur :</span>
+                    <span class="meta-value">Pascal "Thib" Thibodeau</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">📅 Date :</span>
+                    <span class="meta-value">Janvier 2026</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">🔢 Version :</span>
+                    <span class="meta-value">5.0.0-FINAL</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">📦 Taille :</span>
+                    <span class="meta-value">866 Ko</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">🌍 Origine :</span>
+                    <span class="meta-value">Québec, Canada 🇨🇦</span>
+                </div>
+            </div>
+
+            <!-- Call-to-Actions -->
+            <div class="document-ctas">
+                <a href="https://www.genspark.ai/api/files/s/AbaSq33E" 
+                   class="btn-document-primary" 
+                   download="Document-Maitre-ThibEquation-v5.0.pdf"
+                   aria-label="Télécharger le Document Maître ThibEquation v5.0 (PDF, 866 Ko)">
+                    <span>📥</span>
+                    <span>Télécharger le Document Maître (PDF)</span>
+                </a>
+                <a href="#document-highlights" 
+                   class="btn-document-secondary"
+                   aria-label="Découvrir le contenu du Document Maître">
+                    <span>🔍</span>
+                    <span>Découvrir le Contenu</span>
+                </a>
+            </div>
+
+            <!-- Highlights du Document -->
+            <div id="document-highlights" class="document-highlights">
+                <!-- Card 1 : Fondements GKSC v5.0 -->
+                <div class="highlight-card">
+                    <div class="highlight-icon">🧮</div>
+                    <h3 class="highlight-title">Fondements GKSC v5.0</h3>
+                    <p class="highlight-text">
+                        Formule ThibScore complète avec pondérations validées (R² = 0.88) : 
+                        <strong>0.28×G + 0.32×K + 0.23×S + 0.17×C</strong>
+                    </p>
+                </div>
+
+                <!-- Card 2 : Objets Interstellaires -->
+                <div class="highlight-card">
+                    <div class="highlight-icon">🌌</div>
+                    <h3 class="highlight-title">Objets Interstellaires</h3>
+                    <p class="highlight-text">
+                        Analyse approfondie de 3I/ATLAS, C/2024 G3 (ATLAS), et comparaisons 
+                        avec 'Oumuamua et 2I/Borisov. <strong>100 objets validés</strong>.
+                    </p>
+                </div>
+
+                <!-- Card 3 : Validation Empirique -->
+                <div class="highlight-card">
+                    <div class="highlight-icon">✅</div>
+                    <h3 class="highlight-title">Validation Empirique</h3>
+                    <p class="highlight-text">
+                        Données JPL Horizons et MPC avec intégrité SHA-256. 
+                        Scripts Python reproductibles et traçabilité complète.
+                    </p>
+                </div>
+
+                <!-- Card 4 : Métriques Standardisées -->
+                <div class="highlight-card">
+                    <div class="highlight-icon">📊</div>
+                    <h3 class="highlight-title">Métriques Standardisées</h3>
+                    <p class="highlight-text">
+                        SVSC-D (Score de Vélocité Stellaire Comparatif Détaillé), 
+                        ThibScore, et détection d'anomalies multi-domaines.
+                    </p>
+                </div>
+
+                <!-- Card 5 : Applications -->
+                <div class="highlight-card">
+                    <div class="highlight-icon">🚀</div>
+                    <h3 class="highlight-title">Applications</h3>
+                    <p class="highlight-text">
+                        TH-1517 (vaisseau interplanétaire), NTVC (cybersécurité), 
+                        et analytics prédictifs pour objets célestes.
+                    </p>
+                </div>
+
+                <!-- Card 6 : Open Science -->
+                <div class="highlight-card">
+                    <div class="highlight-icon">🔓</div>
+                    <h3 class="highlight-title">Open Science</h3>
+                    <p class="highlight-text">
+                        Code MIT License, datasets publics, DOI Zenodo, 
+                        et reproductibilité garantie à 100%.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Avertissement Scientifique -->
+            <div class="scientific-warning">
+                <p class="scientific-warning-title">⚠️ AVERTISSEMENT SCIENTIFIQUE</p>
+                <p class="scientific-warning-text">
+                    Ce document contient des <strong>hypothèses non vérifiées</strong> et des 
+                    <strong>inventions scientifiques en cours de développement</strong> (ex: TH-1517). 
+                    Toutes les mesures, poids et formules sont d'une <strong>exactitude exemplaire</strong> 
+                    et <strong>réellement reproductibles</strong>. <strong>Aucune donnée n'est inventée.</strong>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <h1>ThibEquation Framework</h1>
+                <p>Analyse Scientifique d'Objets Interstellaires</p>
+                
+                <!-- Stats Cards -->
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-number">100</div>
+                        <div class="stat-label">Objets Validés</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">0.88</div>
+                        <div class="stat-label">Coefficient R²</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">10.0</div>
+                        <div class="stat-label">ThibScore Maximum</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">8</div>
+                        <div class="stat-label">Objets Interstellaires</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Placeholder for other sections -->
+        <section style="min-height: 50vh; display: flex; align-items: center; justify-content: center;">
+            <div class="container" style="text-align: center;">
+                <h2 style="color: var(--text-primary); font-size: 2rem; margin-bottom: 1rem;">
+                    Framework ThibEquation v5.0
+                </h2>
+                <p style="color: var(--text-secondary); font-size: 1.1rem;">
+                    Système de recherche citoyenne québécoise pour l'analyse et la priorisation d'objets interstellaires
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Placeholder -->
+    <footer style="background: var(--bg-secondary); padding: 2rem 0; text-align: center; border-top: 1px solid var(--border-primary);">
+        <div class="container">
+            <p style="color: var(--text-secondary);">
+                © 2026 ThibEquation Research - Nœud Genesis DSN-01 | 
+                <a href="mailto:Thibodeauinnovations@protonmail.me" style="color: var(--accent-primary); text-decoration: none;">
+                    Thibodeauinnovations@protonmail.me
+                </a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts Placeholder -->
+    <script>
+        console.log('ThibEquation Framework v5.0 - OPÉRATIONNEL');
+        console.log('Terminal Manifesto: ✅');
+        console.log('Document Maître Section: ✅');
+        console.log('Contact: Thibodeauinnovations@protonmail.me');
+    </script>
+</body>
+</html>
