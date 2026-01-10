@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TH-1517 + GKSC : Rapport Complet v3.5 FINAL - ThibEquation Framework</title>
+    <meta name="description" content="Framework d'Analyse Quantitative de 3I/ATLAS : Comment un chercheur citoyen développe un framework méthodologique rigoureux surpassant les approches institutionnelles sur 7/10 critères scientifiques">
+    <meta name="keywords" content="TH-1517, GKSC, 3I/ATLAS, framework méthodologique, recherche citoyenne, Pascal Thibodeau, astrophysique">
+    <meta name="author" content="Pascal Thibodeau">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="TH-1517 + GKSC : Rapport Complet v3.5 FINAL">
+    <meta property="og:description" content="Framework d'Analyse Quantitative de 3I/ATLAS - Recherche citoyenne rigoureuse">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://thibequation.com/th-1517-gksc-rapport.html">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-cyan: #00d4ff;
+            --primary-gold: #ffa500;
+            --primary-purple: #9d4edd;
+            --bg-dark: #0a0e27;
+            --bg-card: #1a1f3a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --border-accent: #2a3f5f;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #0f1729 50%, #1a1f3a 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Header */
+        .report-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(255, 165, 0, 0.1) 50%, rgba(157, 78, 221, 0.1) 100%);
+            border-radius: 20px;
+            border: 2px solid var(--border-accent);
+        }
+        
+        .report-header h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.8em;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-gold), var(--primary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+        
+        .report-subtitle {
+            font-size: 1.3em;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        
+        .report-meta {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+            font-size: 0.95em;
+            color: var(--text-secondary);
+        }
+        
+        .report-meta span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .report-meta a {
+            color: var(--primary-cyan);
+            text-decoration: none;
+        }
+        
+        .report-meta a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 15px;
+        }
+        
+        .badge-highlight {
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-purple));
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 165, 0, 0.4);
+        }
+        
+        /* Quote */
+        .quote-box {
+            background: rgba(0, 212, 255, 0.05);
+            border-left: 4px solid var(--primary-cyan);
+            padding: 20px 25px;
+            margin: 30px auto;
+            max-width: 800px;
+            border-radius: 10px;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+        
+        .quote-box strong {
+            color: var(--primary-cyan);
+        }
+        
+        /* PDF Viewer Section */
+        .pdf-section {
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: 20px;
+            border: 2px solid var(--border-accent);
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .pdf-section h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--primary-gold);
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .pdf-viewer {
+            width: 100%;
+            height: 800px;
+            border: 2px solid var(--border-accent);
+            border-radius: 15px;
+            background: #1a1a1a;
+        }
+        
+        .pdf-controls {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        
+        /* Content Sections */
+        .content-section {
+            background: var(--bg-card);
+            padding: 35px;
+            border-radius: 20px;
+            border: 2px solid var(--border-accent);
+            margin-bottom: 30px;
+        }
+        
+        .content-section h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--primary-cyan);
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        
+        .content-section h3 {
+            color: var(--primary-purple);
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+        
+        .content-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .content-section li {
+            padding: 12px 0;
+            padding-left: 35px;
+            position: relative;
+            line-height: 1.7;
+        }
+        
+        .content-section li::before {
+            content: "▹";
+            position: absolute;
+            left: 0;
+            color: var(--primary-cyan);
+            font-weight: bold;
+            font-size: 1.5em;
+        }
+        
+        /* Criteria Grid */
+        .criteria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        
+        .criteria-card {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(255, 165, 0, 0.05));
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid var(--border-accent);
+            transition: all 0.3s ease;
+        }
+        
+        .criteria-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-gold);
+            box-shadow: 0 10px 30px rgba(255, 165, 0, 0.3);
+        }
+        
+        .criteria-card h4 {
+            color: var(--primary-gold);
+            margin-bottom: 12px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .criteria-icon {
+            font-size: 1.5em;
+        }
+        
+        /* Highlight Box */
+        .highlight-box {
+            background: rgba(255, 165, 0, 0.1);
+            border: 2px solid var(--primary-gold);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+        
+        .highlight-box h3 {
+            color: var(--primary-gold);
+            margin-bottom: 20px;
+            font-size: 1.6em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .highlight-box p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 30px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
+            color: white;
+            border-color: transparent;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-gold);
+            border-color: var(--primary-gold);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 165, 0, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .btn-download {
+            background: linear-gradient(135deg, var(--primary-gold), #ff6b35);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .btn-download:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 165, 0, 0.5);
+        }
+        
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        
+        .stat-card {
+            background: rgba(157, 78, 221, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid var(--primary-purple);
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: var(--primary-purple);
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+        
+        /* Footer */
+        .report-footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 40px;
+            border-top: 2px solid var(--border-accent);
+        }
+        
+        .report-footer p {
+            color: var(--text-secondary);
+            margin: 10px 0;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .report-header h1 {
+                font-size: 2em;
+            }
+            
+            .pdf-viewer {
+                height: 500px;
+            }
+            
+            .content-section, .pdf-section {
+                padding: 20px;
+            }
+            
+            .criteria-grid, .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="report-header">
+            <h1>🚀 TH-1517 + GKSC : Rapport Complet v3.5 FINAL</h1>
+            <p class="report-subtitle">
+                <strong>Framework d'Analyse Quantitative de 3I/ATLAS</strong><br>
+                Comment un chercheur citoyen développe un framework méthodologique rigoureux<br>
+                surpassant les approches institutionnelles sur <strong style="color: var(--primary-gold);">7/10 critères scientifiques</strong>
+            </p>
+            <span class="badge badge-highlight">✨ Rapport Majeur</span>
+            <div class="report-meta">
+                <span><i class="fas fa-user"></i> <strong>Pascal Thibodeau</strong></span>
+                <span><i class="fas fa-calendar"></i> 31 décembre 2025</span>
+                <span><i class="fas fa-file-pdf"></i> Version 3.5 FINAL</span>
+                <span><i class="fas fa-database"></i> <a href="https://doi.org/10.5281/zenodo.17587604" target="_blank">DOI: 10.5281/zenodo.17587604</a></span>
+                <span><i class="fas fa-archive"></i> <a href="https://hal.science/hal-05366411" target="_blank">HAL: hal-05366411</a></span>
+            </div>
+        </div>
+
+        <!-- Quote -->
+        <div class="quote-box">
+            <strong>"La science ne repose pas sur l'autorité, mais sur la méthode critique."</strong><br>
+            — Karl Popper
+        </div>
+
+        <!-- DISCLAIMER IMPORTANT -->
+        <div class="quote-box" style="background: rgba(157, 78, 221, 0.1); border-left: 5px solid var(--primary-purple);">
+            <strong>🔬 CLARIFICATION SCIENTIFIQUE ESSENTIELLE</strong><br><br>
+            <strong>ThibEquation v5.0</strong> (formule GKSC : <code>ThibScore = 0.28×G + 0.32×K + 0.23×S + 0.17×C</code>) est le <strong>framework fondamental</strong> — un système de mesure quantitatif validé sur 100 objets (R²=0.88) <strong>sans aucune variable sociale, sans coefficients d'ajustement contextuel</strong>.<br><br>
+            <strong>TH-1517</strong> est une <strong>hypothèse <em>a posteriori</em></strong> — une conséquence logique des mesures effectuées, <strong>non intégrée dans la formule ThibEquation</strong>. Elle n'augmente pas le ThibScore : elle est <strong>contrainte par les données</strong> à être explorée.<br><br>
+            <strong>🎯 3I/ATLAS : #4 mondial</strong>, devant des objets historiquement exceptionnels (y compris ʻOumuamua), sur la base de données publiques mesurables.<br><br>
+            <strong>⚗️ Falsifiabilité TH-1517 :</strong> Tests prédictifs estimés <strong>35-50k USD</strong> (JWST/MIRI, absence de fer, mesure directe de température, polarimétrie multi-bandes). <strong>Si TH-1517 est fausse, elle échouera gracieusement. Si elle est partiellement vraie, elle pourrait ouvrir une nouvelle classe d'objets. Dans tous les cas, la science avance.</strong>
+        </div>
+
+        <!-- PDF Viewer -->
+        <div class="pdf-section">
+            <h2><i class="fas fa-file-pdf"></i> Rapport PDF Intégré</h2>
+            <iframe 
+                src="TH-1517-Rapport-Complet-v3.5-FINAL.pdf" 
+                class="pdf-viewer"
+                title="TH-1517 + GKSC Rapport Complet v3.5 FINAL">
+            </iframe>
+            <div class="pdf-controls">
+                <a href="TH-1517-Rapport-Complet-v3.5-FINAL.pdf" download class="btn btn-download">
+                    <i class="fas fa-download"></i> Télécharger le PDF (735 Ko)
+                </a>
+                <a href="TH-1517-Rapport-Complet-v3.5-FINAL.pdf" target="_blank" class="btn btn-secondary">
+                    <i class="fas fa-external-link-alt"></i> Ouvrir en Plein Écran
+                </a>
+            </div>
+        </div>
+
+        <!-- Highlight -->
+        <div class="highlight-box">
+            <h3><i class="fas fa-trophy"></i> Performance du Framework TH-1517 + GKSC</h3>
+            <p>
+                Le framework TH-1517 associé au GKSC v5.0 démontre une <strong>supériorité méthodologique</strong> 
+                sur <strong style="color: var(--primary-gold);">7 critères scientifiques sur 10</strong> par rapport aux approches institutionnelles 
+                pour l'analyse de 3I/ATLAS (candidat objet interstellaire avec excentricité record e = 6.137 ± 0.00001).
+            </p>
+            <p>
+                Cette performance valide l'approche de <strong>recherche citoyenne rigoureuse</strong> développée par Pascal Thibodeau, 
+                démontrant que la <strong>méthodologie scientifique</strong> prime sur les accréditations institutionnelles.
+            </p>
+        </div>
+
+        <!-- Stats -->
+        <div class="content-section">
+            <h2><i class="fas fa-chart-bar"></i> Statistiques Clés</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-value">7/10</span>
+                    <span class="stat-label">Critères Surpassés</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value">3I/ATLAS</span>
+                    <span class="stat-label">Objet Analysé</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value">e = 6.137</span>
+                    <span class="stat-label">Excentricité Record</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value">v3.5 FINAL</span>
+                    <span class="stat-label">Version Rapport</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value">29 pages</span>
+                    <span class="stat-label">Documentation</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value">2 DOIs</span>
+                    <span class="stat-label">Zenodo + HAL</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Criteria -->
+        <div class="content-section">
+            <h2><i class="fas fa-check-circle"></i> 7 Critères Scientifiques Surpassés</h2>
+            <p style="margin-bottom: 25px; color: var(--text-secondary); font-size: 1.05em;">
+                Le framework TH-1517 + GKSC surpasse les approches institutionnelles sur les critères suivants :
+            </p>
+            <div class="criteria-grid">
+                <div class="criteria-card">
+                    <h4><span class="criteria-icon">1️⃣</span> Reproductibilité</h4>
+                    <p style="color: var(--text-secondary);">
+                        Méthodologie documentée et code open source permettant une reproduction complète des analyses
+                    </p>
+                </div>
+                <div class="criteria-card">
+                    <h4><span class="criteria-icon">2️⃣</span> Transparence</h4>
+                    <p style="color: var(--text-secondary);">
+                        Toutes les données sources, formules et hypothèses sont publiquement accessibles et auditables
+                    </p>
+                </div>
+                <div class="criteria-card">
+                    <h4><span class="criteria-icon">3️⃣</span> Multi-dimensionnalité</h4>
+                    <p style="color: var(--text-secondary);">
+                        Analyse en 4 dimensions (G, K, S, C) vs. approches mono-critères institutionnelles
+                    </p>
+                </div>
+                <div class="criteria-card">
+                    <h4><span class="criteria-icon">4️⃣</span> Validation Empirique</h4>
+                    <p style="color: var(--text-secondary);">
+                        R² = 0.88 sur 100 objets validés avec bootstrap (1000 itérations) et métriques d'erreur (MAE, RMSE)
+                    </p>
+                </div>
+                <div class="criteria-card">
+                    <h4><span class="criteria-icon">5️⃣</span> Accessibilité</h4>
+                    <p style="color: var(--text-secondary);">
+                        Calculateurs interactifs gratuits permettant à tout chercheur de reproduire les analyses
+                    </p>
+                </div>
+                <div class="criteria-card">
+                    <h4><span class="criteria-icon">6️⃣</span> Rapidité de Publication</h4>
+                    <p style="color: var(--text-secondary);">
+                        Analyses publiées en open access immédiat vs. délais de peer review institutionnel (6-18 mois)
+                    </p>
+                </div>
+                <div class="criteria-card">
+                    <h4><span class="criteria-icon">7️⃣</span> Intégration Multi-Sources</h4>
+                    <p style="color: var(--text-secondary);">
+                        Agrégation de données JPL SBDB, MPC, CNEOS, Wikipedia, MNRAS pour validation croisée
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Context 3I/ATLAS -->
+        <div class="content-section">
+            <h2><i class="fas fa-rocket"></i> Contexte : 3I/ATLAS (Candidat Interstellaire)</h2>
+            
+            <h3>📊 Paramètres Orbitaux</h3>
+            <ul>
+                <li><strong>Excentricité</strong> : e = 6.137 ± 0.00001 (excentricité record, hyperbole extrême)</li>
+                <li><strong>Vitesse infinie</strong> : v∞ = 58 km/s (vitesse hyperbolique confirmée)</li>
+                <li><strong>Inclinaison</strong> : i = 5° (orbite rétrograde)</li>
+                <li><strong>Périhélie estimé</strong> : q ≈ 0.05–0.1 AU (HYPOTHÈSE, données non confirmées)</li>
+            </ul>
+
+            <h3>🎯 ThibScore</h3>
+            <ul>
+                <li><strong>Score d'Anomalie Global</strong> : 8.88/10</li>
+                <li><strong>Classement</strong> : #3 dans la hiérarchie ThibEquation</li>
+                <li><strong>Hiérarchie complète</strong> :
+                    <ul style="margin-left: 30px; margin-top: 10px;">
+                        <li>#1 : 1I/'Oumuamua (9.80/10)</li>
+                        <li>#2 : IM1 - Météore Loeb (9.50/10)</li>
+                        <li>#3 : 3I/ATLAS (8.88/10) ← Objet analysé dans ce rapport</li>
+                        <li>#6 : 2I/Borisov (7.50/10)</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>🔬 Sources de Données</h3>
+            <ul>
+                <li><strong>Wikipedia</strong> : <a href="https://en.wikipedia.org/wiki/3I/ATLAS" target="_blank" style="color: var(--primary-cyan);">https://en.wikipedia.org/wiki/3I/ATLAS</a></li>
+                <li><strong>MNRAS</strong> : Articles peer-reviewed sur les paramètres orbitaux</li>
+                <li><strong>JPL SBDB</strong> : Tracking orbital (données partielles)</li>
+                <li><strong>ThibEquation GKSC v5.0</strong> : Framework d'analyse multi-dimensionnelle</li>
+            </ul>
+        </div>
+
+        <!-- Methodology -->
+        <div class="content-section">
+            <h2><i class="fas fa-flask"></i> Méthodologie TH-1517 + GKSC</h2>
+            
+            <h3>🔬 Framework GKSC v5.0 (4 Dimensions)</h3>
+            <ul>
+                <li><strong>G (Gravitation)</strong> : Analyse des paramètres orbitaux (excentricité, périhélie, semi-major axis)</li>
+                <li><strong>K (Kinématique)</strong> : Vitesse, trajectoire, accélération non-gravitationnelle</li>
+                <li><strong>S (Spectre)</strong> : Albédo, température, composition (si données disponibles)</li>
+                <li><strong>C (Contexte)</strong> : Détectabilité, couverture observationnelle, fiabilité des sources</li>
+            </ul>
+
+            <h3>📊 Validation Empirique</h3>
+            <ul>
+                <li><strong>Base de données</strong> : 100 objets validés (interstellaires, TNOs, NEAs, comètes)</li>
+                <li><strong>R² = 0.88</strong> : Coefficient de corrélation (Bootstrap 1000 itérations : 0.8812 ± 0.0234)</li>
+                <li><strong>MAE = 0.44</strong> : Erreur absolue moyenne (95% CI: [0.39, 0.49])</li>
+                <li><strong>RMSE = 0.61</strong> : Erreur quadratique moyenne</li>
+            </ul>
+
+            <h3>🔄 Reproductibilité</h3>
+            <ul>
+                <li><strong>Code open source</strong> : Disponible sur GitHub (<a href="https://github.com/Thib4204/Thib-Equation-Framework" target="_blank" style="color: var(--primary-cyan);">Thib-Equation-Framework</a>)</li>
+                <li><strong>Calculateurs interactifs</strong> : Accès gratuit sur ThibEquation.com</li>
+                <li><strong>Données sources</strong> : JPL SBDB, MPC, CNEOS, Wikipedia, MNRAS</li>
+                <li><strong>DOI permanent</strong> : Zenodo 10.5281/zenodo.17587604 + HAL hal-05366411</li>
+            </ul>
+        </div>
+
+        <!-- Resources -->
+        <div class="content-section">
+            <h2><i class="fas fa-link"></i> Ressources & Liens</h2>
+            <ul style="font-size: 1.05em;">
+                <li><strong>Site Web ThibEquation</strong> : <a href="index.html" target="_blank" style="color: var(--primary-cyan);">https://thibequation.com</a></li>
+                <li><strong>DOI Zenodo (TH-1517 v3.2)</strong> : <a href="https://doi.org/10.5281/zenodo.17587604" target="_blank" style="color: var(--primary-cyan);">10.5281/zenodo.17587604</a></li>
+                <li><strong>Référence HAL</strong> : <a href="https://hal.science/hal-05366411" target="_blank" style="color: var(--primary-cyan);">hal-05366411</a></li>
+                <li><strong>DOI Zenodo (GKSC v5.0)</strong> : <a href="https://doi.org/10.5281/zenodo.17717380" target="_blank" style="color: var(--primary-cyan);">10.5281/zenodo.17717380</a></li>
+                <li><strong>GitHub Repository</strong> : <a href="https://github.com/Thib4204/Thib-Equation-Framework" target="_blank" style="color: var(--primary-cyan);">Thib-Equation-Framework</a></li>
+                <li><strong>Contact</strong> : <a href="https://thibequation.com/cdn-cgi/l/email-protection#1c4874757e7378797d69757272736a7d687573726f5c6c6e73687372717d7570327f7371" style="color: var(--primary-cyan);"><span class="__cf_email__" data-cfemail="80d4e8e9e2efe4e5e1f5e9eeeeeff6e1f4e9efeef3c0f0f2eff4efeeede1e9ecaee3efed">[email&#160;protected]</span></a></li>
+            </ul>
+        </div>
+
+        <!-- Citation -->
+        <div class="content-section">
+            <h2><i class="fas fa-quote-left"></i> Citation Académique</h2>
+            <div style="background: rgba(0, 212, 255, 0.05); padding: 25px; border-radius: 10px; border-left: 4px solid var(--primary-cyan); font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.8;">
+                Thibodeau, P. (2025). <em>TH-1517 + GKSC : Framework d'Analyse Quantitative de 3I/ATLAS — Rapport Complet v3.5 FINAL</em>. 
+                ThibEquation.com. DOI: <a href="https://doi.org/10.5281/zenodo.17587604" target="_blank" style="color: var(--primary-cyan);">10.5281/zenodo.17587604</a>. 
+                HAL: <a href="https://hal.science/hal-05366411" target="_blank" style="color: var(--primary-cyan);">hal-05366411</a>.
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="report-footer">
+            <p><strong>© 2025 ThibEquation Framework</strong></p>
+            <p>Recherche citoyenne en astrophysique interstellaire</p>
+            <p style="font-size: 0.9em; color: var(--text-secondary);">
+                Créé par Pascal Thibodeau | Québec, Canada
+            </p>
+            <div style="margin-top: 25px;">
+                <a href="index.html" class="btn btn-secondary">
+                    <i class="fas fa-home"></i> Retour à l'Accueil
+                </a>
+            </div>
+        </div>
+    </div>
+<script data-cfasync="false" src="cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body>
+</html>

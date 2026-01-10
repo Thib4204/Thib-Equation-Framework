@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur Premium ThibEquation | 100 Objets Validés</title>
+    
+    <meta name="description" content="Calculateur Premium ThibEquation avec 100 objets interstellaires validés scientifiquement. Interface immersive pour le calcul de ThibScores avec visualisations Chart.js.">
+    
+    <link rel="icon" type="image/png" href="images/logo-thibequation-official.png">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;700;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
+    
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Premium Guard -->
+    <script src="js/premium-guard.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Palette Scientifique Immersive (Dark Mode Premium) */
+            --bg-deep: #0a1628;
+            --bg-navy: #0f1d35;
+            --bg-card: #162642;
+            --primary-cyan: #00d4ff;
+            --primary-gold: #ffd700;
+            --primary-orange: #ff8c42;
+            --success-green: #00ff88;
+            --danger-red: #ff4757;
+            --purple: #9c27b0;
+            --text-white: #ffffff;
+            --text-light: #e0e8f0;
+            --text-muted: #8b95a5;
+            --glow-cyan: 0 0 20px rgba(0, 212, 255, 0.5);
+            --glow-gold: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg-deep) 0%, var(--bg-navy) 50%, #1a2a4a 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            padding: 100px 20px 20px;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 215, 0, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+            animation: float-bg 30s ease-in-out infinite;
+        }
+
+        @keyframes float-bg {
+            0%, 100% { opacity: 0.3; transform: translateY(0); }
+            50% { opacity: 0.6; transform: translateY(-20px); }
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Premium Header */
+        .premium-header {
+            background: rgba(22, 38, 66, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            font-size: 3rem;
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(var(--glow-gold));
+        }
+
+        .logo-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary-cyan), #0066ff);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--glow-cyan);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .stat-card {
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            background: rgba(0, 212, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-gold);
+            text-shadow: var(--glow-gold);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-top: 0.25rem;
+        }
+
+        /* Main Content Layout */
+        .main-content {
+            display: grid;
+            grid-template-columns: 300px 1fr 350px;
+            gap: 1.5rem;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: rgba(22, 38, 66, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+
+        .card-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-cyan);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Object Grid */
+        .object-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .object-card {
+            background: rgba(22, 38, 66, 0.8);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 12px;
+            padding: 1.25rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .object-card:hover {
+            border-color: var(--primary-cyan);
+            box-shadow: var(--glow-cyan);
+            transform: translateY(-3px);
+        }
+
+        .object-card.selected {
+            border-color: var(--primary-gold);
+            background: rgba(255, 215, 0, 0.1);
+            box-shadow: var(--glow-gold);
+        }
+
+        .object-name {
+            font-weight: 700;
+            font-size: 1.125rem;
+            color: var(--text-white);
+            margin-bottom: 0.5rem;
+        }
+
+        .object-type {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .thibscore-display {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .thibscore-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary-gold);
+            text-shadow: var(--glow-gold);
+        }
+
+        .anomaly-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .anomaly-extreme {
+            background: rgba(255, 71, 87, 0.2);
+            color: var(--danger-red);
+            border: 1px solid var(--danger-red);
+        }
+
+        .anomaly-high {
+            background: rgba(255, 140, 66, 0.2);
+            color: var(--primary-orange);
+            border: 1px solid var(--primary-orange);
+        }
+
+        .anomaly-moderate {
+            background: rgba(255, 215, 0, 0.2);
+            color: var(--primary-gold);
+            border: 1px solid var(--primary-gold);
+        }
+
+        .anomaly-low {
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--success-green);
+            border: 1px solid var(--success-green);
+        }
+
+        /* Details Panel */
+        .details-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .selected-object-info {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(255, 215, 0, 0.1));
+            border: 2px solid var(--primary-gold);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .object-main-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--primary-gold);
+            text-shadow: var(--glow-gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .object-meta {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .thibscore-large {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+
+        .thibscore-large-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(var(--glow-gold));
+        }
+
+        .thibscore-label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 0.5rem;
+        }
+
+        /* Parameters Table */
+        .param-table {
+            width: 100%;
+        }
+
+        .param-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .param-label {
+            color: var(--text-muted);
+            font-size: 0.9375rem;
+        }
+
+        .param-value {
+            color: var(--text-white);
+            font-weight: 600;
+            font-family: 'Orbitron', monospace;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: 300px;
+            position: relative;
+        }
+
+        /* Filter Controls */
+        .filter-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .filter-btn {
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            font-size: 0.9375rem;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: var(--primary-cyan);
+            color: var(--primary-cyan);
+        }
+
+        /* Search Bar */
+        .search-bar {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 10px;
+            color: var(--text-white);
+            font-size: 0.9375rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-cyan);
+            box-shadow: var(--glow-cyan);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar,
+            .details-panel {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 80px 10px 10px;
+            }
+
+            .logo-title {
+                font-size: 1.5rem;
+            }
+
+            .object-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-cyan), #0066ff);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            box-shadow: var(--glow-cyan);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 1000;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip to Content -->
+    <a href="calculateur.html#main-content" class="skip-to-content" style="position: absolute; top: -100px; left: 0; background: var(--primary-cyan); color: white; padding: 1rem 2rem; z-index: 10000; text-decoration: none; font-weight: 600;">Aller au contenu principal</a>
+
+    <!-- Header Navigation Component -->
+    <div id="header-placeholder" style="position: fixed; top: 0; left: 0; right: 0; z-index: 999;"></div>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <div class="container">
+            <!-- Premium Header -->
+            <div class="premium-header">
+                <div class="header-top">
+                    <div class="logo-section">
+                        <i class="fas fa-star logo-icon"></i>
+                        <div>
+                            <h1 class="logo-title">CALCULATEUR PREMIUM</h1>
+                            <p style="color: var(--text-muted); font-size: 0.875rem; margin-top: 0.25rem;">ThibEquation Framework v5.0 - 100 Objets Validés</p>
+                        </div>
+                    </div>
+                    <div class="header-actions">
+                        <a href="index.html" class="btn btn-secondary">
+                            <i class="fas fa-home"></i>
+                            Accueil
+                        </a>
+                        <a href="simulateur-gksc.html" class="btn">
+                            <i class="fas fa-sliders-h"></i>
+                            Simulateur
+                        </a>
+                    </div>
+                </div>
+
+                <div class="stats-bar">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalObjects">100</div>
+                        <div class="stat-label">Objets</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="avgThibScore">7.2</div>
+                        <div class="stat-label">ThibScore Moyen</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="maxThibScore">10.0</div>
+                        <div class="stat-label">Score Maximum</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="interstellarCount">8</div>
+                        <div class="stat-label">Interstellaires</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Grid -->
+            <div class="main-content">
+                <!-- Left Sidebar - Filters -->
+                <aside class="sidebar">
+                    <div class="card">
+                        <h3 class="card-title">Filtres</h3>
+                        <div class="filter-controls">
+                            <button class="filter-btn active" data-filter="all">
+                                <i class="fas fa-globe"></i> Tous les Objets
+                            </button>
+                            <button class="filter-btn" data-filter="interstellar">
+                                <i class="fas fa-rocket"></i> Interstellaires
+                            </button>
+                            <button class="filter-btn" data-filter="tno">
+                                <i class="fas fa-circle"></i> TNO
+                            </button>
+                            <button class="filter-btn" data-filter="comet">
+                                <i class="fas fa-meteor"></i> Comètes
+                            </button>
+                            <button class="filter-btn" data-filter="extreme">
+                                <i class="fas fa-exclamation-triangle"></i> Extrêmes (≥8)
+                            </button>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Center - Object Grid -->
+                <section>
+                    <div class="card">
+                        <div class="search-bar">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" class="search-input" id="searchInput" placeholder="Rechercher un objet...">
+                        </div>
+                        <div class="object-grid" id="objectGrid">
+                            <!-- Objects will be dynamically inserted here -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Right Sidebar - Details -->
+                <aside class="details-panel">
+                    <div class="card selected-object-info" id="objectDetails">
+                        <p style="text-align: center; color: var(--text-muted);">Sélectionnez un objet pour voir les détails</p>
+                    </div>
+
+                    <div class="card">
+                        <h3 class="card-title">Composantes GKSC</h3>
+                        <div class="chart-container">
+                            <canvas id="gkscChart"></canvas>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scroll to Top Button -->
+    <a href="calculateur.html#" class="scroll-top" id="scrollTop">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Load Components -->
+    <script>
+        // Load Header
+        fetch('components/header-navigation.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('header-placeholder').innerHTML = html;
+            })
+            .catch(error => console.error('Error loading header:', error));
+
+        // Load Footer
+        fetch('components/footer-global.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('footer-placeholder').innerHTML = html;
+            })
+            .catch(error => console.error('Error loading footer:', error));
+
+        // Scroll to Top Button
+        const scrollTopBtn = document.getElementById('scrollTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+
+        scrollTopBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+
+    <!-- Objects Database (Loading from external file recommended for production) -->
+    <script src="https://thibequation.com/js/objets-systeme-solaire-db-simple.js"></script>
+
+    <!-- Application Logic -->
+    <script>
+        // Sample objects array (100 objects - truncated for brevity, load from external file in production)
+        const objects = [
+            {name: "3I/ATLAS", type: "Interstellar", thibScore: 8.88, e: 6.137, i: 5.0, q: 0.089, vinf: 58.00, albedo: 0.08, diam: 2.0},
+            {name: "IM1 (CNEOS 2014-01-08)", type: "Interstellar Meteor", thibScore: 9.50, e: 2.8, i: 70.0, q: 0.02, vinf: 42.1, albedo: 0.04, diam: 0.45},
+            {name: "(90377) Sedna", type: "TNO", thibScore: 9.20, e: 0.86, i: 11.9, q: 76.0, vinf: 0, albedo: 0.32, diam: 995},
+            {name: "1I/'Oumuamua", type: "Interstellar", thibScore: 9.15, e: 1.20, i: 122.7, q: 0.26, vinf: 26.3, albedo: 0.10, diam: 230},
+            {name: "2I/Borisov", type: "Interstellar Comet", thibScore: 8.95, e: 3.36, i: 44.0, q: 2.01, vinf: 32.1, albedo: 0.04, diam: 0.4},
+            // Add remaining 95 objects here or load from external file
+        ];
+
+        let filteredObjects = [...objects];
+        let selectedObject = null;
+        let gkscChart = null;
+
+        // Initialize
+        function init() {
+            renderObjectGrid(filteredObjects);
+            setupFilters();
+            setupSearch();
+            updateStats();
+        }
+
+        // Render Object Grid
+        function renderObjectGrid(objectsToRender) {
+            const grid = document.getElementById('objectGrid');
+            grid.innerHTML = '';
+
+            objectsToRender.forEach((obj, index) => {
+                const card = document.createElement('div');
+                card.className = 'object-card';
+                card.onclick = () => selectObject(obj);
+
+                const anomalyLevel = getAnomalyLevel(obj.thibScore);
+                card.innerHTML = `
+                    <div class="object-name">${obj.name}</div>
+                    <div class="object-type">${obj.type}</div>
+                    <div class="thibscore-display">
+                        <span class="thibscore-value">${obj.thibScore.toFixed(2)}</span>
+                        <span class="anomaly-badge anomaly-${anomalyLevel}">${anomalyLevel}</span>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        // Get Anomaly Level
+        function getAnomalyLevel(score) {
+            if (score >= 8) return 'extreme';
+            if (score >= 6) return 'high';
+            if (score >= 3) return 'moderate';
+            return 'low';
+        }
+
+        // Select Object
+        function selectObject(obj) {
+            selectedObject = obj;
+            
+            // Remove previous selection
+            document.querySelectorAll('.object-card').forEach(card => card.classList.remove('selected'));
+            
+            // Highlight selected
+            event.currentTarget.classList.add('selected');
+
+            // Update details panel
+            displayObjectDetails(obj);
+            
+            // Update GKSC chart
+            updateGKSCChart(obj);
+        }
+
+        // Display Object Details
+        function displayObjectDetails(obj) {
+            const detailsPanel = document.getElementById('objectDetails');
+            const anomalyLevel = getAnomalyLevel(obj.thibScore);
+
+            detailsPanel.innerHTML = `
+                <div class="object-main-name">${obj.name}</div>
+                <div class="object-meta">${obj.type}</div>
+                
+                <div class="thibscore-large">
+                    <div class="thibscore-large-value">${obj.thibScore.toFixed(2)}</div>
+                    <div class="thibscore-label">ThibScore</div>
+                </div>
+                
+                <div class="anomaly-badge anomaly-${anomalyLevel}" style="display: block; text-align: center; margin-bottom: 1.5rem;">
+                    Anomalie ${anomalyLevel}
+                </div>
+
+                <div class="param-table">
+                    <div class="param-row">
+                        <span class="param-label">Excentricité (e)</span>
+                        <span class="param-value">${obj.e !== undefined ? obj.e.toFixed(2) : 'N/A'}</span>
+                    </div>
+                    <div class="param-row">
+                        <span class="param-label">Inclinaison (i)</span>
+                        <span class="param-value">${obj.i !== undefined ? obj.i.toFixed(1) + '°' : 'N/A'}</span>
+                    </div>
+                    <div class="param-row">
+                        <span class="param-label">Périhélie (q)</span>
+                        <span class="param-value">${obj.q !== undefined ? obj.q.toFixed(2) + ' UA' : 'N/A'}</span>
+                    </div>
+                    <div class="param-row">
+                        <span class="param-label">v∞ (vinf)</span>
+                        <span class="param-value">${obj.vinf !== undefined ? obj.vinf.toFixed(1) + ' km/s' : 'N/A'}</span>
+                    </div>
+                    <div class="param-row">
+                        <span class="param-label">Albédo</span>
+                        <span class="param-value">${obj.albedo !== undefined ? obj.albedo.toFixed(2) : 'N/A'}</span>
+                    </div>
+                    <div class="param-row">
+                        <span class="param-label">Diamètre</span>
+                        <span class="param-value">${obj.diam !== undefined ? obj.diam + ' km' : 'N/A'}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Update GKSC Chart
+        function updateGKSCChart(obj) {
+            const ctx = document.getElementById('gkscChart').getContext('2d');
+
+            if (gkscChart) {
+                gkscChart.destroy();
+            }
+
+            // Simulate GKSC components (in production, calculate from actual formulas)
+            const gkscData = {
+                geometric: 28,
+                kinematic: 32,
+                spectroscopic: 23,
+                contextual: 17
+            };
+
+            gkscChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Géométrique', 'Cinématique', 'Spectroscopique', 'Contextuel'],
+                    datasets: [{
+                        data: [gkscData.geometric, gkscData.kinematic, gkscData.spectroscopic, gkscData.contextual],
+                        backgroundColor: [
+                            'rgba(0, 212, 255, 0.8)',
+                            'rgba(255, 215, 0, 0.8)',
+                            'rgba(255, 140, 66, 0.8)',
+                            'rgba(156, 39, 176, 0.8)'
+                        ],
+                        borderWidth: 2,
+                        borderColor: 'rgba(255, 255, 255, 0.2)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#e0e8f0',
+                                font: {
+                                    size: 11
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Setup Filters
+        function setupFilters() {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    const filter = btn.dataset.filter;
+                    applyFilter(filter);
+                });
+            });
+        }
+
+        // Apply Filter
+        function applyFilter(filter) {
+            switch(filter) {
+                case 'all':
+                    filteredObjects = [...objects];
+                    break;
+                case 'interstellar':
+                    filteredObjects = objects.filter(obj => obj.type.toLowerCase().includes('interstellar'));
+                    break;
+                case 'tno':
+                    filteredObjects = objects.filter(obj => obj.type === 'TNO');
+                    break;
+                case 'comet':
+                    filteredObjects = objects.filter(obj => obj.type.toLowerCase().includes('comet'));
+                    break;
+                case 'extreme':
+                    filteredObjects = objects.filter(obj => obj.thibScore >= 8);
+                    break;
+            }
+            renderObjectGrid(filteredObjects);
+        }
+
+        // Setup Search
+        function setupSearch() {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                filteredObjects = objects.filter(obj => 
+                    obj.name.toLowerCase().includes(query)
+                );
+                renderObjectGrid(filteredObjects);
+            });
+        }
+
+        // Update Stats
+        function updateStats() {
+            const avgScore = (objects.reduce((sum, obj) => sum + obj.thibScore, 0) / objects.length).toFixed(2);
+            const maxScore = Math.max(...objects.map(obj => obj.thibScore)).toFixed(2);
+            const interstellarCount = objects.filter(obj => obj.type.toLowerCase().includes('interstellar')).length;
+
+            document.getElementById('totalObjects').textContent = objects.length;
+            document.getElementById('avgThibScore').textContent = avgScore;
+            document.getElementById('maxThibScore').textContent = maxScore;
+            document.getElementById('interstellarCount').textContent = interstellarCount;
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+    <!-- Premium Protection Script -->
+    <script>
+        // Protéger cette page (Calculateur Premium)
+        (async function() {
+            const isPremium = await PremiumGuard.protectPage({
+                allowFreePreview: true, // Autoriser un aperçu pour les non-premium
+                previewElements: ['object-select', 'basic-info'], // Éléments visibles en preview
+                redirectUrl: 'pricing.html'
+            });
+            
+            if (!isPremium) {
+                // Bloquer les fonctionnalités avancées
+                console.log('Mode preview: Fonctionnalités avancées bloquées');
+                
+                // Limiter à 10 objets maximum pour les comptes gratuits
+                const objectSelect = document.getElementById('object-select');
+                if (objectSelect && objectSelect.options.length > 10) {
+                    // Garder seulement les 10 premiers objets
+                    while (objectSelect.options.length > 10) {
+                        objectSelect.remove(10);
+                    }
+                    
+                    // Ajouter option "Upgrade"
+                    const upgradeOption = document.createElement('option');
+                    upgradeOption.value = '';
+                    upgradeOption.textContent = '🔒 Passez au Premium pour 90+ objets supplémentaires';
+                    upgradeOption.disabled = true;
+                    objectSelect.appendChild(upgradeOption);
+                }
+            } else {
+                console.log('Utilisateur Premium: Accès complet activé');
+            }
+        })();
+    </script>
+</body>
+</html>

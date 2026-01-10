@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outils & Visualisations - ThibEquation Framework v5.0</title>
+    <link rel="icon" type="image/png" href="images/logo-thibequation-official.png">
+    
+    <!-- Modern Pale Theme -->
+    <link rel="stylesheet" href="css/modern-pale-theme-v2.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --deep-space: #f8fafb; --navy-dark: #ffffff; --navy-mid: #f3f6f9;
+            --gold: #b8860b; --gold-light: #daa520; --white: #0d1117;
+            --gray-light: #0d1117; --gray-mid: #2d3748;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            background: linear-gradient(180deg, #f8fafb 0%, #ffffff 100%);
+            color: #0d1117; font-family: 'Inter', sans-serif;
+            min-height: 100vh; overflow-x: hidden;
+        }
+        body::before {
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20% 30%, white, transparent),
+                radial-gradient(1px 1px at 50% 50%, white, transparent);
+            background-size: 200% 200%; animation: stars 80s linear infinite;
+            opacity: 0.5; pointer-events: none; z-index: 0;
+        }
+        @keyframes stars { 0% { background-position: 0% 0%; } 100% { background-position: 100% 100%; } }
+        header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(255, 255, 255, 0.98) !important; backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.4);
+        }
+        .header-container {
+            max-width: 1800px; margin: 0 auto; padding: 12px 30px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .logo-section { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo-emblem { width: 50px; height: 50px; transition: transform 0.6s ease; border-radius: 50%; overflow: hidden; }
+        .logo-emblem img { width: 100%; height: 100%; object-fit: cover; filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.5)); }
+        .logo-section:hover .logo-emblem { transform: rotate(180deg); }
+        .logo-text { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600; color: var(--white); letter-spacing: 1px; }
+        nav ul { display: flex; gap: 25px; list-style: none; }
+        nav a {
+            color: var(--gray-light); text-decoration: none; font-size: 12px; font-weight: 500;
+            letter-spacing: 0.5px; transition: all 0.3s ease; position: relative; padding: 8px 0; text-transform: uppercase;
+        }
+        nav a::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px;
+            background: var(--gold); transition: width 0.3s ease;
+        }
+        nav a:hover::after, nav a.active::after { width: 100%; }
+        nav a:hover, nav a.active { color: var(--gold); }
+        .container { position: relative; z-index: 1; max-width: 1400px; margin: 0 auto; padding: 120px 40px 80px; }
+        .page-header { text-align: center; margin-bottom: 80px; }
+        .page-title {
+            font-family: 'Space Grotesk', sans-serif; font-size: 56px; font-weight: 700;
+            background: linear-gradient(135deg, var(--white), var(--gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 20px;
+        }
+        .page-subtitle { font-size: 18px; color: var(--gray-mid); max-width: 700px; margin: 0 auto; }
+        .section { margin-bottom: 80px; }
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif; font-size: 36px; color: var(--gold);
+            margin-bottom: 30px; padding-bottom: 15px; border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+        }
+        .content-card {
+            background: #ffffff !important; border: 1px solid #e0e8ed;
+            border-radius: 12px; padding: 30px; backdrop-filter: blur(10px);
+            margin-bottom: 30px; transition: all 0.3s ease;
+        }
+        .content-card:hover {
+            border-color: var(--gold); box-shadow: 0 0 25px rgba(212, 175, 55, 0.2);
+            transform: translateY(-3px);
+        }
+        .content-card h3 { font-size: 24px; color: var(--gold-light); margin-bottom: 15px; }
+        .content-card p { color: var(--gray-light); line-height: 1.8; font-size: 16px; margin-bottom: 15px; }
+        .data-table {
+            width: 100%; border-collapse: collapse; margin: 20px 0;
+        }
+        .data-table th, .data-table td {
+            padding: 15px; text-align: left; border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        .data-table th {
+            background: rgba(212, 175, 55, 0.1); color: var(--gold);
+            font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 1px;
+        }
+        .data-table td { color: var(--gray-light); }
+        .stat-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 30px 0;
+        }
+        .stat-box {
+            background: #fffbf0 !important; border: 2px solid #e8c468;
+            border-radius: 10px; padding: 25px; text-align: center;
+        }
+        .stat-value {
+            font-size: 48px; color: var(--gold); font-weight: 700; margin-bottom: 10px;
+        }
+        .stat-label {
+            font-size: 12px; color: var(--gray-mid); text-transform: uppercase; letter-spacing: 1px;
+        }
+        @media (max-width: 768px) {
+            .header-container { flex-direction: column; gap: 15px; }
+            nav ul { flex-wrap: wrap; justify-content: center; gap: 12px; }
+            .page-title { font-size: 36px; }
+            .stat-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo-section">
+                <div class="logo-emblem"><img src="images/logo-thibequation-round.png" alt="ThibEquation Logo"></div>
+                <span class="logo-text">THIBEQUATION</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="methodologie.html">Méthodologie GKSC</a></li>
+                    <li><a href="🧮-REGISTRE-CALCULATEURS-RAPIDE.html">🧮 Calculateurs</a></li>
+                    <li><a href="calculateur-ufo-analytics.html">🛸 UFO Analytics</a></li>
+                    <li><a href="outils.html" class="active">Outils & Visualisations</a></li>
+                    <li><a href="📡-LIENS-ORGANISMES-SCIENTIFIQUES.html">📡 Organismes</a></li>
+                    <li><a href="licences-commerciales.html">💼 Licences Pro</a></li>
+                    <li><a href="collaboration.html">Collaboration</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">🛠️ Outils & Visualisations</h1>
+            <p class="page-subtitle">Suite complète d'outils interactifs pour l'analyse des objets interstellaires - ThibEquation Framework v5.0.0-EMPIRICAL</p>
+        </div>
+
+        <div class="stat-grid">
+            <div class="stat-box">
+                <div class="stat-value">100</div>
+                <div class="stat-label">Objets Validés</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">0.88</div>
+                <div class="stat-label">Coefficient R²</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">10.0</div>
+                <div class="stat-label">ThibScore Maximum</div>
+            </div>
+        </div>
+
+        <section class="section">
+    <h2 class="section-title">🛠️ Calculateurs Interactifs</h2>
+    
+    <div class="content-card" style="border-left: 4px solid #ff7733;">
+        <h3>🛸 UFO Analytics - Pont Ufologie-Astrophysique</h3>
+        <p>
+            <strong>⭐ NOUVEAU</strong> - Interface révolutionnaire avec jauge 0-100, graphiques GKSC interactifs, système de fiabilité psychométrique.
+        </p>
+        <p><strong>Accès:</strong> <a href="calculateur-ufo-analytics.html" style="color: var(--gold); font-weight: 600;">calculateur-ufo-analytics.html</a></p>
+        <p><strong>Fonctionnalités:</strong></p>
+        <ul style="color: var(--gray-light); line-height: 1.8;">
+            <li>Score d'Anomalie Global (SAG) 0-100</li>
+            <li>Graphiques radar GKSC interactifs</li>
+            <li>Tests psychométriques de fiabilité</li>
+            <li>Export CSV/JSON/Markdown scientifique</li>
+            <li>Base de 100 objets validés (R²=0.88)</li>
+        </ul>
+    </div>
+
+    <div class="content-card" style="border-left: 4px solid #ffd700;">
+        <h3>👑 Calculateur Premium</h3>
+        <p>
+            <strong>Version avancée</strong> avec 100 objets pré-chargés, graphiques comparatifs Chart.js, interface moderne.
+        </p>
+        <p><strong>Accès:</strong> <a href="calculateur-premium.html" style="color: var(--gold); font-weight: 600;">calculateur-premium.html</a></p>
+        <p><strong>Fonctionnalités:</strong></p>
+        <ul style="color: var(--gray-light); line-height: 1.8;">
+            <li>100 objets pré-chargés (interstellaires, TNOs, NEAs, comètes)</li>
+            <li>Visualisation graphiques comparatifs</li>
+            <li>ThibScore 0-10.0 (validation R²=0.88)</li>
+            <li>Export scientifique complet</li>
+            <li>Filtres avancés par type et niveau d'anomalie</li>
+        </ul>
+    </div>
+
+    <div class="content-card">
+        <h3>📊 Calculateur Standard</h3>
+        <p>
+            <strong>Calculateur de base robuste</strong> intégrant les 4 composantes GKSC pour analyse complète.
+        </p>
+        <p><strong>Accès:</strong> <a href="calculateur.html" style="color: var(--gold);">calculateur.html</a></p>
+        <p><strong>Fonctionnalités:</strong></p>
+        <ul style="color: var(--gray-light); line-height: 1.8;">
+            <li>Calcul automatique des 12 paramètres GKSC</li>
+            <li>Score d'Anomalie Global (0-10.0)</li>
+            <li>Graphiques de base Chart.js</li>
+            <li>Export CSV basique</li>
+            <li>Interface simple et intuitive</li>
+        </ul>
+    </div>
+
+    <div class="content-card">
+        <h3>📖 Documentation Interactive</h3>
+        <p>
+            <strong>Guide complet</strong> avec explications détaillées de tous les paramètres, formules mathématiques, exemples réels.
+        </p>
+        <p><strong>Accès:</strong> <a href="documentation-interactive.html" style="color: var(--gold);">documentation-interactive.html</a></p>
+        <p><strong>Contenu:</strong></p>
+        <ul style="color: var(--gray-light); line-height: 1.8;">
+            <li>12 paramètres GKSC expliqués en détail</li>
+            <li>Exemples réels : Oumuamua, Borisov, 3I/ATLAS</li>
+            <li>Formules mathématiques complètes</li>
+            <li>Sources scientifiques citées (JPL, MPC)</li>
+            <li>Calculateur intégré</li>
+        </ul>
+    </div>
+
+    <div class="content-card" style="border-left: 4px solid #ffd700;">
+        <h3>🧮 Registre des Calculateurs (Accès Rapide)</h3>
+        <p>
+            <strong>⭐ NOUVEAU</strong> - Hub central d'accès rapide à tous les calculateurs avec explications détaillées des paramètres.
+        </p>
+        <p><strong>Accès:</strong> <a href="🧮-REGISTRE-CALCULATEURS-RAPIDE.html" style="color: var(--gold); font-weight: 600;">🧮-REGISTRE-CALCULATEURS-RAPIDE.html</a></p>
+        <p><strong>Contenu:</strong></p>
+        <ul style="color: var(--gray-light); line-height: 1.8;">
+            <li>9 calculateurs documentés (UFO Analytics, Premium, CAPE, NTVC...)</li>
+            <li>Explications des 12 paramètres GKSC</li>
+            <li>Guide d'utilisation complet</li>
+            <li>Badges de statut (PRO, STANDARD, SPÉCIALISÉ)</li>
+            <li>Liens vers documentation technique</li>
+        </ul>
+    </div>
+
+    <div class="content-card" style="border-left: 4px solid #00d4ff;">
+        <h3>📡 Liens Organismes Scientifiques</h3>
+        <p>
+            <strong>⭐ NOUVEAU</strong> - Liens directs vers 8 organismes majeurs pour soumettre vos observations et travaux.
+        </p>
+        <p><strong>Accès:</strong> <a href="📡-LIENS-ORGANISMES-SCIENTIFIQUES.html" style="color: var(--gold); font-weight: 600;">📡-LIENS-ORGANISMES-SCIENTIFIQUES.html</a></p>
+        <p><strong>Organismes inclus:</strong></p>
+        <ul style="color: var(--gray-light); line-height: 1.8;">
+            <li><strong>Astrophysique:</strong> JPL/NASA, MPC (IAU)</li>
+            <li><strong>Ufologie:</strong> MUFON, NUFORC</li>
+            <li><strong>Météorologie:</strong> American Meteor Society</li>
+            <li><strong>Open Science:</strong> Zenodo, arXiv, HAL</li>
+            <li>Guide de soumission étape par étape</li>
+        </ul>
+    </div>
+    <div class="content-card">
+        <h3>📖 Documentation Complète des Paramètres</h3>
+        <p>
+            <strong>⭐ NOUVEAU</strong> - Guide scientifique exhaustif (22 Ko) expliquant rigoureusement tous les paramètres d'observation GKSC.
+        </p>
+        <p><strong>Accès:</strong> <a href="📖-PARAMETRES-OBSERVATION-COMPLETS-THIBEQUATION.md" style="color: var(--gold); font-weight: 600;">📖-PARAMETRES-OBSERVATION-COMPLETS-THIBEQUATION.md</a></p>
+        <p><strong>Contenu exhaustif:</strong></p>
+        <ul style="color: var(--gray-light); line-height: 1.8;">
+            <li>12 paramètres GKSC détaillés (e, i, q, v∞, albédo, diamètre...)</li>
+            <li>4 dimensions expliquées (G, K, S, C)</li>
+            <li>Formules mathématiques complètes avec unités SI</li>
+            <li>Exemples réels : 1I/'Oumuamua (9.80/10), 3I/ATLAS (8.88/10)</li>
+            <li>Sources de données : JPL SBDB, MPC, JWST, VLT</li>
+            <li>Méthodes de mesure : Photométrie, spectroscopie, astrométrie</li>
+            <li>Incertitudes : Marges d'erreur typiques par paramètre</li>
+            <li>Validation empirique : R²=0.88, MAE=0.44, RMSE=0.61</li>
+            <li>Guide de reproductibilité : Étapes pas-à-pas</li>
+            <li>Glossaire scientifique + Références bibliographiques</li>
+        </ul>
+    </div>
+</section>
+
+<section class="section">
+    <h2 class="section-title">🔬 Calculateurs Spécialisés</h2>
+    
+    <div class="content-card" style="border-left: 4px solid #ffd700;">
+        <h3>⚖️ CAPE (Cadre d'Analyse Parentale par Évaluation)</h3>
+        <p>
+            <strong>Application juridique</strong> - Adaptation du framework GKSC pour le droit familial québécois (Article 33 CCQ).
+        </p>
+        <p><strong>Accès:</strong> <a href="cape-comparaison.html" style="color: var(--gold); font-weight: 600;">cape-comparaison.html</a> | <a href="licences-commerciales.html" style="color: var(--gold);">Licence</a></p>
+        <p><strong>Caractéristiques:</strong></p>
+        <ul style="color: var(--gray-light); line-height: 1.8;">
+            <li>Adaptation GKSC pour évaluation parentale</li>
+            <li>Conformité Article 33 Code civil du Québec</li>
+            <li>Scoring quantitatif objectif</li>
+            <li>Rapport détaillé pour tribunaux</li>
+            <li><strong>Tarif:</strong> 25 000 $ CAD (licence institutionnelle, 5 utilisateurs inclus)</li>
+        </ul>
+    </div>
+
+    <div class="content-card" style="border-left: 4px solid #00c853;">
+        <h3>🛡️ NTVC (Network Threat Vector Coefficient)</h3>
+        <p>
+            <strong>Application cybersécurité</strong> - Framework de détection d'anomalies multi-dimensionnelle (-73% faux positifs).
+        </p>
+        <p><strong>Accès:</strong> <a href="ntvc-dashboard.html" style="color: var(--gold); font-weight: 600;">ntvc-dashboard.html</a> | <a href="ntvc-comparaison.html" style="color: var(--gold);">Comparaison</a></p>
+        <p><strong>Caractéristiques:</strong></p>
+        <ul style="color: var(--gray-light); line-height: 1.8;">
+            <li>Adaptation GKSC pour analyse événements réseau</li>
+            <li>Réduction massive faux positifs (-73% projection)</li>
+            <li>Dashboard temps réel immersif</li>
+            <li>Capacité 100k+ événements/seconde</li>
+            <li><strong>Tarif:</strong> À partir de 15 000 $ CAD/an (Startup, 50k événements/jour)</li>
+        </ul>
+    </div>
+</section>
+
+<section class="section">
+    <h2 class="section-title">🌌 Visualisations 3D & Outils Avancés</h2>
+    
+    <div class="content-card">
+        <h3>🎨 Visualisation 3D Trajectoires</h3>
+        <p>
+            <strong>Rendu 3D WebGL interactif</strong> des trajectoires d'objets interstellaires avec système solaire complet.
+        </p>
+        <p><strong>Accès:</strong> <a href="visualisation-3d-trajectoires.html" style="color: var(--gold);">visualisation-3d-trajectoires.html</a></p>
+        <p><strong>Fonctionnalités:</strong></p>
+        <ul style="color: var(--gray-light); line-height: 1.8;">
+            <li>Rotation/zoom/pan temps réel</li>
+            <li>Trajectoires hyperboliques (1I/'Oumuamua, 2I/Borisov, 3I/ATLAS)</li>
+            <li>Système solaire complet avec planètes</li>
+            <li>Annotations scientifiques</li>
+            <li>Export de vues en haute résolution</li>
+        </ul>
+    </div>
+
+    <div class="content-card">
+        <h3>📊 Catalogue Objets Interstellaires</h3>
+        <p>
+            <strong>Base de données complète</strong> de 100 objets validés avec filtres avancés et iframes JPL HORIZONS.
+        </p>
+        <p><strong>Accès:</strong> <a href="catalogue-objets-interstellaires.html" style="color: var(--gold);">catalogue-objets-interstellaires.html</a></p>
+        <p><strong>Fonctionnalités:</strong></p>
+        <ul style="color: var(--gray-light); line-height: 1.8;">
+            <li>100 objets validés (interstellaires, TNOs, comètes, NEAs)</li>
+            <li>Filtres par type, score, excentricité</li>
+            <li>Iframes JPL HORIZONS embarqués</li>
+            <li>Validation scientifique R² 0.88</li>
+            <li>Export CSV complet</li>
+        </ul>
+    </div>
+
+    <div class="content-card">
+        <h3>🧪 Composition Métallique</h3>
+        <p>
+            <strong>Analyse spectroscopique comparative</strong> avec graphiques interactifs Chart.js.
+        </p>
+        <p><strong>Accès:</strong> <a href="composition-metallique.html" style="color: var(--gold);">composition-metallique.html</a></p>
+        <p><strong>Fonctionnalités:</strong></p>
+        <ul style="color: var(--gray-light); line-height: 1.8;">
+            <li>Graphiques doughnut + bar interactifs</li>
+            <li>6 compositions d'objets (Oumuamua, Borisov, ATLAS...)</li>
+            <li>Classe JavaScript MetallicCompositionAnalyzer</li>
+            <li>Comparaison astéroïde/comète/météorite</li>
+        </ul>
+    </div>
+
+    <div class="content-card">
+        <h3>⏱️ Dashboard Temps Réel</h3>
+        <p>
+            <strong>Métriques de performance</strong> et statistiques globales en temps réel.
+        </p>
+        <p><strong>Accès:</strong> <a href="dashboard-temps-reel.html" style="color: var(--gold);">dashboard-temps-reel.html</a></p>
+        <p><strong>Graphiques inclus:</strong></p>
+        <ul style="color: var(--gray-light); line-height: 1.8;">
+            <li>Distribution GKSC (4 composantes)</li>
+            <li>Timeline PVrelSQ (rencontres stellaires)</li>
+            <li>Activité mensuelle (découvertes)</li>
+            <li>Radar top objets (ThibScore max)</li>
+        </ul>
+    </div>
+</section>
+
+<section class="section">
+    <h2 class="section-title">📊 Statistiques en Temps Réel</h2>
+    
+    <div class="content-card">
+        <h3>Dashboard Analytique</h3>
+        <p>
+            Tableau de bord interactif affichant les métriques clés du framework ThibEquation v5.0.
+        </p>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Métrique</th>
+                    <th>Valeur Actuelle</th>
+                    <th>Objectif 2025</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Objets Validés</td>
+                    <td><strong style="color: var(--gold);">100</strong></td>
+                    <td>✅ Atteint (Déc. 2025)</td>
+                </tr>
+                <tr>
+                    <td>Valeurs GKSC Complètes</td>
+                    <td><strong style="color: var(--gold);">1200</strong></td>
+                    <td>✅ Dépassé</td>
+                </tr>
+                <tr>
+                    <td>Complétude Dataset</td>
+                    <td><strong style="color: var(--gold);">100%</strong></td>
+                    <td>✅ Atteint</td>
+                </tr>
+                <tr>
+                    <td>R² Score Validation</td>
+                    <td><strong style="color: var(--gold);">0.88</strong></td>
+                    <td>✅ Bootstrap validé (0.8812 ± 0.0234)</td>
+                </tr>
+                <tr>
+                    <td>MAE (Mean Absolute Error)</td>
+                    <td><strong style="color: var(--gold);">0.44</strong></td>
+                    <td>✅ 95% CI: [0.39, 0.49]</td>
+                </tr>
+                <tr>
+                    <td>ThibScore Max Théorique</td>
+                    <td><strong style="color: var(--gold);">10.0</strong></td>
+                    <td>Limite scientifique</td>
+                </tr>
+                <tr>
+                    <td>ThibScore Max Observé</td>
+                    <td><strong style="color: var(--gold);">9.80</strong></td>
+                    <td>1I/'Oumuamua</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section class="section">
+    <h2 class="section-title">🔗 API & Intégrations</h2>
+    
+    <div class="content-card">
+        <h3>API RESTful ThibEquation</h3>
+        <p>
+            <strong>(EN DÉVELOPPEMENT)</strong> Interface programmatique pour accéder aux données GKSC.
+        </p>
+        <p><strong>Endpoints prévus:</strong></p>
+        <ul style="color: var(--gray-light); line-height: 1.8;">
+            <li><code style="color: var(--gold);">GET /api/objects</code> - Liste complète des objets</li>
+            <li><code style="color: var(--gold);">GET /api/objects/{id}</code> - Détails d'un objet spécifique</li>
+            <li><code style="color: var(--gold);">POST /api/calculate</code> - Calcul ThibScore à partir de paramètres</li>
+            <li><code style="color: var(--gold);">GET /api/stats</code> - Statistiques globales du dataset</li>
+        </ul>
+        <p style="margin-top: 15px;">
+            <strong>Format:</strong> JSON | <strong>Authentification:</strong> API Key (gratuite pour recherche académique)
+        </p>
+    </div>
+
+    <div class="content-card">
+        <h3>Intégrations Externes</h3>
+        <p>
+            Connexions automatiques avec bases de données astronomiques internationales.
+        </p>
+        <ul style="color: var(--gray-light); line-height: 1.8;">
+            <li><strong>JPL HORIZONS API:</strong> Récupération automatique des éphémérides</li>
+            <li><strong>MPC Database:</strong> Vérification des désignations officielles</li>
+            <li><strong>SIMBAD/Vizier:</strong> Données spectroscopiques complémentaires</li>
+            <li><strong>Galileo Project:</strong> Données 'Oumuamua haute précision</li>
+        </ul>
+    </div>
+</section>
+    </div>
+
+    <!-- Bouton Patreon Flottant -->
+    <a href="https://www.patreon.com/c/ThibodeauInnovations" target="_blank" rel="noopener noreferrer" class="patreon-float" aria-label="Supporter sur Patreon">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+            <path d="M15.386.524c-4.764 0-8.64 3.876-8.64 8.64 0 4.75 3.876 8.613 8.64 8.613 4.75 0 8.614-3.864 8.614-8.613C24 4.4 20.136.524 15.386.524M.003 23.537h4.22V.524H.003"/>
+        </svg>
+        <span>Supporter</span>
+    </a>
+
+    <style>
+        .patreon-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #ff424d 0%, #d91c23 100%);
+            color: white;
+            padding: 14px 22px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 15px;
+            text-decoration: none;
+            box-shadow: 0 8px 25px rgba(255, 66, 77, 0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 10000;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .patreon-float:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 12px 35px rgba(255, 66, 77, 0.6);
+            background: linear-gradient(135deg, #ff5562 0%, #e92d35 100%);
+        }
+
+        .patreon-float:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .patreon-float svg {
+            flex-shrink: 0;
+        }
+
+        .patreon-float span {
+            white-space: nowrap;
+        }
+
+        @keyframes patreon-pulse {
+            0%, 100% { box-shadow: 0 8px 25px rgba(255, 66, 77, 0.4); }
+            50% { box-shadow: 0 8px 35px rgba(255, 66, 77, 0.6); }
+        }
+
+        .patreon-float {
+            animation: patreon-pulse 3s ease-in-out infinite;
+        }
+
+        @media (max-width: 768px) {
+            .patreon-float {
+                bottom: 20px;
+                right: 20px;
+                padding: 12px 18px;
+                font-size: 14px;
+            }
+
+            .patreon-float svg {
+                width: 24px;
+                height: 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .patreon-float span {
+                display: none;
+            }
+
+            .patreon-float {
+                width: 56px;
+                height: 56px;
+                padding: 0;
+                justify-content: center;
+                border-radius: 50%;
+            }
+        }
+    </style>
+</body>
+</html>

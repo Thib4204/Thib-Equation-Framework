@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulateur GKSC - ThibEquation Framework V1.0 Avancé</title>
+    <meta name="description" content="Simulateur avancé des composantes GKSC : Géométrique, Cinématique, Spectroscopique et Contextuelle pour l'analyse d'objets interstellaires.">
+    
+    <!-- External Resources -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        :root {
+            --cosmic-black: #0a0a0f;
+            --cosmic-dark: #1a1a2e;
+            --cosmic-blue: #16213e;
+            --cosmic-purple: #6366f1;
+            --cosmic-cyan: #06b6d4;
+            --cosmic-white: #f8fafc;
+            --geometric-color: #4ade80;
+            --kinematic-color: #f59e0b;
+            --spectroscopic-color: #ec4899;
+            --contextual-color: #06b6d4;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--cosmic-black) 0%, var(--cosmic-dark) 50%, var(--cosmic-blue) 100%);
+            color: var(--cosmic-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(100, 200, 255, 0.3);
+            margin-bottom: 30px;
+            backdrop-filter: blur(15px);
+        }
+
+        .header h1 {
+            font-size: 3em;
+            background: linear-gradient(45deg, #64b5f6, #42a5f5, #29b6f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        .formula-display {
+            font-size: 1.5em;
+            font-family: 'JetBrains Mono', monospace;
+            color: #fbbf24;
+            margin: 20px 0;
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            border: 2px solid #fbbf24;
+        }
+
+        .gksc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .component-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .component-panel:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .geometric { border-color: var(--geometric-color); }
+        .kinematic { border-color: var(--kinematic-color); }
+        .spectroscopic { border-color: var(--spectroscopic-color); }
+        .contextual { border-color: var(--contextual-color); }
+
+        .component-title {
+            font-size: 1.3em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .component-icon {
+            font-size: 1.5em;
+            margin-right: 12px;
+        }
+
+        .geometric .component-title { color: var(--geometric-color); }
+        .kinematic .component-title { color: var(--kinematic-color); }
+        .spectroscopic .component-title { color: var(--spectroscopic-color); }
+        .contextual .component-title { color: var(--contextual-color); }
+
+        .parameter-group {
+            margin-bottom: 20px;
+        }
+
+        .parameter-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #e2e8f0;
+        }
+
+        .parameter-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .parameter-input:focus {
+            outline: none;
+            border-color: #64b5f6;
+            box-shadow: 0 0 15px rgba(100, 181, 246, 0.3);
+        }
+
+        .component-score {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 2em;
+            font-weight: 800;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .results-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            border: 2px solid #64b5f6;
+            backdrop-filter: blur(15px);
+            text-align: center;
+        }
+
+        .final-score {
+            font-size: 4em;
+            font-weight: 900;
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(45deg, #64b5f6, #42a5f5, #29b6f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 20px 0;
+        }
+
+        .score-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .breakdown-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid;
+        }
+
+        .breakdown-item.geometric { border-color: var(--geometric-color); }
+        .breakdown-item.kinematic { border-color: var(--kinematic-color); }
+        .breakdown-item.spectroscopic { border-color: var(--spectroscopic-color); }
+        .breakdown-item.contextual { border-color: var(--contextual-color); }
+
+        .chart-container {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .nav-link {
+            color: #64b5f6;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            background: rgba(100, 181, 246, 0.1);
+            border: 1px solid rgba(100, 181, 246, 0.3);
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin: 5px;
+        }
+
+        .nav-link:hover {
+            background: rgba(100, 181, 246, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .interpretation {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            border-left: 4px solid #fbbf24;
+        }
+
+        @media (max-width: 768px) {
+            .gksc-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2.2em;
+            }
+            
+            .final-score {
+                font-size: 2.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <div class="container">
+        <!-- Navigation -->
+        <div style="text-align: center; margin-bottom: 20px;">
+            <a href="index.html" class="nav-link">🏠 Accueil</a>
+            <a href="calculateur.html" class="nav-link">🧮 Calculateur</a>
+            <a href="simulateur-unifie.html" class="nav-link">🔗 Simulateur Unifié</a>
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+            <h1>🧬 Simulateur GKSC Avancé</h1>
+            <p style="font-size: 1.2em; color: #b0bec5;">
+                Analyse Multi-Dimensionnelle d'Objets Interstellaires
+            </p>
+            <div class="formula-display">
+                ThibScore = 0.28×G + 0.32×K + 0.23×S + 0.17×C
+            </div>
+        </div>
+
+        <!-- Composantes GKSC -->
+        <div class="gksc-grid">
+            <!-- Composante G (Géométrique) -->
+            <div class="component-panel geometric">
+                <div class="component-title">
+                    <i class="fas fa-shapes component-icon"></i>
+                    G - Géométrique (30%)
+                </div>
+                
+                <div class="parameter-group">
+                    <label class="parameter-label">R_aspect - Rapport d'aspect</label>
+                    <input type="range" class="parameter-input" id="r-aspect" min="0" max="10" step="0.1" value="5">
+                    <span id="r-aspect-value">5.0</span>
+                </div>
+                
+                <div class="parameter-group">
+                    <label class="parameter-label">D_sphérique - Déviation sphérique</label>
+                    <input type="range" class="parameter-input" id="d-spherique" min="0" max="10" step="0.1" value="5">
+                    <span id="d-spherique-value">5.0</span>
+                </div>
+                
+                <div class="parameter-group">
+                    <label class="parameter-label">I_rugosité - Index de rugosité</label>
+                    <input type="range" class="parameter-input" id="i-rugosite" min="0" max="10" step="0.1" value="5">
+                    <span id="i-rugosite-value">5.0</span>
+                </div>
+                
+                <div class="component-score" id="g-score" style="color: var(--geometric-color);">0.0</div>
+            </div>
+
+            <!-- Composante K (Cinématique) -->
+            <div class="component-panel kinematic">
+                <div class="component-title">
+                    <i class="fas fa-rocket component-icon"></i>
+                    K - Cinématique (30%)
+                </div>
+                
+                <div class="parameter-group">
+                    <label class="parameter-label">V_excess - Vitesse d'excès</label>
+                    <input type="range" class="parameter-input" id="v-excess" min="0" max="10" step="0.1" value="5">
+                    <span id="v-excess-value">5.0</span>
+                </div>
+                
+                <div class="parameter-group">
+                    <label class="parameter-label">A_non-grav - Accélération non-grav</label>
+                    <input type="range" class="parameter-input" id="a-nongrav" min="0" max="10" step="0.1" value="5">
+                    <span id="a-nongrav-value">5.0</span>
+                </div>
+                
+                <div class="parameter-group">
+                    <label class="parameter-label">E_orbital - Excentricité orbitale</label>
+                    <input type="range" class="parameter-input" id="e-orbital" min="0" max="10" step="0.1" value="5">
+                    <span id="e-orbital-value">5.0</span>
+                </div>
+                
+                <div class="component-score" id="k-score" style="color: var(--kinematic-color);">0.0</div>
+            </div>
+
+            <!-- Composante S (Spectroscopique) -->
+            <div class="component-panel spectroscopic">
+                <div class="component-title">
+                    <i class="fas fa-spectrum component-icon"></i>
+                    S - Spectroscopique (25%)
+                </div>
+                
+                <div class="parameter-group">
+                    <label class="parameter-label">A_albedo - Analyse d'albédo</label>
+                    <input type="range" class="parameter-input" id="a-albedo" min="0" max="10" step="0.1" value="5">
+                    <span id="a-albedo-value">5.0</span>
+                </div>
+                
+                <div class="parameter-group">
+                    <label class="parameter-label">D_spectre - Déviation spectrale</label>
+                    <input type="range" class="parameter-input" id="d-spectre" min="0" max="10" step="0.1" value="5">
+                    <span id="d-spectre-value">5.0</span>
+                </div>
+                
+                <div class="parameter-group">
+                    <label class="parameter-label">T_thermal - Signatures thermiques</label>
+                    <input type="range" class="parameter-input" id="t-thermal" min="0" max="10" step="0.1" value="5">
+                    <span id="t-thermal-value">5.0</span>
+                </div>
+                
+                <div class="parameter-group">
+                    <label class="parameter-label">E_emission - Patterns d'émission</label>
+                    <input type="range" class="parameter-input" id="e-emission" min="0" max="10" step="0.1" value="5">
+                    <span id="e-emission-value">5.0</span>
+                </div>
+                
+                <div class="component-score" id="s-score" style="color: var(--spectroscopic-color);">0.0</div>
+            </div>
+
+            <!-- Composante C (Contextuelle) -->
+            <div class="component-panel contextual">
+                <div class="component-title">
+                    <i class="fas fa-globe component-icon"></i>
+                    C - Contextuelle (15%)
+                </div>
+                
+                <div class="parameter-group">
+                    <label class="parameter-label">I_interstellar - Origine interstellaire</label>
+                    <input type="range" class="parameter-input" id="i-interstellar" min="0" max="10" step="0.1" value="5">
+                    <span id="i-interstellar-value">5.0</span>
+                </div>
+                
+                <div class="parameter-group">
+                    <label class="parameter-label">R_rareté - Facteurs de rareté</label>
+                    <input type="range" class="parameter-input" id="r-rarete" min="0" max="10" step="0.1" value="5">
+                    <span id="r-rarete-value">5.0</span>
+                </div>
+                
+                <div class="parameter-group">
+                    <label class="parameter-label">T_timing - Signification temporelle</label>
+                    <input type="range" class="parameter-input" id="t-timing" min="0" max="10" step="0.1" value="5">
+                    <span id="t-timing-value">5.0</span>
+                </div>
+                
+                <div class="parameter-group">
+                    <label class="parameter-label">M_multi - Multi-longueurs d'onde</label>
+                    <input type="range" class="parameter-input" id="m-multi" min="0" max="10" step="0.1" value="5">
+                    <span id="m-multi-value">5.0</span>
+                </div>
+                
+                <div class="component-score" id="c-score" style="color: var(--contextual-color);">0.0</div>
+            </div>
+        </div>
+
+        <!-- Résultats -->
+        <div class="results-section">
+            <h2 style="font-size: 1.8em; margin-bottom: 20px;">🎯 Résultat ThibScore GKSC</h2>
+            
+            <div class="final-score" id="final-score">0.0</div>
+            
+            <div class="score-breakdown">
+                <div class="breakdown-item geometric">
+                    <strong>G × 0.30</strong><br>
+                    <span id="g-contribution">0.0</span>
+                </div>
+                <div class="breakdown-item kinematic">
+                    <strong>K × 0.30</strong><br>
+                    <span id="k-contribution">0.0</span>
+                </div>
+                <div class="breakdown-item spectroscopic">
+                    <strong>S × 0.25</strong><br>
+                    <span id="s-contribution">0.0</span>
+                </div>
+                <div class="breakdown-item contextual">
+                    <strong>C × 0.15</strong><br>
+                    <span id="c-contribution">0.0</span>
+                </div>
+            </div>
+            
+            <div class="interpretation" id="interpretation">
+                Ajustez les paramètres GKSC pour calculer le ThibScore...
+            </div>
+
+            <!-- Chart -->
+            <div class="chart-container">
+                <canvas id="gkscChart" width="400" height="400"></canvas>
+            </div>
+        </div>
+
+        <!-- Objets de Référence -->
+        <div style="margin-top: 30px; text-align: center;">
+            <h3 style="font-size: 1.5em; margin-bottom: 20px;">📊 Objets de Référence GKSC</h3>
+            <button class="nav-link" onclick="loadOumuamua()">🚀 'Oumuamua (89.2±4.2)</button>
+            <button class="nav-link" onclick="loadBorisov()">☄️ Borisov (67.8±3.1)</button>
+            <button class="nav-link" onclick="loadAtlas()">🌟 3I/Atlas (94.5±2.8)</button>
+        </div>
+    </div>
+
+    <script>
+        // Animation des étoiles
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numStars = 100;
+
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = star.style.height = Math.random() * 3 + 1 + 'px';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Variables globales
+        let gkscChart;
+
+        // Calcul des composantes GKSC
+        function calculateGeometricComponent(rAspect, dSpherique, iRugosite) {
+            return (rAspect * 0.40) + (dSpherique * 0.35) + (iRugosite * 0.25);
+        }
+
+        function calculateKinematicComponent(vExcess, aNonGrav, eOrbital) {
+            return (vExcess * 0.35) + (aNonGrav * 0.40) + (eOrbital * 0.25);
+        }
+
+        function calculateSpectroscopicComponent(aAlbedo, dSpectre, tThermal, eEmission) {
+            return (aAlbedo * 0.25) + (dSpectre * 0.30) + (tThermal * 0.25) + (eEmission * 0.20);
+        }
+
+        function calculateContextualComponent(iInterstellar, rRarete, tTiming, mMulti) {
+            return (iInterstellar * 0.30) + (rRarete * 0.25) + (tTiming * 0.20) + (mMulti * 0.25);
+        }
+
+        // Mise à jour en temps réel
+        function updateAllComponents() {
+            // Lecture des valeurs
+            const rAspect = parseFloat(document.getElementById('r-aspect').value);
+            const dSpherique = parseFloat(document.getElementById('d-spherique').value);
+            const iRugosite = parseFloat(document.getElementById('i-rugosite').value);
+            
+            const vExcess = parseFloat(document.getElementById('v-excess').value);
+            const aNonGrav = parseFloat(document.getElementById('a-nongrav').value);
+            const eOrbital = parseFloat(document.getElementById('e-orbital').value);
+            
+            const aAlbedo = parseFloat(document.getElementById('a-albedo').value);
+            const dSpectre = parseFloat(document.getElementById('d-spectre').value);
+            const tThermal = parseFloat(document.getElementById('t-thermal').value);
+            const eEmission = parseFloat(document.getElementById('e-emission').value);
+            
+            const iInterstellar = parseFloat(document.getElementById('i-interstellar').value);
+            const rRarete = parseFloat(document.getElementById('r-rarete').value);
+            const tTiming = parseFloat(document.getElementById('t-timing').value);
+            const mMulti = parseFloat(document.getElementById('m-multi').value);
+
+            // Calcul des composantes
+            const G = calculateGeometricComponent(rAspect, dSpherique, iRugosite);
+            const K = calculateKinematicComponent(vExcess, aNonGrav, eOrbital);
+            const S = calculateSpectroscopicComponent(aAlbedo, dSpectre, tThermal, eEmission);
+            const C = calculateContextualComponent(iInterstellar, rRarete, tTiming, mMulti);
+
+            // ThibScore final
+            const thibScore = (0.30 * G) + (0.30 * K) + (0.25 * S) + (0.15 * C);
+
+            // Mise à jour affichage
+            document.getElementById('g-score').textContent = G.toFixed(1);
+            document.getElementById('k-score').textContent = K.toFixed(1);
+            document.getElementById('s-score').textContent = S.toFixed(1);
+            document.getElementById('c-score').textContent = C.toFixed(1);
+            
+            document.getElementById('final-score').textContent = thibScore.toFixed(1);
+            
+            document.getElementById('g-contribution').textContent = (G * 0.30).toFixed(1);
+            document.getElementById('k-contribution').textContent = (K * 0.30).toFixed(1);
+            document.getElementById('s-contribution').textContent = (S * 0.25).toFixed(1);
+            document.getElementById('c-contribution').textContent = (C * 0.15).toFixed(1);
+
+            // Interprétation
+            updateInterpretation(thibScore, G, K, S, C);
+            
+            // Chart
+            updateChart(G, K, S, C);
+        }
+
+        // Interprétation du score
+        function updateInterpretation(score, G, K, S, C) {
+            let interpretation = "";
+            let alertClass = "";
+
+            if (score >= 90) {
+                interpretation = "🚨 ANOMALIE EXCEPTIONNELLE - Investigation urgente requise ! Score GKSC extrêmement élevé indiquant des propriétés hautement anormales.";
+                alertClass = "exceptional";
+            } else if (score >= 75) {
+                interpretation = "⚠️ ANOMALIE MAJEURE - Objet d'intérêt prioritaire. Propriétés significativement déviantes nécessitant une étude approfondie.";
+                alertClass = "major";
+            } else if (score >= 60) {
+                interpretation = "🔍 ANOMALIE SIGNIFICATIVE - Mérite une investigation. Plusieurs composantes GKSC montrent des valeurs inhabituelles.";
+                alertClass = "significant";
+            } else if (score >= 40) {
+                interpretation = "📊 PROPRIÉTÉS MODÉRÉES - Objet avec certaines caractéristiques notables mais dans les limites attendues.";
+                alertClass = "moderate";
+            } else {
+                interpretation = "✅ OBJET STANDARD - Propriétés conformes aux attentes pour un objet céleste typique.";
+                alertClass = "standard";
+            }
+
+            // Analyse détaillée des composantes
+            const dominantComponent = Math.max(G, K, S, C);
+            let componentAnalysis = "\n\n📈 ANALYSE DES COMPOSANTES:\n";
+            
+            if (G === dominantComponent && G > 70) componentAnalysis += "• Géométrie exceptionnelle dominante\n";
+            if (K === dominantComponent && K > 70) componentAnalysis += "• Cinématique anormale dominante\n";
+            if (S === dominantComponent && S > 70) componentAnalysis += "• Signatures spectrales uniques\n";
+            if (C === dominantComponent && C > 70) componentAnalysis += "• Contexte d'observation exceptionnel\n";
+
+            document.getElementById('interpretation').textContent = interpretation + componentAnalysis;
+        }
+
+        // Mise à jour du chart
+        function updateChart(G, K, S, C) {
+            if (gkscChart) {
+                gkscChart.data.datasets[0].data = [G, K, S, C];
+                gkscChart.update();
+            }
+        }
+
+        // Initialisation du chart
+        function initChart() {
+            const ctx = document.getElementById('gkscChart').getContext('2d');
+            gkscChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Géométrique (G)', 'Cinématique (K)', 'Spectroscopique (S)', 'Contextuelle (C)'],
+                    datasets: [{
+                        label: 'Composantes GKSC',
+                        data: [50, 50, 50, 50],
+                        borderColor: '#64b5f6',
+                        backgroundColor: 'rgba(100, 181, 246, 0.2)',
+                        pointBackgroundColor: '#64b5f6',
+                        pointBorderColor: '#ffffff',
+                        pointHoverBackgroundColor: '#ffffff',
+                        pointHoverBorderColor: '#64b5f6'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: { color: '#ffffff' },
+                            grid: { color: 'rgba(255, 255, 255, 0.2)' },
+                            pointLabels: { color: '#ffffff', font: { size: 12 } }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: { color: '#ffffff' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Objets de référence
+        function loadOumuamua() {
+            // 'Oumuamua : ThibScore 89.2±4.2
+            setSliderValue('r-aspect', 9.5);  // Rapport d'aspect exceptionnel 6:1
+            setSliderValue('d-spherique', 8.8);
+            setSliderValue('i-rugosite', 7.2);
+            
+            setSliderValue('v-excess', 8.7);  // Vitesse d'excès élevée
+            setSliderValue('a-nongrav', 9.1); // Accélération non-grav détectée
+            setSliderValue('e-orbital', 8.3);
+            
+            setSliderValue('a-albedo', 7.8);  // Albédo inhabituel
+            setSliderValue('d-spectre', 8.9); 
+            setSliderValue('t-thermal', 6.5);
+            setSliderValue('e-emission', 5.2);
+            
+            setSliderValue('i-interstellar', 10); // Premier objet interstellaire
+            setSliderValue('r-rarete', 9.8);
+            setSliderValue('t-timing', 9.5);
+            setSliderValue('m-multi', 8.7);
+        }
+
+        function loadBorisov() {
+            // Borisov : ThibScore 67.8±3.1
+            setSliderValue('r-aspect', 4.5);  // Forme cométaire standard
+            setSliderValue('d-spherique', 5.2);
+            setSliderValue('i-rugosite', 4.8);
+            
+            setSliderValue('v-excess', 7.2);  // Vitesse d'excès élevée
+            setSliderValue('a-nongrav', 5.8);
+            setSliderValue('e-orbital', 6.9);
+            
+            setSliderValue('a-albedo', 6.8);  // Composition cométaire typique
+            setSliderValue('d-spectre', 5.9);
+            setSliderValue('t-thermal', 7.1);
+            setSliderValue('e-emission', 6.2);
+            
+            setSliderValue('i-interstellar', 9.5); // Deuxième objet interstellaire
+            setSliderValue('r-rarete', 8.7);
+            setSliderValue('t-timing', 8.2);
+            setSliderValue('m-multi', 7.8);
+        }
+
+        function loadAtlas() {
+            // 3I/Atlas : ThibScore 94.5±2.8
+            setSliderValue('r-aspect', 9.1);  // Morphologie complexe
+            setSliderValue('d-spherique', 8.9);
+            setSliderValue('i-rugosite', 8.7);
+            
+            setSliderValue('v-excess', 8.9);  // Cinématique variable
+            setSliderValue('a-nongrav', 9.3);
+            setSliderValue('e-orbital', 8.5);
+            
+            setSliderValue('a-albedo', 9.6);  // Spectre unique
+            setSliderValue('d-spectre', 9.8); // Déplétion carbone extrême
+            setSliderValue('t-thermal', 8.4);
+            setSliderValue('e-emission', 8.9);
+            
+            setSliderValue('i-interstellar', 9.8); // Découverte récente
+            setSliderValue('r-rarete', 9.9);
+            setSliderValue('t-timing', 9.6);
+            setSliderValue('m-multi', 9.2);
+        }
+
+        function setSliderValue(id, value) {
+            const slider = document.getElementById(id);
+            slider.value = value;
+            document.getElementById(id + '-value').textContent = value.toFixed(1);
+        }
+
+        // Event listeners pour les sliders
+        function setupEventListeners() {
+            const sliders = document.querySelectorAll('input[type="range"]');
+            sliders.forEach(slider => {
+                slider.addEventListener('input', function() {
+                    document.getElementById(this.id + '-value').textContent = parseFloat(this.value).toFixed(1);
+                    updateAllComponents();
+                });
+            });
+        }
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+            initChart();
+            setupEventListeners();
+            updateAllComponents(); // Calcul initial
+        });
+    </script>
+</body>
+</html>

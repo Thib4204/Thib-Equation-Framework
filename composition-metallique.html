@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Composition Métallique - ThibEquation Framework</title>
+    <link rel="icon" type="image/png" href="images/logo-thibequation-official.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/modern-pale-theme-v2.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --deep-space: #f8fafb; --navy-dark: #ffffff; --navy-mid: #f3f6f9;
+            --gold: #b8860b; --gold-light: #daa520; --white: #0d1117;
+            --gray-light: #0d1117; --gray-mid: #2d3748;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            background: linear-gradient(180deg, #f8fafb 0%, #ffffff 100%);
+            color: #0d1117; font-family: 'Inter', sans-serif;
+            min-height: 100vh; overflow-x: hidden;
+        }
+        body::before {
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20% 30%, white, transparent),
+                radial-gradient(1px 1px at 50% 50%, white, transparent);
+            background-size: 200% 200%; animation: stars 80s linear infinite;
+            opacity: 0.5; pointer-events: none; z-index: 0;
+        }
+        @keyframes stars { 0% { background-position: 0% 0%; } 100% { background-position: 100% 100%; } }
+        header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(10, 22, 40, 0.97); backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.4);
+        }
+        .header-container {
+            max-width: 1800px; margin: 0 auto; padding: 12px 30px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .logo-section { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo-emblem { width: 50px; height: 50px; transition: transform 0.6s ease; border-radius: 50%; overflow: hidden; }
+        .logo-emblem img { width: 100%; height: 100%; object-fit: cover; filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.5)); }
+        .logo-section:hover .logo-emblem { transform: rotate(180deg); }
+        .logo-text { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600; color: var(--white); letter-spacing: 1px; }
+        nav ul { display: flex; gap: 25px; list-style: none; }
+        nav a {
+            color: var(--gray-light); text-decoration: none; font-size: 12px; font-weight: 500;
+            letter-spacing: 0.5px; transition: all 0.3s ease; position: relative; padding: 8px 0; text-transform: uppercase;
+        }
+        nav a::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px;
+            background: var(--gold); transition: width 0.3s ease;
+        }
+        nav a:hover::after, nav a.active::after { width: 100%; }
+        nav a:hover, nav a.active { color: var(--gold); }
+        .container { position: relative; z-index: 1; max-width: 1400px; margin: 0 auto; padding: 120px 40px 80px; }
+        .page-header { text-align: center; margin-bottom: 50px; }
+        .page-title {
+            font-family: 'Space Grotesk', sans-serif; font-size: 56px; font-weight: 700;
+            background: linear-gradient(135deg, var(--white), var(--gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 20px;
+        }
+        .page-subtitle { font-size: 18px; color: var(--gray-mid); max-width: 800px; margin: 0 auto; line-height: 1.6; }
+        
+        .spectrum-panel {
+            background: rgba(27, 38, 59, 0.7); border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px; padding: 30px; margin: 30px 0;
+        }
+        .element-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin: 25px 0;
+        }
+        .element-card {
+            background: rgba(13, 27, 42, 0.9); border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 10px; padding: 25px; text-align: center;
+        }
+        .element-symbol {
+            font-size: 36px; color: var(--gold); font-weight: 700; margin-bottom: 10px;
+        }
+        .element-name {
+            font-size: 14px; color: var(--gray-light); margin-bottom: 15px;
+        }
+        .element-abundance {
+            font-size: 24px; color: var(--white); font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            .element-grid { grid-template-columns: repeat(2, 1fr); }
+            .page-title { font-size: 36px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo-section">
+                <div class="logo-emblem"><img src="images/logo-thibequation-round.png" alt="ThibEquation Logo"></div>
+                <span class="logo-text">THIBEQUATION</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="methodologie.html">Méthodologie GKSC</a></li>
+                    <li><a href="calculateur.html">Calculateur Détaillé</a></li>
+                    <li><a href="donnees.html">Données Sources</a></li>
+                    <li><a href="outils.html">Outils & Visualisations</a></li>
+                    <li><a href="collaboration.html">Collaboration v5.0</a></li>
+                    <li><a href="sources.html">Framework Scientifique</a></li>
+                    <li><a href="bibliographie.html">Recherche Interstellaire</a></li>
+                    <li><a href="feedback.html">Feedback</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">🧪 Composition Métallique</h1>
+            <p class="page-subtitle">
+                Analyse spectroscopique et abondances élémentaires des objets interstellaires
+            </p>
+        </div>
+
+        <div class="spectrum-panel">
+            <h3 style="color: var(--gold); margin-bottom: 25px; font-size: 24px;">📊 1I/'Oumuamua - Composition Estimée</h3>
+            <canvas id="spectrumChart" style="height: 300px;"></canvas>
+        </div>
+
+        <div class="spectrum-panel">
+            <h3 style="color: var(--gold); margin-bottom: 25px; font-size: 24px;">⚛️ Abondances Élémentaires</h3>
+            <div class="element-grid">
+                <div class="element-card">
+                    <div class="element-symbol">H</div>
+                    <div class="element-name">Hydrogène</div>
+                    <div class="element-abundance">70.6%</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-symbol">He</div>
+                    <div class="element-name">Hélium</div>
+                    <div class="element-abundance">27.4%</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-symbol">O</div>
+                    <div class="element-name">Oxygène</div>
+                    <div class="element-abundance">0.9%</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-symbol">C</div>
+                    <div class="element-name">Carbone</div>
+                    <div class="element-abundance">0.3%</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-symbol">Fe</div>
+                    <div class="element-name">Fer</div>
+                    <div class="element-abundance">0.2%</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-symbol">N</div>
+                    <div class="element-name">Azote</div>
+                    <div class="element-abundance">0.1%</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-symbol">Si</div>
+                    <div class="element-name">Silicium</div>
+                    <div class="element-abundance">0.1%</div>
+                </div>
+                <div class="element-card">
+                    <div class="element-symbol">Mg</div>
+                    <div class="element-name">Magnésium</div>
+                    <div class="element-abundance">0.1%</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="spectrum-panel">
+            <h3 style="color: var(--gold); margin-bottom: 25px; font-size: 24px;">📈 2I/Borisov - Spectre de Comète</h3>
+            <canvas id="cometChart" style="height: 300px;"></canvas>
+        </div>
+
+        <div class="spectrum-panel">
+            <h3 style="color: var(--gold); margin-bottom: 25px; font-size: 24px;">⚡ 3I/ATLAS - Spectre Atypique (JWST)</h3>
+            <canvas id="atlasChart" style="height: 300px;"></canvas>
+            <div style="margin-top: 20px; padding: 20px; background: rgba(212, 175, 55, 0.1); border-left: 4px solid var(--gold); border-radius: 6px;">
+                <p style="color: var(--gray-light); font-size: 14px; line-height: 1.8;">
+                    <strong style="color: var(--gold);">🔬 Données JWST 2025 (Cordiner, Seligman, Jewitt et al.)</strong><br>
+                    Ratio CO/H₂O exceptionnel : <strong style="color: var(--white);">7.6 ± 0.3</strong> (record pour comète interstellaire)<br>
+                    Excentricité : <strong>6.137</strong> (trajectoire hyperbolique la plus extrême observée)<br>
+                    Vitesse périhélie : <strong>68 km/s</strong> (29 octobre 2025)<br>
+                    Sources : NASA JPL HORIZONS, MPC (IAU), Hubble, JWST
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ctx1 = document.getElementById('spectrumChart').getContext('2d');
+        new Chart(ctx1, {
+            type: 'line',
+            data: {
+                labels: ['350nm', '400nm', '450nm', '500nm', '550nm', '600nm', '650nm', '700nm'],
+                datasets: [{
+                    label: 'Réflectance Spectrale',
+                    data: [0.08, 0.09, 0.10, 0.12, 0.14, 0.16, 0.17, 0.18],
+                    borderColor: 'rgba(212, 175, 55, 1)',
+                    backgroundColor: 'rgba(212, 175, 55, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { labels: { color: '#e0e6ed' } } },
+                scales: {
+                    y: { ticks: { color: '#e0e6ed' }, grid: { color: 'rgba(255,255,255,0.1)' } },
+                    x: { ticks: { color: '#e0e6ed' }, grid: { color: 'rgba(255,255,255,0.1)' } }
+                }
+            }
+        });
+
+        const ctx2 = document.getElementById('cometChart').getContext('2d');
+        new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: ['H₂O', 'CO', 'CO₂', 'CN', 'C₂', 'NH₂'],
+                datasets: [{
+                    label: 'Production (molécules/s)',
+                    data: [3.2e28, 1.5e27, 8.0e26, 3.0e26, 2.0e26, 1.0e26],
+                    backgroundColor: 'rgba(0, 212, 255, 0.6)',
+                    borderColor: 'rgba(0, 212, 255, 1)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { labels: { color: '#e0e6ed' } } },
+                scales: {
+                    y: { 
+                        type: 'logarithmic',
+                        ticks: { color: '#e0e6ed' },
+                        grid: { color: 'rgba(255,255,255,0.1)' }
+                    },
+                    x: { ticks: { color: '#e0e6ed' }, grid: { color: 'rgba(255,255,255,0.1)' } }
+                }
+            }
+        });
+
+        // Chart.js pour 3I/ATLAS (ratio CO/H₂O anormal)
+        const ctx3 = document.getElementById('atlasChart').getContext('2d');
+        new Chart(ctx3, {
+            type: 'bar',
+            data: {
+                labels: ['CO', 'H₂O', 'CO₂', 'CN', 'C₂', 'NH₂'],
+                datasets: [{
+                    label: 'Production Relative (normalisé)',
+                    data: [7.6, 1.0, 0.4, 0.2, 0.15, 0.08],
+                    backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { 
+                    legend: { labels: { color: '#e0e6ed' } },
+                    title: {
+                        display: true,
+                        text: 'Ratio CO/H₂O : 7.6±0.3 (JWST) - Record Interstellaire',
+                        color: '#d4af37',
+                        font: { size: 16, weight: 'bold' }
+                    }
+                },
+                scales: {
+                    y: { 
+                        ticks: { color: '#e0e6ed' },
+                        grid: { color: 'rgba(255,255,255,0.1)' }
+                    },
+                    x: { ticks: { color: '#e0e6ed' }, grid: { color: 'rgba(255,255,255,0.1)' } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

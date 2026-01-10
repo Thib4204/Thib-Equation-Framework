@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registre Calculateurs ThibEquation - Accès Rapide | v5.0.0</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0e27;
+            --bg-card: #1a1f3a;
+            --bg-input: #0f1629;
+            --primary: #00d4ff;
+            --success: #00c853;
+            --gold: #ffd700;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --purple: #9c27b0;
+            --text-light: #e0e6ed;
+            --text-muted: #8b95a5;
+            --border: #2a3f5f;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1629 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3em;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--gold), var(--warning));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+
+        .version-badge {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .version-badge span {
+            display: inline-block;
+            padding: 10px 25px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 2px solid var(--primary);
+            border-radius: 25px;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 30px;
+            padding: 14px 28px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            font-size: 1.05em;
+        }
+
+        .back-link:hover {
+            background: rgba(0, 212, 255, 0.2);
+            transform: translateX(-5px);
+        }
+
+        .category-section {
+            margin-bottom: 60px;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .category-icon {
+            font-size: 2.5em;
+        }
+
+        .category-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2em;
+            font-weight: 800;
+        }
+
+        .calculators-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+            gap: 25px;
+        }
+
+        .calculator-card {
+            background: rgba(26, 31, 58, 0.9);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .calculator-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--gold));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .calculator-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .calculator-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-icon {
+            font-size: 2em;
+            color: var(--primary);
+        }
+
+        .card-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.4em;
+            font-weight: 700;
+            color: var(--text-light);
+        }
+
+        .card-badge {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.75em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-pro {
+            background: linear-gradient(135deg, var(--gold), #ffed4e);
+            color: #0a0e27;
+        }
+
+        .badge-standard {
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .badge-specialized {
+            background: rgba(156, 39, 176, 0.2);
+            color: var(--purple);
+            border: 1px solid var(--purple);
+        }
+
+        .card-description {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+
+        .parameters-section {
+            margin-bottom: 20px;
+        }
+
+        .parameters-title {
+            font-size: 0.9em;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .parameters-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .param-tag {
+            padding: 6px 12px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 6px;
+            color: var(--text-light);
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .features-list li {
+            padding: 8px 0;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9em;
+        }
+
+        .features-list li i {
+            color: var(--success);
+            font-size: 1em;
+        }
+
+        .card-footer {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--primary);
+        }
+
+        .btn:hover {
+            background: rgba(0, 212, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #00e6ff);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+        }
+
+        .quick-access {
+            background: rgba(15, 22, 41, 0.8);
+            border: 2px solid var(--gold);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 50px;
+        }
+
+        .quick-access h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8em;
+            font-weight: 800;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .quick-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 20px;
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid var(--gold);
+            border-radius: 10px;
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .quick-link:hover {
+            background: rgba(255, 215, 0, 0.2);
+            transform: translateX(5px);
+        }
+
+        .info-box {
+            background: rgba(0, 212, 255, 0.05);
+            border-left: 4px solid var(--primary);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        .info-box h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .info-box p {
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+
+        @media (max-width: 768px) {
+            .calculators-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+
+            .quick-links {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">
+            <i class="fas fa-arrow-left"></i>
+            Retour à l'accueil
+        </a>
+
+        <h1><i class="fas fa-calculator"></i> Registre des Calculateurs</h1>
+        <p class="subtitle">
+            Accès rapide à tous les outils ThibEquation avec explications des paramètres
+        </p>
+        <div class="version-badge">
+            <span><i class="fas fa-code-branch"></i> ThibEquation Framework v5.0.0-EMPIRICAL</span>
+        </div>
+
+        <!-- Accès Rapide -->
+        <div class="quick-access">
+            <h3><i class="fas fa-bolt"></i> Accès Rapide</h3>
+            <div class="quick-links">
+                <a href="calculateur-ufo-analytics.html" class="quick-link">
+                    <i class="fas fa-ufo-beam"></i>
+                    <span>UFO Analytics</span>
+                </a>
+                <a href="calculateur-premium.html" class="quick-link">
+                    <i class="fas fa-crown"></i>
+                    <span>Calculateur Premium</span>
+                </a>
+                <a href="calculateur.html" class="quick-link">
+                    <i class="fas fa-calculator"></i>
+                    <span>Calculateur Standard</span>
+                </a>
+                <a href="📡-LIENS-ORGANISMES-SCIENTIFIQUES.html" class="quick-link">
+                    <i class="fas fa-satellite"></i>
+                    <span>Liens Organismes</span>
+                </a>
+                <a href="📖-PARAMETRES-OBSERVATION-COMPLETS-THIBEQUATION.md" class="quick-link">
+                    <i class="fas fa-book-open"></i>
+                    <span>Documentation Complète</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Calculateurs Principaux -->
+        <div class="category-section">
+            <div class="category-header">
+                <i class="fas fa-star category-icon" style="color: var(--gold);"></i>
+                <h2 class="category-title" style="color: var(--gold);">Calculateurs Principaux</h2>
+            </div>
+
+            <div class="calculators-grid">
+                <!-- UFO Analytics -->
+                <div class="calculator-card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-ufo-beam card-icon" style="color: var(--warning);"></i>
+                            <h3 class="card-name">UFO Analytics</h3>
+                        </div>
+                        <span class="card-badge badge-pro">PRO</span>
+                    </div>
+                    <p class="card-description">
+                        Interface révolutionnaire "Pont Ufologie-Astrophysique" avec jauge 0-100, 
+                        graphiques GKSC interactifs, système de fiabilité psychométrique, export scientifique.
+                    </p>
+                    <div class="parameters-section">
+                        <div class="parameters-title"><i class="fas fa-sliders-h"></i> 12 Paramètres GKSC</div>
+                        <div class="parameters-list">
+                            <span class="param-tag">Excentricité (e)</span>
+                            <span class="param-tag">Périhélie (q)</span>
+                            <span class="param-tag">V∞ (km/s)</span>
+                            <span class="param-tag">Inclinaison (i°)</span>
+                            <span class="param-tag">Albédo</span>
+                            <span class="param-tag">Diamètre</span>
+                            <span class="param-tag">4 Composantes GKSC</span>
+                        </div>
+                    </div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check-circle"></i> Jauge 0-100 (Score d'Anomalie Global)</li>
+                        <li><i class="fas fa-check-circle"></i> Graphiques radar GKSC interactifs</li>
+                        <li><i class="fas fa-check-circle"></i> Système de fiabilité (tests psychométriques)</li>
+                        <li><i class="fas fa-check-circle"></i> Export CSV/JSON/Markdown</li>
+                        <li><i class="fas fa-check-circle"></i> Base 100 objets validés</li>
+                    </ul>
+                    <div class="card-footer">
+                        <a href="calculateur-ufo-analytics.html" class="btn btn-primary">
+                            <i class="fas fa-play"></i>
+                            Lancer
+                        </a>
+                        <a href="📱-INTEGRATION-UFO-ANALYTICS.md" class="btn">
+                            <i class="fas fa-file-alt"></i>
+                            Doc
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Calculateur Premium -->
+                <div class="calculator-card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-crown card-icon" style="color: var(--gold);"></i>
+                            <h3 class="card-name">Calculateur Premium</h3>
+                        </div>
+                        <span class="card-badge badge-pro">PRO</span>
+                    </div>
+                    <p class="card-description">
+                        Version avancée avec 100 objets pré-chargés, graphiques comparatifs, 
+                        analyse détaillée des 4 composantes GKSC, export multi-formats.
+                    </p>
+                    <div class="parameters-section">
+                        <div class="parameters-title"><i class="fas fa-sliders-h"></i> 12 Paramètres Complets</div>
+                        <div class="parameters-list">
+                            <span class="param-tag">e (Excentricité)</span>
+                            <span class="param-tag">i (Inclinaison)</span>
+                            <span class="param-tag">q (Périhélie)</span>
+                            <span class="param-tag">v∞ (Vitesse)</span>
+                            <span class="param-tag">Albédo</span>
+                            <span class="param-tag">Diamètre (m)</span>
+                            <span class="param-tag">G/K/S/C</span>
+                        </div>
+                    </div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check-circle"></i> 100 objets pré-chargés (interstellaires, TNOs, NEAs)</li>
+                        <li><i class="fas fa-check-circle"></i> Graphiques Chart.js comparatifs</li>
+                        <li><i class="fas fa-check-circle"></i> ThibScore 0-10.0 (validation R²=0.88)</li>
+                        <li><i class="fas fa-check-circle"></i> Export scientifique complet</li>
+                        <li><i class="fas fa-check-circle"></i> Interface moderne Bootstrap-like</li>
+                    </ul>
+                    <div class="card-footer">
+                        <a href="calculateur-premium.html" class="btn btn-primary">
+                            <i class="fas fa-play"></i>
+                            Lancer
+                        </a>
+                        <a href="documentation-interactive.html" class="btn">
+                            <i class="fas fa-file-alt"></i>
+                            Doc
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Calculateur Standard -->
+                <div class="calculator-card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-calculator card-icon"></i>
+                            <h3 class="card-name">Calculateur Standard</h3>
+                        </div>
+                        <span class="card-badge badge-standard">STANDARD</span>
+                    </div>
+                    <p class="card-description">
+                        Calculateur de base robuste avec tous les paramètres GKSC, 
+                        graphiques essentiels, export de base, idéal pour débutants.
+                    </p>
+                    <div class="parameters-section">
+                        <div class="parameters-title"><i class="fas fa-sliders-h"></i> 10 Paramètres Principaux</div>
+                        <div class="parameters-list">
+                            <span class="param-tag">Excentricité</span>
+                            <span class="param-tag">Inclinaison</span>
+                            <span class="param-tag">Périhélie</span>
+                            <span class="param-tag">Vitesse infinie</span>
+                            <span class="param-tag">Albédo</span>
+                            <span class="param-tag">Diamètre</span>
+                        </div>
+                    </div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check-circle"></i> Interface simple et intuitive</li>
+                        <li><i class="fas fa-check-circle"></i> ThibScore 0-10.0 (GKSC v5.0)</li>
+                        <li><i class="fas fa-check-circle"></i> Graphiques de base</li>
+                        <li><i class="fas fa-check-circle"></i> Export CSV basique</li>
+                        <li><i class="fas fa-check-circle"></i> Léger et rapide</li>
+                    </ul>
+                    <div class="card-footer">
+                        <a href="calculateur.html" class="btn btn-primary">
+                            <i class="fas fa-play"></i>
+                            Lancer
+                        </a>
+                        <a href="README.md" class="btn">
+                            <i class="fas fa-file-alt"></i>
+                            Doc
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Documentation Interactive -->
+                <div class="calculator-card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-book-open card-icon" style="color: var(--success);"></i>
+                            <h3 class="card-name">Documentation Interactive</h3>
+                        </div>
+                        <span class="card-badge badge-standard">ÉDUCATIF</span>
+                    </div>
+                    <p class="card-description">
+                        Guide complet interactif avec explications détaillées de tous les paramètres, 
+                        formules mathématiques, exemples réels, sources scientifiques.
+                    </p>
+                    <div class="parameters-section">
+                        <div class="parameters-title"><i class="fas fa-graduation-cap"></i> Contenu Pédagogique</div>
+                        <div class="parameters-list">
+                            <span class="param-tag">Formules GKSC</span>
+                            <span class="param-tag">Exemples réels</span>
+                            <span class="param-tag">Sources JPL/MPC</span>
+                            <span class="param-tag">Validation R²</span>
+                        </div>
+                    </div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check-circle"></i> 12 paramètres expliqués en détail</li>
+                        <li><i class="fas fa-check-circle"></i> Exemples : Oumuamua, Borisov, 3I/ATLAS</li>
+                        <li><i class="fas fa-check-circle"></i> Formules mathématiques complètes</li>
+                        <li><i class="fas fa-check-circle"></i> Sources scientifiques citées</li>
+                        <li><i class="fas fa-check-circle"></i> Calculateur intégré</li>
+                    </ul>
+                    <div class="card-footer">
+                        <a href="documentation-interactive.html" class="btn btn-primary">
+                            <i class="fas fa-play"></i>
+                            Lancer
+                        </a>
+                        <a href="📖-PARAMETRES-OBSERVATION-COMPLETS-THIBEQUATION.md" class="btn">
+                            <i class="fas fa-file-alt"></i>
+                            Doc MD
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calculateurs Spécialisés -->
+        <div class="category-section">
+            <div class="category-header">
+                <i class="fas fa-tools category-icon" style="color: var(--purple);"></i>
+                <h2 class="category-title" style="color: var(--purple);">Calculateurs Spécialisés</h2>
+            </div>
+
+            <div class="calculators-grid">
+                <!-- CAPE -->
+                <div class="calculator-card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-balance-scale card-icon" style="color: var(--gold);"></i>
+                            <h3 class="card-name">CAPE</h3>
+                        </div>
+                        <span class="card-badge badge-specialized">SPÉCIALISÉ</span>
+                    </div>
+                    <p class="card-description">
+                        Cadre d'Analyse Parentale par Évaluation. Adaptation du framework GKSC 
+                        pour le droit familial québécois (Article 33 Code civil du Québec).
+                    </p>
+                    <div class="parameters-section">
+                        <div class="parameters-title"><i class="fas fa-gavel"></i> Paramètres Juridiques</div>
+                        <div class="parameters-list">
+                            <span class="param-tag">Stabilité émotionnelle</span>
+                            <span class="param-tag">Capacité parentale</span>
+                            <span class="param-tag">Environnement familial</span>
+                            <span class="param-tag">Contexte juridique</span>
+                        </div>
+                    </div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check-circle"></i> Adaptation GKSC pour évaluation parentale</li>
+                        <li><i class="fas fa-check-circle"></i> Conformité Article 33 CCQ</li>
+                        <li><i class="fas fa-check-circle"></i> Scoring quantitatif objectif</li>
+                        <li><i class="fas fa-check-circle"></i> Rapport détaillé pour tribunaux</li>
+                        <li><i class="fas fa-check-circle"></i> Licence institutionnelle : 25 000 $ CAD</li>
+                    </ul>
+                    <div class="card-footer">
+                        <a href="cape-comparaison.html" class="btn btn-primary">
+                            <i class="fas fa-chart-bar"></i>
+                            Comparaison
+                        </a>
+                        <a href="licences-commerciales.html" class="btn">
+                            <i class="fas fa-dollar-sign"></i>
+                            Licence
+                        </a>
+                    </div>
+                </div>
+
+                <!-- NTVC -->
+                <div class="calculator-card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-shield-halved card-icon" style="color: var(--success);"></i>
+                            <h3 class="card-name">NTVC</h3>
+                        </div>
+                        <span class="card-badge badge-specialized">SPÉCIALISÉ</span>
+                    </div>
+                    <p class="card-description">
+                        Network Threat Vector Coefficient. Framework de détection d'anomalies 
+                        multi-dimensionnelle pour cybersécurité (-73% faux positifs).
+                    </p>
+                    <div class="parameters-section">
+                        <div class="parameters-title"><i class="fas fa-shield-alt"></i> Paramètres Cyber</div>
+                        <div class="parameters-list">
+                            <span class="param-tag">Latence réseau</span>
+                            <span class="param-tag">Volume paquets</span>
+                            <span class="param-tag">Patterns anormaux</span>
+                            <span class="param-tag">Contexte sécurité</span>
+                        </div>
+                    </div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check-circle"></i> Adaptation GKSC pour cybersécurité</li>
+                        <li><i class="fas fa-check-circle"></i> Réduction massive faux positifs (-73%)</li>
+                        <li><i class="fas fa-check-circle"></i> Dashboard temps réel immersif</li>
+                        <li><i class="fas fa-check-circle"></i> Capacité 100k+ événements/seconde</li>
+                        <li><i class="fas fa-check-circle"></i> À partir de 15 000 $ CAD/an</li>
+                    </ul>
+                    <div class="card-footer">
+                        <a href="ntvc-dashboard.html" class="btn btn-primary">
+                            <i class="fas fa-desktop"></i>
+                            Dashboard
+                        </a>
+                        <a href="ntvc-comparaison.html" class="btn">
+                            <i class="fas fa-chart-bar"></i>
+                            Comparaison
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Calculateur GKSC Moderne -->
+                <div class="calculator-card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-atom card-icon" style="color: var(--primary);"></i>
+                            <h3 class="card-name">GKSC Moderne</h3>
+                        </div>
+                        <span class="card-badge badge-standard">MODERNE</span>
+                    </div>
+                    <p class="card-description">
+                        Interface modernisée avec visualisations avancées, thème sombre, 
+                        animations fluides, export avancé.
+                    </p>
+                    <div class="parameters-section">
+                        <div class="parameters-title"><i class="fas fa-layer-group"></i> Paramètres GKSC v5.0</div>
+                        <div class="parameters-list">
+                            <span class="param-tag">12 paramètres</span>
+                            <span class="param-tag">4 composantes</span>
+                            <span class="param-tag">Validation R²=0.88</span>
+                        </div>
+                    </div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check-circle"></i> UI/UX moderne et fluide</li>
+                        <li><i class="fas fa-check-circle"></i> Animations CSS avancées</li>
+                        <li><i class="fas fa-check-circle"></i> Graphiques ECharts</li>
+                        <li><i class="fas fa-check-circle"></i> Export multi-formats</li>
+                        <li><i class="fas fa-check-circle"></i> Mobile-responsive</li>
+                    </ul>
+                    <div class="card-footer">
+                        <a href="calculateur-gksc-moderne.html" class="btn btn-primary">
+                            <i class="fas fa-play"></i>
+                            Lancer
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Visualisation 3D Trajectoires -->
+                <div class="calculator-card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <i class="fas fa-cube card-icon" style="color: var(--warning);"></i>
+                            <h3 class="card-name">Trajectoires 3D</h3>
+                        </div>
+                        <span class="card-badge badge-standard">VISUEL</span>
+                    </div>
+                    <p class="card-description">
+                        Visualisation interactive 3D des trajectoires d'objets interstellaires 
+                        avec système solaire, orbites planétaires, angles de vue multiples.
+                    </p>
+                    <div class="parameters-section">
+                        <div class="parameters-title"><i class="fas fa-rocket"></i> Objets Visualisés</div>
+                        <div class="parameters-list">
+                            <span class="param-tag">1I/'Oumuamua</span>
+                            <span class="param-tag">2I/Borisov</span>
+                            <span class="param-tag">3I/ATLAS</span>
+                            <span class="param-tag">Planètes</span>
+                        </div>
+                    </div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check-circle"></i> Rendu 3D interactif WebGL</li>
+                        <li><i class="fas fa-check-circle"></i> Rotation/zoom/pan temps réel</li>
+                        <li><i class="fas fa-check-circle"></i> Trajectoires hyperboliques</li>
+                        <li><i class="fas fa-check-circle"></i> Système solaire complet</li>
+                        <li><i class="fas fa-check-circle"></i> Annotations scientifiques</li>
+                    </ul>
+                    <div class="card-footer">
+                        <a href="visualisation-3d-trajectoires.html" class="btn btn-primary">
+                            <i class="fas fa-play"></i>
+                            Lancer
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resources -->
+        <div class="info-box">
+            <h3><i class="fas fa-info-circle"></i> Guide d'Utilisation</h3>
+            <p>
+                <strong>1. Choisissez votre calculateur</strong> selon vos besoins :<br>
+                &nbsp;&nbsp;&nbsp;• <strong>Débutant</strong> → Calculateur Standard<br>
+                &nbsp;&nbsp;&nbsp;• <strong>Intermédiaire</strong> → Calculateur Premium<br>
+                &nbsp;&nbsp;&nbsp;• <strong>Avancé (Ufologie+Astrophysique)</strong> → UFO Analytics<br>
+                &nbsp;&nbsp;&nbsp;• <strong>Spécialisé</strong> → CAPE (droit familial) ou NTVC (cybersécurité)<br><br>
+                
+                <strong>2. Comprenez les paramètres</strong> :<br>
+                &nbsp;&nbsp;&nbsp;• <strong>G (Gravitationnel)</strong> : e (excentricité), q (périhélie), v∞ (vitesse)<br>
+                &nbsp;&nbsp;&nbsp;• <strong>K (Keplérien)</strong> : i (inclinaison), vₚ (vitesse périhélique), Ω (longitude nœud)<br>
+                &nbsp;&nbsp;&nbsp;• <strong>S (Structural)</strong> : albédo, diamètre, ratio d'aspect<br>
+                &nbsp;&nbsp;&nbsp;• <strong>C (Contextuel)</strong> : spectroscopie, activité, accélération non-grav<br><br>
+                
+                <strong>3. Consultez la documentation complète</strong> : 
+                <a href="📖-PARAMETRES-OBSERVATION-COMPLETS-THIBEQUATION.md" style="color: var(--primary);">📖 Documentation MD</a> 
+                ou <a href="documentation-interactive.html" style="color: var(--primary);">Doc Interactive</a><br><br>
+                
+                <strong>4. Soumettez vos résultats</strong> aux organismes scientifiques : 
+                <a href="📡-LIENS-ORGANISMES-SCIENTIFIQUES.html" style="color: var(--primary);">📡 Liens Organismes</a><br><br>
+                
+                <strong>5. Citez ThibEquation</strong> : DOI <code style="background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px;">10.5281/zenodo.17717380</code>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

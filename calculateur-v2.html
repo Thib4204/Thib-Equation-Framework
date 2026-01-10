@@ -1,0 +1,1580 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="calc.title">Calculateur ThibScore - ThibEquation Framework V1.0</title>
+    <meta name="description" content="Calculateur interactif GKSC avec visualisation 3D, tutoriel pas-à-pas et glossaire scientifique intégré">
+    <meta name="keywords" content="ThibEquation, GKSC, calculateur, 3D visualization, tutorial, accessibility, UAP analysis">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/logo-thibequation-badge.png">
+    <link rel="apple-touch-icon" href="images/logo-thibequation-badge.png">
+    
+    <!-- Preload critical resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" as="style">
+    
+    <!-- External Dependencies -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Local Frameworks -->
+    <link rel="stylesheet" href="css/java-css-config.css">
+    <link rel="stylesheet" href="css/beta-banner.css">
+    
+    <!-- Trajectory System CSS -->
+    <link rel="stylesheet" href="css/csv-ui.css">
+    <link rel="stylesheet" href="css/trajectory-ui.css">
+    
+    <!-- Accessibility and Reduced Motion Support -->
+    <style>
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            .reduce-motion * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #ffffff;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+        }
+        
+        /* Main Layout */
+        .calculator-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            padding-top: 100px; /* Account for fixed header */
+        }
+        
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 1024px) {
+            .calculator-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #3b82f6, #10b981, #8b5cf6, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* Calculator Panel */
+        .calculator-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .parameter-section {
+            margin-bottom: 2rem;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .section-header:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .section-header.geometric { background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05)); }
+        .section-header.kinematic { background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05)); }
+        .section-header.spectroscopic { background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05)); }
+        .section-header.contextual { background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(139, 92, 246, 0.05)); }
+        
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-size: 1.5rem;
+        }
+        
+        .section-icon.geometric { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+        .section-icon.kinematic { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+        .section-icon.spectroscopic { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+        .section-icon.contextual { background: rgba(139, 92, 246, 0.2); color: #8b5cf6; }
+        
+        .section-info h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .section-weight {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        .parameter-inputs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .input-group {
+            position: relative;
+        }
+        
+        .input-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .input-field:invalid {
+            border-color: #ef4444;
+        }
+        
+        .input-help {
+            font-size: 0.8rem;
+            opacity: 0.6;
+            margin-top: 0.25rem;
+        }
+        
+        /* Visualization Panel */
+        .visualization-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .viz-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .viz-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 0.5rem;
+        }
+        
+        .viz-3d-container {
+            flex: 1;
+            min-height: 400px;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            border: 2px solid rgba(59, 130, 246, 0.2);
+            margin-bottom: 2rem;
+        }
+        
+        .score-display {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 16px;
+            border: 2px solid rgba(59, 130, 246, 0.3);
+        }
+        
+        .score-value {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #3b82f6, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+        
+        .score-interpretation {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.4);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        /* Components Display */
+        .components-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .component-card {
+            text-align: center;
+            padding: 1rem;
+            border-radius: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .component-card.geometric { border-color: rgba(59, 130, 246, 0.3); }
+        .component-card.kinematic { border-color: rgba(16, 185, 129, 0.3); }
+        .component-card.spectroscopic { border-color: rgba(245, 158, 11, 0.3); }
+        .component-card.contextual { border-color: rgba(139, 92, 246, 0.3); }
+        
+        .component-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 0.5rem;
+        }
+        
+        .component-value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        
+        .component-value.geometric { color: #3b82f6; }
+        .component-value.kinematic { color: #10b981; }
+        .component-value.spectroscopic { color: #f59e0b; }
+        .component-value.contextual { color: #8b5cf6; }
+        
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 0;
+        }
+        
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #3b82f6;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #3b82f6;
+        }
+        
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .calculator-container {
+                padding: 1rem;
+                padding-top: 80px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .parameter-inputs {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+        }
+        
+        /* Loading States */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(59, 130, 246, 0.3);
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            transform: translate(-50%, -50%);
+        }
+        
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        /* Error States */
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            margin: 1rem 0;
+            text-align: center;
+        }
+        
+        .success-message {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            margin: 1rem 0;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body data-beta-banner data-beta-banner-theme="cosmic" data-beta-banner-position="top">
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-content">
+            <div class="logo" style="display: flex; align-items: center; gap: 0.75rem;">
+                <div style="position: relative; display: inline-block;">
+                    <!-- Fond circulaire -->
+                    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+                                background: radial-gradient(circle, rgba(10, 10, 15, 0.98), rgba(26, 26, 46, 0.95));
+                                border-radius: 50%;
+                                border: 2px solid rgba(59, 130, 246, 0.3);
+                                box-shadow: 0 3px 10px rgba(59, 130, 246, 0.2);
+                                z-index: 0;"></div>
+                    <img src="images/logo-thibequation-badge.png" alt="ThibEquation" 
+                         style="height: 40px; width: 40px; 
+                                display: block;
+                                position: relative;
+                                z-index: 1;
+                                filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5));">
+                </div>
+                <span>ThibEquation</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link" data-i18n="nav.home">Accueil</a></li>
+                <li><a href="calculateur-v2.html#" class="nav-link active" data-i18n="nav.calculator">Calculateur</a></li>
+                <li><a href="sources.html" class="nav-link">Sources & Méthodes</a></li>
+                <li><a href="thibscore-details.html" class="nav-link">Détails ThibScore</a></li>
+                <li><a href="comparaison-jpl-mpc.html" class="nav-link">Validation JPL/MPC</a></li>
+                <li><a href="variables-gksc-detaillees.html" class="nav-link" data-i18n="nav.variables">Variables GKSC</a></li>
+            </ul>
+            
+            <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); margin-left: auto;">
+                <i class="fas fa-calendar-alt"></i>
+                <span><strong>Mise à jour</strong> : 3 nov. 2025</span>
+            </div>
+            
+            <!-- Language switcher will be inserted here by multilingual-system.js -->
+        </div>
+    </nav>
+    
+    <main id="main-content" class="calculator-container">
+        <!-- Header -->
+        <header class="header">
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+                <div style="position: relative; display: inline-block;">
+                    <!-- Fond circulaire -->
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                                width: 100%; height: 100%;
+                                background: radial-gradient(circle, 
+                                    rgba(10, 10, 15, 0.98) 0%, 
+                                    rgba(26, 26, 46, 0.95) 50%, 
+                                    rgba(10, 10, 15, 0.98) 100%);
+                                border-radius: 50%;
+                                border: 3px solid rgba(59, 130, 246, 0.4);
+                                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4),
+                                           0 0 50px rgba(59, 130, 246, 0.3);
+                                z-index: 0;"></div>
+                    <img src="images/logo-thibequation-badge.png" alt="ThibEquation Logo" 
+                         style="height: 80px; width: 80px; 
+                                display: block;
+                                position: relative;
+                                z-index: 1;
+                                filter: drop-shadow(0 0 15px rgba(59, 130, 246, 0.6));">
+                </div>
+            </div>
+            <h1 data-i18n="calc.title">Calculateur ThibScore</h1>
+            <p data-i18n="calc.subtitle">Saisissez les valeurs GKSC pour obtenir le score quantitatif d'analyse d'objet interstellaire</p>
+        </header>
+        
+        <!-- Calculator Grid -->
+        <div class="calculator-grid">
+            <!-- Calculator Panel -->
+            <div class="calculator-panel">
+                <form id="gksc-calculator-form" novalidate>
+                    <!-- Geometric Parameters -->
+                    <section class="parameter-section" id="geometric-parameters">
+                        <div class="section-header geometric" role="button" tabindex="0" aria-expanded="true" aria-controls="geometric-inputs">
+                            <div class="section-icon geometric">
+                                <i class="fas fa-shapes" aria-hidden="true"></i>
+                            </div>
+                            <div class="section-info">
+                                <h3 data-i18n="gksc.geometric.title">Géométrique (G)</h3>
+                                <span class="section-weight" data-i18n="gksc.geometric.weight">Poids: 30%</span>
+                            </div>
+                        </div>
+                        <div class="parameter-inputs" id="geometric-inputs">
+                            <div class="input-group">
+                                <label for="g1" class="input-label" data-i18n="var.g1.title">G1 - Taille Apparente</label>
+                                <input 
+                                    type="number" 
+                                    id="g1" 
+                                    name="g1" 
+                                    class="input-field" 
+                                    min="0" 
+                                    max="10" 
+                                    step="0.1" 
+                                    required 
+                                    aria-describedby="g1-help"
+                                    data-i18n-placeholder="calc.input.placeholder"
+                                    placeholder="Valeur 0-10">
+                                <div id="g1-help" class="input-help" data-i18n="var.g1.description">Évaluation de la dimension apparente de l'objet</div>
+                            </div>
+                            <div class="input-group">
+                                <label for="g2" class="input-label" data-i18n="var.g2.title">G2 - Forme Géométrique</label>
+                                <input 
+                                    type="number" 
+                                    id="g2" 
+                                    name="g2" 
+                                    class="input-field" 
+                                    min="0" 
+                                    max="10" 
+                                    step="0.1" 
+                                    required 
+                                    aria-describedby="g2-help"
+                                    data-i18n-placeholder="calc.input.placeholder"
+                                    placeholder="Valeur 0-10">
+                                <div id="g2-help" class="input-help" data-i18n="var.g2.description">Analyse de la morphologie et régularité structurelle</div>
+                            </div>
+                            <div class="input-group">
+                                <label for="g3" class="input-label" data-i18n="var.g3.title">G3 - Ratio d'Aspect</label>
+                                <input 
+                                    type="number" 
+                                    id="g3" 
+                                    name="g3" 
+                                    class="input-field" 
+                                    min="0" 
+                                    max="10" 
+                                    step="0.1" 
+                                    required 
+                                    aria-describedby="g3-help"
+                                    data-i18n-placeholder="calc.input.placeholder"
+                                    placeholder="Valeur 0-10">
+                                <div id="g3-help" class="input-help" data-i18n="var.g3.description">Rapport dimensionnel longueur/largeur observé</div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Kinematic Parameters -->
+                    <section class="parameter-section" id="kinematic-parameters">
+                        <div class="section-header kinematic" role="button" tabindex="0" aria-expanded="true" aria-controls="kinematic-inputs">
+                            <div class="section-icon kinematic">
+                                <i class="fas fa-arrows-alt" aria-hidden="true"></i>
+                            </div>
+                            <div class="section-info">
+                                <h3 data-i18n="gksc.kinematic.title">Cinématique (K)</h3>
+                                <span class="section-weight" data-i18n="gksc.kinematic.weight">Poids: 30%</span>
+                            </div>
+                        </div>
+                        <div class="parameter-inputs" id="kinematic-inputs">
+                            <div class="input-group">
+                                <label for="k1" class="input-label" data-i18n="var.k1.title">K1 - Vitesse de Déplacement</label>
+                                <input 
+                                    type="number" 
+                                    id="k1" 
+                                    name="k1" 
+                                    class="input-field" 
+                                    min="0" 
+                                    max="10" 
+                                    step="0.1" 
+                                    required 
+                                    aria-describedby="k1-help"
+                                    data-i18n-placeholder="calc.input.placeholder"
+                                    placeholder="Valeur 0-10">
+                                <div id="k1-help" class="input-help" data-i18n="var.k1.description">Magnitude de la vélocité de translation observée</div>
+                            </div>
+                            <div class="input-group">
+                                <label for="k2" class="input-label" data-i18n="var.k2.title">K2 - Accélération Observée</label>
+                                <input 
+                                    type="number" 
+                                    id="k2" 
+                                    name="k2" 
+                                    class="input-field" 
+                                    min="0" 
+                                    max="10" 
+                                    step="0.1" 
+                                    required 
+                                    aria-describedby="k2-help"
+                                    data-i18n-placeholder="calc.input.placeholder"
+                                    placeholder="Valeur 0-10">
+                                <div id="k2-help" class="input-help" data-i18n="var.k2.description">Changements de vitesse détectés et mesurés</div>
+                            </div>
+                            <div class="input-group">
+                                <label for="k3" class="input-label" data-i18n="var.k3.title">K3 - Changement de Trajectoire</label>
+                                <input 
+                                    type="number" 
+                                    id="k3" 
+                                    name="k3" 
+                                    class="input-field" 
+                                    min="0" 
+                                    max="10" 
+                                    step="0.1" 
+                                    required 
+                                    aria-describedby="k3-help"
+                                    data-i18n-placeholder="calc.input.placeholder"
+                                    placeholder="Valeur 0-10">
+                                <div id="k3-help" class="input-help" data-i18n="var.k3.description">Déviations par rapport à une trajectoire linéaire prédite</div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Spectroscopic Parameters -->
+                    <section class="parameter-section" id="spectroscopic-parameters">
+                        <div class="section-header spectroscopic" role="button" tabindex="0" aria-expanded="true" aria-controls="spectroscopic-inputs">
+                            <div class="section-icon spectroscopic">
+                                <i class="fas fa-wave-square" aria-hidden="true"></i>
+                            </div>
+                            <div class="section-info">
+                                <h3 data-i18n="gksc.spectroscopic.title">Spectroscopique (S)</h3>
+                                <span class="section-weight" data-i18n="gksc.spectroscopic.weight">Poids: 25%</span>
+                            </div>
+                        </div>
+                        <div class="parameter-inputs" id="spectroscopic-inputs">
+                            <div class="input-group">
+                                <label for="s1" class="input-label" data-i18n="var.s1.title">S1 - Signature Spectrale</label>
+                                <input 
+                                    type="number" 
+                                    id="s1" 
+                                    name="s1" 
+                                    class="input-field" 
+                                    min="0" 
+                                    max="10" 
+                                    step="0.1" 
+                                    required 
+                                    aria-describedby="s1-help"
+                                    data-i18n-placeholder="calc.input.placeholder"
+                                    placeholder="Valeur 0-10">
+                                <div id="s1-help" class="input-help" data-i18n="var.s1.description">Caractéristiques du spectre électromagnétique émis/réfléchi</div>
+                            </div>
+                            <div class="input-group">
+                                <label for="s2" class="input-label" data-i18n="var.s2.title">S2 - Réflectance/Albédo</label>
+                                <input 
+                                    type="number" 
+                                    id="s2" 
+                                    name="s2" 
+                                    class="input-field" 
+                                    min="0" 
+                                    max="10" 
+                                    step="0.1" 
+                                    required 
+                                    aria-describedby="s2-help"
+                                    data-i18n-placeholder="calc.input.placeholder"
+                                    placeholder="Valeur 0-10">
+                                <div id="s2-help" class="input-help" data-i18n="var.s2.description">Coefficient de réflexion de la lumière incidente</div>
+                            </div>
+                            <div class="input-group">
+                                <label for="s3" class="input-label" data-i18n="var.s3.title">S3 - Émissions Détectées</label>
+                                <input 
+                                    type="number" 
+                                    id="s3" 
+                                    name="s3" 
+                                    class="input-field" 
+                                    min="0" 
+                                    max="10" 
+                                    step="0.1" 
+                                    required 
+                                    aria-describedby="s3-help"
+                                    data-i18n-placeholder="calc.input.placeholder"
+                                    placeholder="Valeur 0-10">
+                                <div id="s3-help" class="input-help" data-i18n="var.s3.description">Signaux énergétiques propres émis par l'objet</div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Contextual Parameters -->
+                    <section class="parameter-section" id="contextual-parameters">
+                        <div class="section-header contextual" role="button" tabindex="0" aria-expanded="true" aria-controls="contextual-inputs">
+                            <div class="section-icon contextual">
+                                <i class="fas fa-globe" aria-hidden="true"></i>
+                            </div>
+                            <div class="section-info">
+                                <h3 data-i18n="gksc.contextual.title">Contextuel (C)</h3>
+                                <span class="section-weight" data-i18n="gksc.contextual.weight">Poids: 15%</span>
+                            </div>
+                        </div>
+                        <div class="parameter-inputs" id="contextual-inputs">
+                            <div class="input-group">
+                                <label for="c1" class="input-label" data-i18n="var.c1.title">C1 - Localisation Système</label>
+                                <input 
+                                    type="number" 
+                                    id="c1" 
+                                    name="c1" 
+                                    class="input-field" 
+                                    min="0" 
+                                    max="10" 
+                                    step="0.1" 
+                                    required 
+                                    aria-describedby="c1-help"
+                                    data-i18n-placeholder="calc.input.placeholder"
+                                    placeholder="Valeur 0-10">
+                                <div id="c1-help" class="input-help" data-i18n="var.c1.description">Position relative dans le système d'observation</div>
+                            </div>
+                            <div class="input-group">
+                                <label for="c2" class="input-label" data-i18n="var.c2.title">C2 - Interaction Gravitationnelle</label>
+                                <input 
+                                    type="number" 
+                                    id="c2" 
+                                    name="c2" 
+                                    class="input-field" 
+                                    min="0" 
+                                    max="10" 
+                                    step="0.1" 
+                                    required 
+                                    aria-describedby="c2-help"
+                                    data-i18n-placeholder="calc.input.placeholder"
+                                    placeholder="Valeur 0-10">
+                                <div id="c2-help" class="input-help" data-i18n="var.c2.description">Effets gravitationnels mesurables sur l'environnement</div>
+                            </div>
+                            <div class="input-group">
+                                <label for="c3" class="input-label" data-i18n="var.c3.title">C3 - Conditions d'Observation</label>
+                                <input 
+                                    type="number" 
+                                    id="c3" 
+                                    name="c3" 
+                                    class="input-field" 
+                                    min="0" 
+                                    max="10" 
+                                    step="0.1" 
+                                    required 
+                                    aria-describedby="c3-help"
+                                    data-i18n-placeholder="calc.input.placeholder"
+                                    placeholder="Valeur 0-10">
+                                <div id="c3-help" class="input-help" data-i18n="var.c3.description">Qualité et circonstances de l'acquisition des données</div>
+                            </div>
+                        </div>
+                    </section>
+                </form>
+                
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button type="submit" form="gksc-calculator-form" class="btn btn-primary" id="calculate-button">
+                        <i class="fas fa-calculator" aria-hidden="true"></i>
+                        <span data-i18n="calc.button.calculate">Calculer ThibScore</span>
+                    </button>
+                    <button type="reset" form="gksc-calculator-form" class="btn btn-secondary" id="reset-button">
+                        <i class="fas fa-redo" aria-hidden="true"></i>
+                        <span data-i18n="calc.button.reset">Réinitialiser</span>
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="export-button">
+                        <i class="fas fa-download" aria-hidden="true"></i>
+                        <span data-i18n="calc.button.export">Exporter Résultats</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Visualization Panel -->
+            <div class="visualization-panel">
+                <div class="viz-header">
+                    <h2>Visualisation 3D Interactive</h2>
+                    <p>Visualisation temps réel des paramètres GKSC et du ThibScore</p>
+                </div>
+                
+                <!-- 3D Visualization Container -->
+                <div class="viz-3d-container">
+                    <div id="gksc-3d-visualizer" class="w-full h-full" aria-label="Visualisation 3D des paramètres GKSC" aria-describedby="viz-description">
+                        <!-- Three.js visualization will be inserted here -->
+                    </div>
+                    <div id="viz-description" class="sr-only">
+                        Visualisation 3D interactive montrant les paramètres GKSC sous forme d'objets orbitaux et le score total au centre.
+                    </div>
+                </div>
+                
+                <!-- Score Display -->
+                <div class="score-display" id="results-section">
+                    <div class="score-value" id="score-value" aria-live="polite">--</div>
+                    <div class="score-interpretation" id="score-interpretation" data-i18n="result.interpretation">En attente du calcul</div>
+                    
+                    <!-- Component Values -->
+                    <div class="components-display">
+                        <div class="component-card geometric">
+                            <div class="component-label">G</div>
+                            <div class="component-value geometric" id="g-component">--</div>
+                        </div>
+                        <div class="component-card kinematic">
+                            <div class="component-label">K</div>
+                            <div class="component-value kinematic" id="k-component">--</div>
+                        </div>
+                        <div class="component-card spectroscopic">
+                            <div class="component-label">S</div>
+                            <div class="component-value spectroscopic" id="s-component">--</div>
+                        </div>
+                        <div class="component-card contextual">
+                            <div class="component-label">C</div>
+                            <div class="component-value contextual" id="c-component">--</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Status Messages -->
+        <div id="status-messages" aria-live="assertive" class="sr-only"></div>
+        
+        <!-- ============================================ -->
+        <!-- TRAJECTORY SYSTEM SECTION                    -->
+        <!-- ============================================ -->
+        <section id="trajectory-section" class="calculator-container" style="margin-top: 4rem;">
+            <div class="header">
+                <h2 style="font-size: 2.5rem; font-weight: 700; background: linear-gradient(135deg, #667eea, #764ba2, #f093fb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 1rem;">
+                    🛸 Système de Trajectoires 3D
+                </h2>
+                <p style="font-size: 1.1rem; opacity: 0.85; max-width: 900px; margin: 0 auto;">
+                    Importez des trajectoires déterministes (RK4) et probabilistes (Monte-Carlo) pour visualiser les données en 3D. 
+                    Compatible avec les notebooks Python Jupyter pour l'analyse scientifique bidirectionnelle.
+                </p>
+            </div>
+            
+            <!-- Trajectory UI Container (will be populated by TrajectoryUIComponent) -->
+            <div id="trajectory-ui-container"></div>
+            
+            <!-- Trajectory Canvas Container -->
+            <div id="trajectory-canvas-container" style="margin-top: 2rem; position: relative;">
+                <canvas id="trajectory-canvas" style="width: 100%; height: 600px; border-radius: 16px; border: 2px solid rgba(102, 126, 234, 0.3); background: rgba(0, 0, 0, 0.2);"></canvas>
+                <div id="trajectory-canvas-overlay" style="position: absolute; top: 20px; right: 20px; background: rgba(0, 0, 0, 0.7); padding: 1rem; border-radius: 12px; color: white; font-size: 0.9rem; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); max-width: 250px;">
+                    <h4 style="margin-bottom: 0.5rem; font-weight: 600; color: #667eea;">Contrôles 3D</h4>
+                    <ul style="list-style: none; padding: 0; margin: 0; line-height: 1.8;">
+                        <li><strong>Rotation:</strong> Clic gauche + glisser</li>
+                        <li><strong>Zoom:</strong> Molette souris</li>
+                        <li><strong>Déplacement:</strong> Clic droit + glisser</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Scripts -->
+    <script src="js/java-css-integration.js"></script>
+    <script src="js/multilingual-system.js"></script>
+    <script src="js/three-gksc-visualizer.js"></script>
+    <script src="js/interactive-tutorial.js"></script>
+    <script src="js/scientific-glossary.js"></script>
+    <script src="js/accessibility-system.js"></script>
+    
+    <script>
+        // Main Calculator Application
+        class ThibEquationCalculator {
+            constructor() {
+                this.form = document.getElementById('gksc-calculator-form');
+                this.visualizer = null;
+                this.currentValues = {};
+                this.currentScore = null;
+                
+                this.init();
+            }
+            
+            init() {
+                this.setupEventListeners();
+                this.initializeVisualization();
+                this.setupFormValidation();
+                
+                console.log('✅ ThibEquation Calculator initialized');
+            }
+            
+            setupEventListeners() {
+                // Form submission
+                this.form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.calculateScore();
+                });
+                
+                // Reset form
+                document.getElementById('reset-button').addEventListener('click', () => {
+                    this.resetCalculator();
+                });
+                
+                // Export results
+                document.getElementById('export-button').addEventListener('click', () => {
+                    this.exportResults();
+                });
+                
+                // Real-time input updates
+                const inputs = this.form.querySelectorAll('input[type="number"]');
+                inputs.forEach(input => {
+                    input.addEventListener('input', () => {
+                        this.updateVisualization();
+                        this.validateInput(input);
+                    });
+                });
+                
+                // Section collapse/expand
+                const sectionHeaders = document.querySelectorAll('.section-header');
+                sectionHeaders.forEach(header => {
+                    header.addEventListener('click', () => {
+                        this.toggleSection(header);
+                    });
+                    
+                    header.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            this.toggleSection(header);
+                        }
+                    });
+                });
+            }
+            
+            initializeVisualization() {
+                try {
+                    this.visualizer = new GKSCVisualizer3D('gksc-3d-visualizer');
+                    console.log('✅ 3D Visualization initialized');
+                } catch (error) {
+                    console.warn('⚠️ 3D Visualization failed to initialize:', error);
+                    this.showFallbackVisualization();
+                }
+            }
+            
+            showFallbackVisualization() {
+                const container = document.getElementById('gksc-3d-visualizer');
+                container.innerHTML = `
+                    <div style="display: flex; align-items: center; justify-content: center; height: 100%; background: rgba(59, 130, 246, 0.1); border-radius: 12px;">
+                        <div style="text-align: center; color: rgba(255, 255, 255, 0.7);">
+                            <i class="fas fa-cube" style="font-size: 4rem; margin-bottom: 1rem; color: #3b82f6;"></i>
+                            <p>Visualisation 3D non disponible</p>
+                            <p style="font-size: 0.9rem; opacity: 0.6;">Les résultats seront affichés ci-dessous</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            setupFormValidation() {
+                const inputs = this.form.querySelectorAll('input[type="number"]');
+                
+                inputs.forEach(input => {
+                    input.addEventListener('invalid', (e) => {
+                        e.preventDefault();
+                        this.showValidationError(input);
+                    });
+                    
+                    input.addEventListener('blur', () => {
+                        this.validateInput(input);
+                    });
+                });
+            }
+            
+            validateInput(input) {
+                const value = parseFloat(input.value);
+                const isValid = !isNaN(value) && value >= 0 && value <= 10;
+                
+                input.classList.toggle('invalid', !isValid);
+                
+                if (!isValid && input.value !== '') {
+                    this.showValidationError(input);
+                } else {
+                    this.clearValidationError(input);
+                }
+                
+                return isValid;
+            }
+            
+            showValidationError(input) {
+                let errorElement = input.parentElement.querySelector('.error-message');
+                if (!errorElement) {
+                    errorElement = document.createElement('div');
+                    errorElement.className = 'error-message';
+                    errorElement.style.cssText = `
+                        color: #ef4444;
+                        font-size: 0.8rem;
+                        margin-top: 0.25rem;
+                    `;
+                    input.parentElement.appendChild(errorElement);
+                }
+                
+                errorElement.textContent = window.i18n ? 
+                    window.i18n.t('status.error.invalid.input') :
+                    'Erreur: La valeur doit être entre 0 et 10';
+                
+                // Announce error to screen readers
+                if (window.accessibilitySystem) {
+                    window.accessibilitySystem.announce(errorElement.textContent, 'assertive');
+                }
+            }
+            
+            clearValidationError(input) {
+                const errorElement = input.parentElement.querySelector('.error-message');
+                if (errorElement) {
+                    errorElement.remove();
+                }
+            }
+            
+            calculateScore() {
+                // Collect all input values
+                const values = {};
+                const inputs = this.form.querySelectorAll('input[type="number"]');
+                let allValid = true;
+                
+                inputs.forEach(input => {
+                    const value = parseFloat(input.value);
+                    if (isNaN(value) || value < 0 || value > 10) {
+                        allValid = false;
+                        this.validateInput(input);
+                    } else {
+                        values[input.name] = value;
+                    }
+                });
+                
+                if (!allValid) {
+                    this.showStatusMessage('status.error.invalid.input', 'error');
+                    return;
+                }
+                
+                // Check if all fields are filled
+                if (Object.keys(values).length < 12) {
+                    this.showStatusMessage('Veuillez remplir tous les champs', 'error');
+                    return;
+                }
+                
+                // Show loading state
+                this.setLoadingState(true);
+                
+                // Simulate calculation delay for better UX
+                setTimeout(() => {
+                    this.performCalculation(values);
+                    this.setLoadingState(false);
+                }, 500);
+            }
+            
+            performCalculation(values) {
+                try {
+                    // Calculate component averages
+                    const G = (values.g1 + values.g2 + values.g3) / 3;
+                    const K = (values.k1 + values.k2 + values.k3) / 3;
+                    const S = (values.s1 + values.s2 + values.s3) / 3;
+                    const C = (values.c1 + values.c2 + values.c3) / 3;
+                    
+                    // Apply GKSC V1.0 formula
+                    const thibScore = 0.30 * G + 0.30 * K + 0.25 * S + 0.15 * C;
+                    
+                    // Store results
+                    this.currentScore = thibScore;
+                    this.currentValues = { G, K, S, C, thibScore, ...values };
+                    
+                    // Update displays
+                    this.updateScoreDisplay(thibScore, G, K, S, C);
+                    this.updateVisualization();
+                    
+                    // Announce success
+                    this.showStatusMessage('status.success.calculated', 'success');
+                    
+                    console.log('✅ ThibScore calculated:', thibScore.toFixed(2));
+                    
+                } catch (error) {
+                    console.error('❌ Calculation error:', error);
+                    this.showStatusMessage('Erreur lors du calcul', 'error');
+                }
+            }
+            
+            updateScoreDisplay(score, G, K, S, C) {
+                // Update main score
+                document.getElementById('score-value').textContent = score.toFixed(2);
+                
+                // Update interpretation
+                const interpretation = this.getScoreInterpretation(score);
+                document.getElementById('score-interpretation').textContent = interpretation;
+                
+                // Update component displays
+                document.getElementById('g-component').textContent = G.toFixed(1);
+                document.getElementById('k-component').textContent = K.toFixed(1);
+                document.getElementById('s-component').textContent = S.toFixed(1);
+                document.getElementById('c-component').textContent = C.toFixed(1);
+                
+                // Scroll to results
+                document.getElementById('results-section').scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'nearest' 
+                });
+            }
+            
+            getScoreInterpretation(score) {
+                if (score < 3) {
+                    return window.i18n ? window.i18n.t('result.priority.low') : 'Objet standard - Priorité d\'investigation faible';
+                } else if (score < 6) {
+                    return window.i18n ? window.i18n.t('result.priority.medium') : 'Caractéristiques intéressantes - Suivi recommandé';
+                } else if (score < 8) {
+                    return window.i18n ? window.i18n.t('result.priority.high') : 'Objet remarquable - Investigation prioritaire';
+                } else {
+                    return window.i18n ? window.i18n.t('result.priority.critical') : 'Anomalie majeure - Investigation urgente requise';
+                }
+            }
+            
+            updateVisualization() {
+                if (!this.visualizer) return;
+                
+                const values = this.getInputValues();
+                if (Object.keys(values).length >= 4) {
+                    const G = values.g1 && values.g2 && values.g3 ? (values.g1 + values.g2 + values.g3) / 3 : 0;
+                    const K = values.k1 && values.k2 && values.k3 ? (values.k1 + values.k2 + values.k3) / 3 : 0;
+                    const S = values.s1 && values.s2 && values.s3 ? (values.s1 + values.s2 + values.s3) / 3 : 0;
+                    const C = values.c1 && values.c2 && values.c3 ? (values.c1 + values.c2 + values.c3) / 3 : 0;
+                    
+                    this.visualizer.updateGKSCValues({ G, K, S, C });
+                    
+                    if (G && K && S && C) {
+                        const score = 0.30 * G + 0.30 * K + 0.25 * S + 0.15 * C;
+                        this.visualizer.createScoreVisualization(score);
+                    }
+                }
+            }
+            
+            getInputValues() {
+                const values = {};
+                const inputs = this.form.querySelectorAll('input[type="number"]');
+                
+                inputs.forEach(input => {
+                    const value = parseFloat(input.value);
+                    if (!isNaN(value)) {
+                        values[input.name] = value;
+                    }
+                });
+                
+                return values;
+            }
+            
+            resetCalculator() {
+                // Reset form
+                this.form.reset();
+                
+                // Reset displays
+                document.getElementById('score-value').textContent = '--';
+                document.getElementById('score-interpretation').textContent = 'En attente du calcul';
+                document.getElementById('g-component').textContent = '--';
+                document.getElementById('k-component').textContent = '--';
+                document.getElementById('s-component').textContent = '--';
+                document.getElementById('c-component').textContent = '--';
+                
+                // Clear validation errors
+                const errorMessages = document.querySelectorAll('.error-message');
+                errorMessages.forEach(error => error.remove());
+                
+                // Reset visualization
+                if (this.visualizer) {
+                    this.visualizer.updateGKSCValues({ G: 0, K: 0, S: 0, C: 0 });
+                }
+                
+                // Clear stored values
+                this.currentValues = {};
+                this.currentScore = null;
+                
+                this.showStatusMessage('Calculateur réinitialisé', 'success');
+            }
+            
+            exportResults() {
+                if (!this.currentScore) {
+                    this.showStatusMessage('Aucun résultat à exporter', 'error');
+                    return;
+                }
+                
+                const results = {
+                    timestamp: new Date().toISOString(),
+                    framework: 'ThibEquation Framework V1.0',
+                    methodology: 'GKSC',
+                    formula: 'ThibScore = 0.30×G + 0.30×K + 0.25×S + 0.15×C',
+                    values: this.currentValues,
+                    score: this.currentScore,
+                    interpretation: this.getScoreInterpretation(this.currentScore)
+                };
+                
+                const blob = new Blob([JSON.stringify(results, null, 2)], { 
+                    type: 'application/json' 
+                });
+                
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `thibscore-results-${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                this.showStatusMessage('status.export.success', 'success');
+            }
+            
+            toggleSection(header) {
+                const expanded = header.getAttribute('aria-expanded') === 'true';
+                const controlsId = header.getAttribute('aria-controls');
+                const inputs = document.getElementById(controlsId);
+                
+                header.setAttribute('aria-expanded', !expanded);
+                inputs.style.display = expanded ? 'none' : 'grid';
+                
+                // Add animation class if not reduced motion
+                if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    inputs.style.transition = 'all 0.3s ease';
+                }
+            }
+            
+            setLoadingState(loading) {
+                const calculateButton = document.getElementById('calculate-button');
+                const form = this.form;
+                
+                if (loading) {
+                    calculateButton.disabled = true;
+                    calculateButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Calcul en cours...</span>';
+                    form.classList.add('loading');
+                } else {
+                    calculateButton.disabled = false;
+                    calculateButton.innerHTML = '<i class="fas fa-calculator"></i> <span data-i18n="calc.button.calculate">Calculer ThibScore</span>';
+                    form.classList.remove('loading');
+                }
+            }
+            
+            showStatusMessage(messageKey, type = 'info') {
+                const message = window.i18n ? window.i18n.t(messageKey) || messageKey : messageKey;
+                
+                // Create status message element
+                const statusElement = document.createElement('div');
+                statusElement.className = `${type}-message`;
+                statusElement.textContent = message;
+                statusElement.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    padding: 1rem 2rem;
+                    border-radius: 8px;
+                    z-index: 10000;
+                    font-weight: 500;
+                    animation: slideIn 0.3s ease;
+                `;
+                
+                // Style based on type
+                switch(type) {
+                    case 'error':
+                        statusElement.style.background = 'rgba(239, 68, 68, 0.9)';
+                        statusElement.style.color = 'white';
+                        break;
+                    case 'success':
+                        statusElement.style.background = 'rgba(16, 185, 129, 0.9)';
+                        statusElement.style.color = 'white';
+                        break;
+                    default:
+                        statusElement.style.background = 'rgba(59, 130, 246, 0.9)';
+                        statusElement.style.color = 'white';
+                }
+                
+                document.body.appendChild(statusElement);
+                
+                // Auto remove after 4 seconds
+                setTimeout(() => {
+                    statusElement.style.opacity = '0';
+                    setTimeout(() => statusElement.remove(), 300);
+                }, 4000);
+                
+                // Announce to screen readers
+                if (window.accessibilitySystem) {
+                    window.accessibilitySystem.announce(message, type === 'error' ? 'assertive' : 'polite');
+                }
+            }
+        }
+        
+        // Initialize application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            window.thibCalculator = new ThibEquationCalculator();
+            
+            // Initialize all systems
+            const javaController = new JavaCSSController();
+            javaController.init();
+            
+            console.log('🚀 ThibEquation Calculator V2.0 Ready!');
+        });
+        
+        // Add slide-in animation CSS
+        const animationStyles = document.createElement('style');
+        animationStyles.textContent = `
+            @keyframes slideIn {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+        `;
+        document.head.appendChild(animationStyles);
+    </script>
+    
+    <!-- ============================================ -->
+    <!-- TRAJECTORY SYSTEM SCRIPTS                    -->
+    <!-- ============================================ -->
+    <script src="js/trajectory-adapter.js"></script>
+    <script src="js/trajectory-visualizer-3d.js"></script>
+    <script src="js/trajectory-ui-component.js"></script>
+    <script src="js/session-manager.js"></script>
+    <script src="js/session-ui.js"></script>
+    
+    <script>
+        // ============================================
+        // TRAJECTORY & SESSION SYSTEM INITIALIZATION
+        // ============================================
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🌌 Initializing Trajectory & Session Systems...');
+            
+            // Check dependencies
+            if (typeof TrajectoryAdapter === 'undefined') {
+                console.error('❌ TrajectoryAdapter not loaded');
+                return;
+            }
+            if (typeof TrajectoryVisualizer3D === 'undefined') {
+                console.error('❌ TrajectoryVisualizer3D not loaded');
+                return;
+            }
+            if (typeof TrajectoryUIComponent === 'undefined') {
+                console.error('❌ TrajectoryUIComponent not loaded');
+                return;
+            }
+            if (typeof SessionManager === 'undefined') {
+                console.error('❌ SessionManager not loaded');
+                return;
+            }
+            if (typeof SessionUI === 'undefined') {
+                console.error('❌ SessionUI not loaded');
+                return;
+            }
+            
+            // Initialize Trajectory System
+            try {
+                const trajectoryAdapter = new TrajectoryAdapter({
+                    validatePhysics: true,
+                    autoNormalize: true,
+                    maxPoints: 10000
+                });
+                
+                const canvas = document.getElementById('trajectory-canvas');
+                const container = document.getElementById('trajectory-canvas-container');
+                
+                if (!canvas || !container) {
+                    console.error('❌ Trajectory canvas or container not found');
+                    return;
+                }
+                
+                const visualizer3D = new TrajectoryVisualizer3D({
+                    canvasId: 'trajectory-canvas',
+                    enableAnimation: true,
+                    enableControls: true,
+                    colorScheme: 'velocity-gradient',
+                    backgroundColor: 0x0a0a0a,
+                    ambientLightIntensity: 0.5,
+                    directionalLightIntensity: 0.8
+                });
+                
+                const trajectoryUI = new TrajectoryUIComponent(trajectoryAdapter, visualizer3D, {
+                    containerId: 'trajectory-ui-container',
+                    theme: 'cosmic',
+                    showPreview: true,
+                    showControls: true,
+                    showSettings: true,
+                    enableDragDrop: true
+                });
+                
+                console.log('✅ Trajectory System initialized successfully');
+                
+                // Expose to global scope for debugging
+                window.trajectorySystem = {
+                    adapter: trajectoryAdapter,
+                    visualizer: visualizer3D,
+                    ui: trajectoryUI
+                };
+            } catch (error) {
+                console.error('❌ Failed to initialize Trajectory System:', error);
+            }
+            
+            // Initialize Session System
+            try {
+                const sessionManager = new SessionManager({
+                    storageKey: 'thibequation_session',
+                    autoSave: true,
+                    autoSaveDelay: 1000, // 1 second debounce
+                    maxSessions: 10,
+                    compressionEnabled: true
+                });
+                
+                const sessionUI = new SessionUI(sessionManager, {
+                    containerId: 'session-ui-container',
+                    position: 'bottom-right',
+                    theme: 'cosmic',
+                    showStatistics: true,
+                    enableNotifications: true
+                });
+                
+                console.log('✅ Session System initialized successfully');
+                
+                // Expose to global scope for debugging
+                window.sessionSystem = {
+                    manager: sessionManager,
+                    ui: sessionUI
+                };
+                
+                // ============================================
+                // AUTO-SAVE INTEGRATION WITH GKSC FORM
+                // ============================================
+                const gkscInputs = document.querySelectorAll(
+                    'input[id^="g"], input[id^="k"], input[id^="s"], input[id^="c"]'
+                );
+                
+                if (gkscInputs.length > 0) {
+                    gkscInputs.forEach(input => {
+                        input.addEventListener('input', () => {
+                            const gkscData = collectGKSCData();
+                            sessionManager.autoSaveGKSCSession(gkscData);
+                        });
+                    });
+                    
+                    console.log('✅ Auto-save connected to GKSC form inputs');
+                }
+                
+                // ============================================
+                // AUTO-LOAD LAST SESSION ON STARTUP
+                // ============================================
+                const sessions = sessionManager.listSessions();
+                if (sessions.length > 0) {
+                    const lastSession = sessions.sort((a, b) => b.timestamp - a.timestamp)[0];
+                    const sessionData = sessionManager.loadSession(lastSession.id);
+                    
+                    if (sessionData && sessionData.type === 'gksc') {
+                        console.log('📂 Auto-loading last session:', lastSession.id);
+                        restoreGKSCData(sessionData.data);
+                        
+                        // Show notification
+                        if (typeof sessionUI !== 'undefined') {
+                            sessionUI.showNotification(
+                                'Session restaurée automatiquement',
+                                'success'
+                            );
+                        }
+                    }
+                }
+                
+            } catch (error) {
+                console.error('❌ Failed to initialize Session System:', error);
+            }
+            
+            // ============================================
+            // HELPER FUNCTIONS FOR GKSC DATA
+            // ============================================
+            function collectGKSCData() {
+                const data = {
+                    G: {},
+                    K: {},
+                    S: {},
+                    C: {}
+                };
+                
+                // Collect all G inputs
+                document.querySelectorAll('input[id^="g"]').forEach(input => {
+                    const key = input.id.replace('g-', '');
+                    data.G[key] = parseFloat(input.value) || 0;
+                });
+                
+                // Collect all K inputs
+                document.querySelectorAll('input[id^="k"]').forEach(input => {
+                    const key = input.id.replace('k-', '');
+                    data.K[key] = parseFloat(input.value) || 0;
+                });
+                
+                // Collect all S inputs
+                document.querySelectorAll('input[id^="s"]').forEach(input => {
+                    const key = input.id.replace('s-', '');
+                    data.S[key] = parseFloat(input.value) || 0;
+                });
+                
+                // Collect all C inputs
+                document.querySelectorAll('input[id^="c"]').forEach(input => {
+                    const key = input.id.replace('c-', '');
+                    data.C[key] = parseFloat(input.value) || 0;
+                });
+                
+                return data;
+            }
+            
+            function restoreGKSCData(data) {
+                // Restore G inputs
+                Object.entries(data.G || {}).forEach(([key, value]) => {
+                    const input = document.getElementById(`g-${key}`);
+                    if (input) input.value = value;
+                });
+                
+                // Restore K inputs
+                Object.entries(data.K || {}).forEach(([key, value]) => {
+                    const input = document.getElementById(`k-${key}`);
+                    if (input) input.value = value;
+                });
+                
+                // Restore S inputs
+                Object.entries(data.S || {}).forEach(([key, value]) => {
+                    const input = document.getElementById(`s-${key}`);
+                    if (input) input.value = value;
+                });
+                
+                // Restore C inputs
+                Object.entries(data.C || {}).forEach(([key, value]) => {
+                    const input = document.getElementById(`c-${key}`);
+                    if (input) input.value = value;
+                });
+                
+                // Trigger recalculation if calculator exists
+                if (window.thibEquationCalculator) {
+                    window.thibEquationCalculator.calculateScore();
+                }
+            }
+            
+            console.log('🚀 All systems initialized and ready!');
+        });
+    </script>
+    
+    <!-- Beta Banner System -->
+    <script src="js/beta-banner-system.js"></script>
+</body>
+</html>

@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collaborez avec Nous ⚜️ - ThibEquation Framework V2.0</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/logo-thibequation-official.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --cosmic-dark: #0a0a0f;
+            --space-blue: #1a1a2e;
+            --cyan-accent: #00d9ff;
+            --purple-accent: #8b5cf6;
+            --text-primary: #e5e7eb;
+            --text-secondary: #9ca3af;
+            --border-color: rgba(139, 92, 246, 0.2);
+            --success-green: #10b981;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--cosmic-dark) 0%, var(--space-blue) 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--border-color);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo-header {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 2px solid var(--cyan-accent);
+            box-shadow: 0 0 15px rgba(0, 217, 255, 0.3);
+        }
+        
+        .header-title h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--cyan-accent), var(--purple-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 2rem 2rem 2rem;
+        }
+        
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.1), rgba(139, 92, 246, 0.1));
+            border-radius: 20px;
+            border: 2px solid var(--border-color);
+            margin-bottom: 3rem;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--cyan-accent), var(--purple-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* Ways to Collaborate */
+        .ways-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+        
+        .way-card {
+            background: rgba(26, 26, 46, 0.6);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .way-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--cyan-accent);
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.2);
+        }
+        
+        .way-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .way-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--cyan-accent);
+            margin-bottom: 1rem;
+        }
+        
+        .way-desc {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        /* Form Section */
+        .form-section {
+            background: rgba(26, 26, 46, 0.6);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .form-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--cyan-accent);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        
+        .form-label .required {
+            color: #ef4444;
+        }
+        
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(10, 10, 15, 0.8);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--cyan-accent);
+            box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.1);
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .form-help {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+        
+        /* File Upload */
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .file-upload-input {
+            display: none;
+        }
+        
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 1.5rem;
+            background: rgba(10, 10, 15, 0.8);
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .file-upload-label:hover {
+            border-color: var(--cyan-accent);
+            color: var(--cyan-accent);
+        }
+        
+        .file-upload-label i {
+            font-size: 2rem;
+        }
+        
+        .file-name {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--success-green);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        /* Submit Button */
+        .btn-submit {
+            width: 100%;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--cyan-accent), var(--purple-accent));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.4);
+        }
+        
+        .btn-submit:active {
+            transform: translateY(-1px);
+        }
+        
+        /* Success Message */
+        .success-message {
+            display: none;
+            padding: 1.5rem;
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid var(--success-green);
+            border-radius: 8px;
+            color: var(--success-green);
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+        
+        .success-message.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Info Box */
+        .info-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #3b82f6;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+        
+        .info-box-title {
+            font-weight: 600;
+            color: #3b82f6;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* Footer */
+        footer {
+            background: rgba(10, 10, 15, 0.95);
+            border-top: 2px solid var(--border-color);
+            padding: 2rem;
+            margin-top: 4rem;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--cyan-accent);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .ways-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Bannière Prototype de Validation Publique -->
+    <div style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%); 
+                color: white; 
+                text-align: center; 
+                padding: 0.75rem 1rem; 
+                font-weight: 600;
+                font-size: 0.95rem;
+                box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);">
+        <i class="fas fa-flask" style="margin-right: 0.5rem;"></i>
+        <strong>PROTOTYPE DE VALIDATION PUBLIQUE</strong> 
+        <span style="opacity: 0.9; font-weight: 400; margin-left: 0.5rem;">⚜️ V2.0-BETA</span>
+    </div>
+    
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="header-left">
+                <img src="images/logo-thibequation-official.png" alt="ThibEquation Official Logo" class="logo-header">
+                <div class="header-title">
+                    <h1>Collaborez avec Nous ⚜️</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Container -->
+    <div class="container">
+        <!-- Hero -->
+        <div class="hero">
+            <h1>🤝 Rejoignez la Communauté ThibEquation</h1>
+            <p>
+                Scientifiques, chercheurs, étudiants, amateurs passionnés : votre contribution peut faire avancer la science ouverte. 
+                Partagez vos données, proposez des améliorations ou collaborez sur des cas d'étude.
+            </p>
+        </div>
+
+        <!-- Ways to Collaborate -->
+        <div class="ways-grid">
+            <div class="way-card">
+                <div class="way-icon" style="color: var(--cyan-accent);">📊</div>
+                <h3 class="way-title">Partagez vos Données</h3>
+                <p class="way-desc">
+                    Vous avez des observations, des CSVs d'éphémérides, des données télémétriques ? 
+                    Partagez-les pour enrichir notre base de validation.
+                </p>
+            </div>
+            
+            <div class="way-card">
+                <div class="way-icon" style="color: var(--purple-accent);">🔬</div>
+                <h3 class="way-title">Proposez des Améliorations</h3>
+                <p class="way-desc">
+                    Suggestions méthodologiques, corrections formules, nouvelles sous-variables : 
+                    toutes les contributions académiques sont bienvenues.
+                </p>
+            </div>
+            
+            <div class="way-card">
+                <div class="way-icon" style="color: var(--success-green);">💻</div>
+                <h3 class="way-title">Contribuez au Code</h3>
+                <p class="way-desc">
+                    Développeurs : améliorez le calculateur, optimisez les performances, 
+                    ajoutez de nouvelles visualisations. GitHub ouvert aux pull requests.
+                </p>
+            </div>
+            
+            <div class="way-card">
+                <div class="way-icon" style="color: #f59e0b;">📝</div>
+                <h3 class="way-title">Rédigez des Études de Cas</h3>
+                <p class="way-desc">
+                    Analysez un cas historique avec ThibScore, documentez votre méthodologie, 
+                    publiez vos résultats. Nous pouvons les héberger.
+                </p>
+            </div>
+        </div>
+
+        <!-- Info Box -->
+        <div class="info-box">
+            <div class="info-box-title">
+                <i class="fas fa-info-circle"></i>
+                Politique de Confidentialité
+            </div>
+            <p>
+                Les données partagées via ce formulaire seront traitées avec respect et confidentialité. 
+                Aucune information personnelle ne sera publiée sans votre consentement explicite. 
+                Les données scientifiques anonymisées peuvent être utilisées pour validation.
+            </p>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="form-section">
+            <h2 class="form-title">
+                <i class="fas fa-envelope"></i>
+                Formulaire de Contact
+            </h2>
+            
+            <form id="collaborationForm">
+                <!-- Name -->
+                <div class="form-group">
+                    <label for="name" class="form-label">
+                        Nom / Pseudo <span class="required">*</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        id="name" 
+                        name="name" 
+                        class="form-input" 
+                        required 
+                        placeholder="Ex: Dr. Jane Smith ou AstroEnthusiast42">
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email" class="form-label">
+                        Email <span class="required">*</span>
+                    </label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="form-input" 
+                        required 
+                        placeholder="votre.email@exemple.com">
+                    <p class="form-help">Votre email restera confidentiel et ne sera utilisé que pour vous répondre.</p>
+                </div>
+
+                <!-- Affiliation -->
+                <div class="form-group">
+                    <label for="affiliation" class="form-label">
+                        Affiliation / Institution (optionnel)
+                    </label>
+                    <input 
+                        type="text" 
+                        id="affiliation" 
+                        name="affiliation" 
+                        class="form-input" 
+                        placeholder="Ex: Université McGill, NASA, Amateur indépendant">
+                </div>
+
+                <!-- Collaboration Type -->
+                <div class="form-group">
+                    <label for="type" class="form-label">
+                        Type de Collaboration <span class="required">*</span>
+                    </label>
+                    <select id="type" name="type" class="form-select" required>
+                        <option value="">-- Sélectionnez --</option>
+                        <option value="data">Partage de données (CSV, observations)</option>
+                        <option value="methodology">Amélioration méthodologique</option>
+                        <option value="code">Contribution code/développement</option>
+                        <option value="case-study">Étude de cas collaborative</option>
+                        <option value="peer-review">Peer-review académique</option>
+                        <option value="other">Autre</option>
+                    </select>
+                </div>
+
+                <!-- Message -->
+                <div class="form-group">
+                    <label for="message" class="form-label">
+                        Message <span class="required">*</span>
+                    </label>
+                    <textarea 
+                        id="message" 
+                        name="message" 
+                        class="form-textarea" 
+                        required 
+                        placeholder="Décrivez votre proposition de collaboration, les données que vous souhaitez partager, ou vos suggestions..."></textarea>
+                </div>
+
+                <!-- File Upload -->
+                <div class="form-group">
+                    <label for="file" class="form-label">
+                        Fichiers (CSV, PDF, images) - Optionnel
+                    </label>
+                    <div class="file-upload">
+                        <input 
+                            type="file" 
+                            id="file" 
+                            name="file" 
+                            class="file-upload-input" 
+                            accept=".csv,.pdf,.png,.jpg,.jpeg,.txt"
+                            multiple>
+                        <label for="file" class="file-upload-label">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <div>
+                                <div>Cliquez pour sélectionner des fichiers</div>
+                                <div style="font-size: 0.85rem; margin-top: 0.25rem;">CSV, PDF, Images (max 10 MB par fichier)</div>
+                            </div>
+                        </label>
+                        <div id="fileName" class="file-name"></div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-paper-plane"></i>
+                    Envoyer la Demande
+                </button>
+
+                <!-- Success Message -->
+                <div id="successMessage" class="success-message">
+                    <i class="fas fa-check-circle" style="font-size: 2rem; margin-bottom: 0.5rem;"></i>
+                    <p style="font-size: 1.1rem; font-weight: 600;">Message envoyé avec succès !</p>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem;">Nous vous répondrons dans les 48-72 heures.</p>
+                </div>
+            </form>
+        </div>
+
+        <!-- Alternative Contact -->
+        <div class="info-box">
+            <div class="info-box-title">
+                <i class="fas fa-comments"></i>
+                Autres Moyens de Contact
+            </div>
+            <p>
+                <strong>GitHub</strong> : <a href="https://github.com/Thib4204" style="color: var(--cyan-accent);">Thib4204</a> (Issues et Pull Requests bienvenues)<br>
+                <strong>Email direct</strong> : thibequation[at]proton.me<br>
+                <strong>Discussion publique</strong> : Section Discussions GitHub (bientôt disponible)
+            </p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 ThibEquation Framework V2.0-BETA | Développé par <strong>Pascal Thibodeau (Thib)</strong></p>
+        <div class="footer-links">
+            <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
+            <a href="calculateur-v3-simplifie.html"><i class="fas fa-calculator"></i> Calculateur</a>
+            <a href="sources.html"><i class="fas fa-book"></i> Sources</a>
+            <a href="a-propos.html"><i class="fas fa-info-circle"></i> À Propos</a>
+            <a href="collaborez.html" style="color: var(--cyan-accent);"><i class="fas fa-handshake"></i> Collaborer</a>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // File Upload Display
+        const fileInput = document.getElementById('file');
+        const fileName = document.getElementById('fileName');
+        
+        fileInput.addEventListener('change', (e) => {
+            const files = e.target.files;
+            if (files.length > 0) {
+                const names = Array.from(files).map(f => f.name).join(', ');
+                fileName.textContent = `✓ Fichiers sélectionnés : ${names}`;
+            } else {
+                fileName.textContent = '';
+            }
+        });
+
+        // Form Submission (Client-side only - would need backend integration)
+        const form = document.getElementById('collaborationForm');
+        const successMessage = document.getElementById('successMessage');
+        
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // In production, send data to backend API here
+            // For now, just show success message
+            
+            const formData = new FormData(form);
+            console.log('Form data:', Object.fromEntries(formData.entries()));
+            
+            // Show success message
+            successMessage.classList.add('show');
+            
+            // Reset form
+            form.reset();
+            fileName.textContent = '';
+            
+            // Hide success message after 5 seconds
+            setTimeout(() => {
+                successMessage.classList.remove('show');
+            }, 5000);
+            
+            // Scroll to success message
+            successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>À Propos ⚜️ - Mission Citoyenne - ThibEquation Framework V2.0</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/logo-thibequation-official.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --cosmic-dark: #0a0a0f;
+            --space-blue: #1a1a2e;
+            --cyan-accent: #00d9ff;
+            --purple-accent: #8b5cf6;
+            --text-primary: #e5e7eb;
+            --text-secondary: #9ca3af;
+            --border-color: rgba(139, 92, 246, 0.2);
+            --success-green: #10b981;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--cosmic-dark) 0%, var(--space-blue) 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--border-color);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo-header {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 2px solid var(--cyan-accent);
+            box-shadow: 0 0 15px rgba(0, 217, 255, 0.3);
+        }
+        
+        .header-title h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--cyan-accent), var(--purple-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header-title p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        /* Container */
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 2rem 2rem 2rem;
+        }
+        
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.1), rgba(139, 92, 246, 0.1));
+            border-radius: 20px;
+            border: 2px solid var(--border-color);
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 217, 255, 0.1) 0%, transparent 70%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(180deg); }
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--cyan-accent), var(--purple-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero-tagline {
+            font-size: 1.5rem;
+            color: var(--cyan-accent);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+        
+        /* Section */
+        .section {
+            background: rgba(26, 26, 46, 0.6);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .section:hover {
+            border-color: var(--cyan-accent);
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.2);
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--cyan-accent);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .section-title i {
+            font-size: 2rem;
+        }
+        
+        .section p {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+        
+        .section strong {
+            color: var(--text-primary);
+        }
+        
+        .section em {
+            color: var(--cyan-accent);
+            font-style: normal;
+            font-weight: 600;
+        }
+        
+        /* Values Grid */
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .value-card {
+            background: rgba(10, 10, 15, 0.6);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .value-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--cyan-accent);
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.2);
+        }
+        
+        .value-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .value-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--cyan-accent);
+            margin-bottom: 0.5rem;
+        }
+        
+        .value-desc {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Quote Box */
+        .quote-box {
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.1), rgba(139, 92, 246, 0.1));
+            border-left: 4px solid var(--cyan-accent);
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            font-style: italic;
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            text-align: center;
+        }
+        
+        .quote-author {
+            display: block;
+            margin-top: 1rem;
+            font-style: normal;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(0, 217, 255, 0.1));
+            border-radius: 12px;
+            border: 2px solid var(--purple-accent);
+            margin-top: 3rem;
+        }
+        
+        .cta-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--purple-accent);
+            margin-bottom: 1rem;
+        }
+        
+        .cta-text {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--cyan-accent), var(--purple-accent));
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: rgba(26, 26, 46, 0.8);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.3);
+        }
+        
+        /* Footer */
+        footer {
+            background: rgba(10, 10, 15, 0.95);
+            border-top: 2px solid var(--border-color);
+            padding: 2rem;
+            margin-top: 4rem;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--cyan-accent);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero-tagline {
+                font-size: 1.2rem;
+            }
+            
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Bannière Prototype de Validation Publique -->
+    <div style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%); 
+                color: white; 
+                text-align: center; 
+                padding: 0.75rem 1rem; 
+                font-weight: 600;
+                font-size: 0.95rem;
+                box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);">
+        <i class="fas fa-flask" style="margin-right: 0.5rem;"></i>
+        <strong>PROTOTYPE DE VALIDATION PUBLIQUE</strong> 
+        <span style="opacity: 0.9; font-weight: 400; margin-left: 0.5rem;">⚜️ V2.0-BETA</span>
+    </div>
+    
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="header-left">
+                <img src="images/logo-thibequation-official.png" alt="ThibEquation Official Logo" class="logo-header">
+                <div class="header-title">
+                    <h1>À Propos ⚜️ - Mission Citoyenne</h1>
+                    <p>La Science Ouverte Commence Ici</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Container -->
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <div class="hero-content">
+                <h1>🌌 ThibEquation Framework</h1>
+                <p class="hero-tagline">"La Science Ouverte Commence Ici"</p>
+                <p>
+                    Un projet citoyen pour démocratiser l'analyse quantitative des objets interstellaires 
+                    et phénomènes aérospatiaux anomaux. Parce que la curiosité scientifique 
+                    n'appartient à personne... et à tout le monde.
+                </p>
+            </div>
+        </div>
+
+        <!-- Notre Mission -->
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-bullseye"></i>
+                Notre Mission
+            </h2>
+            <p>
+                <strong>ThibEquation</strong> est né d'une conviction simple : <em>la science doit être accessible, transparente et reproductible</em>. 
+                Face à l'augmentation des observations d'objets célestes non identifiés et des phénomènes aérospatiaux inexpliqués, 
+                nous avons créé une <strong>méthodologie quantitative standardisée</strong> permettant à chacun — scientifique professionnel 
+                ou amateur passionné — d'analyser et comparer objectivement ces observations.
+            </p>
+            <p>
+                Notre objectif : <em>transformer des observations qualitatives en métriques quantifiables</em>, établir un <em>Score d'Anomalie Global (ThibScore)</em> 
+                reproductible, et ainsi contribuer à <strong>prioriser les investigations scientifiques</strong> sur les cas les plus significatifs.
+            </p>
+        </div>
+
+        <!-- Qui Sommes-Nous -->
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-user-astronaut"></i>
+                Qui Sommes-Nous ?
+            </h2>
+            <p>
+                <strong>Pascal Thibodeau (Thib)</strong> - Développeur-Chercheur indépendant en Analyse Mathématique Interstellaire, 
+                créateur du Framework ThibEquation. Passionné par l'astrophysique, la détection d'anomalies cosmiques et les systèmes conceptuels, 
+                je développe des outils open-source pour standardiser l'analyse d'objets célestes.
+            </p>
+            <p>
+                Formé en développement web et analyse de données, j'ai consacré <strong>60 jours intensifs</strong> (septembre-novembre 2025) 
+                à construire cette méthodologie GKSC (Géométrie, Kinétique, Signature, Contextuel) en m'inspirant des travaux académiques 
+                de J. Allen Hynek, Jacques Vallée, Avi Loeb et Thomas L. Saaty (Analytic Hierarchy Process).
+            </p>
+            <p>
+                <em>Basé au Québec, Canada</em> 🇨🇦 | <a href="https://github.com/Thib4204" style="color: var(--cyan-accent);">GitHub: Thib4204</a>
+            </p>
+        </div>
+
+        <!-- Nos Valeurs -->
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-heart"></i>
+                Nos Valeurs Fondamentales
+            </h2>
+            
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon" style="color: var(--success-green);">🔬</div>
+                    <div class="value-title">Rigueur Scientifique</div>
+                    <p class="value-desc">
+                        Méthodologie basée sur des formules mathématiques explicites, validation empirique et peer-review encouragée.
+                    </p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon" style="color: var(--cyan-accent);">📖</div>
+                    <div class="value-title">Transparence Totale</div>
+                    <p class="value-desc">
+                        Code open-source, méthodologie documentée exhaustivement, limitations clairement énoncées, données publiques.
+                    </p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon" style="color: var(--purple-accent);">🤝</div>
+                    <div class="value-title">Collaboration</div>
+                    <p class="value-desc">
+                        Ouverture académique, contributions bienvenues, partage de connaissances avec la communauté scientifique internationale.
+                    </p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon" style="color: #f59e0b;">💡</div>
+                    <div class="value-title">Innovation</div>
+                    <p class="value-desc">
+                        Approche multicritère unique (GKSC), application créative de l'AHP à l'astrophysique, vision futuriste.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Citation -->
+        <div class="quote-box">
+            "La curiosité est l'une des caractéristiques permanentes et certaines d'un esprit vigoureux."
+            <span class="quote-author">— Samuel Johnson</span>
+        </div>
+
+        <!-- Pourquoi C'est Important -->
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-lightbulb"></i>
+                Pourquoi C'est Important ?
+            </h2>
+            <p>
+                Dans un contexte où les observations d'objets interstellaires se multiplient ('Oumuamua 2017, 2I/Borisov 2019, potentiel 3I/Atlas), 
+                et où les gouvernements déclassifient progressivement des rapports UAP/UFO (Pentagone 2020-2023), 
+                <strong>il devient crucial d'avoir des outils d'analyse standardisés</strong>.
+            </p>
+            <p>
+                ThibEquation répond à ce besoin en proposant :
+            </p>
+            <ul style="list-style: none; padding-left: 0; margin-top: 1rem;">
+                <li style="margin: 0.75rem 0; padding-left: 1.5rem; position: relative;">
+                    <span style="position: absolute; left: 0; color: var(--cyan-accent); font-weight: 700;">✓</span>
+                    Un <strong>Score d'Anomalie Global (ThibScore)</strong> reproductible sur échelle 0-10
+                </li>
+                <li style="margin: 0.75rem 0; padding-left: 1.5rem; position: relative;">
+                    <span style="position: absolute; left: 0; color: var(--cyan-accent); font-weight: 700;">✓</span>
+                    Une <strong>méthodologie GKSC transparente</strong> avec 16 sous-variables documentées
+                </li>
+                <li style="margin: 0.75rem 0; padding-left: 1.5rem; position: relative;">
+                    <span style="position: absolute; left: 0; color: var(--cyan-accent); font-weight: 700;">✓</span>
+                    Des <strong>outils open-source</strong> (calculateur web, notebook Python RK4/Monte-Carlo)
+                </li>
+                <li style="margin: 0.75rem 0; padding-left: 1.5rem; position: relative;">
+                    <span style="position: absolute; left: 0; color: var(--cyan-accent); font-weight: 700;">✓</span>
+                    Une <strong>validation scientifique</strong> par comparaison avec standards JPL/MPC
+                </li>
+            </ul>
+        </div>
+
+        <!-- Science Citoyenne -->
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-users"></i>
+                Science Citoyenne & Participation
+            </h2>
+            <p>
+                Nous croyons fermement que <em>la science appartient à tous</em>. ThibEquation est conçu pour être utilisé par :
+            </p>
+            <ul style="list-style: none; padding-left: 0; margin-top: 1rem;">
+                <li style="margin: 0.75rem 0; padding-left: 1.5rem; position: relative;">
+                    <span style="position: absolute; left: 0; color: var(--purple-accent); font-weight: 700;">🔭</span>
+                    <strong>Chercheurs professionnels</strong> : Outil complémentaire pour analyse comparative d'objets interstellaires
+                </li>
+                <li style="margin: 0.75rem 0; padding-left: 1.5rem; position: relative;">
+                    <span style="position: absolute; left: 0; color: var(--purple-accent); font-weight: 700;">👨‍🎓</span>
+                    <strong>Étudiants en astrophysique</strong> : Support pédagogique pour comprendre l'analyse multicritère
+                </li>
+                <li style="margin: 0.75rem 0; padding-left: 1.5rem; position: relative;">
+                    <span style="position: absolute; left: 0; color: var(--purple-accent); font-weight: 700;">🌟</span>
+                    <strong>Astronomes amateurs</strong> : Cadre méthodologique pour évaluer leurs observations
+                </li>
+                <li style="margin: 0.75rem 0; padding-left: 1.5rem; position: relative;">
+                    <span style="position: absolute; left: 0; color: var(--purple-accent); font-weight: 700;">🚀</span>
+                    <strong>Passionnés d'espace</strong> : Interface accessible pour explorer l'analyse quantitative
+                </li>
+            </ul>
+            <p style="margin-top: 1.5rem;">
+                Vous souhaitez contribuer ? <a href="collaborez.html" style="color: var(--cyan-accent); font-weight: 600;">Rejoignez-nous !</a>
+            </p>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <h2 class="cta-title">Prêt à Explorer ?</h2>
+            <p class="cta-text">
+                Découvrez la méthodologie, testez le calculateur, analysez des cas réels ou contribuez au projet.
+            </p>
+            <div class="cta-buttons">
+                <a href="calculateur-v3-simplifie.html" class="btn btn-primary">
+                    <i class="fas fa-calculator"></i> Calculateur ThibScore
+                </a>
+                <a href="sources.html" class="btn btn-secondary">
+                    <i class="fas fa-book"></i> Documentation Complète
+                </a>
+                <a href="collaborez.html" class="btn btn-secondary">
+                    <i class="fas fa-handshake"></i> Collaborer
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 ThibEquation Framework V2.0-BETA | Développé par <strong>Pascal Thibodeau (Thib)</strong></p>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.5rem;">
+            <i class="fas fa-heart" style="color: var(--success-green);"></i> 
+            Projet citoyen pour la science ouverte et la transparence académique
+        </p>
+        <div class="footer-links">
+            <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
+            <a href="calculateur-v3-simplifie.html"><i class="fas fa-calculator"></i> Calculateur</a>
+            <a href="sources.html"><i class="fas fa-book"></i> Sources</a>
+            <a href="historique-projet.html"><i class="fas fa-history"></i> Historique</a>
+            <a href="a-propos.html" style="color: var(--cyan-accent);"><i class="fas fa-info-circle"></i> À Propos</a>
+            <a href="collaborez.html"><i class="fas fa-handshake"></i> Collaborer</a>
+        </div>
+        <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-secondary);">
+            <i class="fas fa-github"></i> GitHub: <a href="https://github.com/Thib4204" style="color: var(--cyan-accent);">Thib4204</a> | 
+            <i class="fas fa-envelope"></i> Contact: thibequation[at]proton.me
+        </p>
+    </footer>
+</body>
+</html>

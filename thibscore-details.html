@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThibScore - Détails du Modèle - ThibEquation Framework V2.0-BETA</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://thibequation.com/images/logo-thibequation-simple.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <style>
+        :root {
+            --cosmic-dark: #0a0a0f;
+            --space-blue: #1a1a2e;
+            --cyan-accent: #00d9ff;
+            --purple-accent: #8b5cf6;
+            --warning-yellow: #fbbf24;
+            --success-green: #10b981;
+            --error-red: #ef4444;
+            --text-primary: #e5e7eb;
+            --text-secondary: #9ca3af;
+            --border-color: rgba(139, 92, 246, 0.2);
+            
+            /* Component colors */
+            --color-g: #10b981;
+            --color-k: #f59e0b;
+            --color-s: #ef4444;
+            --color-c: #8b5cf6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--cosmic-dark) 0%, var(--space-blue) 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        /* Header fixe */
+        header {
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--border-color);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo-header {
+            width: 48px;
+            height: 48px;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo-header:hover {
+            transform: rotate(360deg);
+        }
+        
+        .header-title h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--cyan-accent), var(--purple-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header-title p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            width: 100%;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1rem;
+        }
+        
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-links a:hover {
+            color: var(--cyan-accent);
+        }
+        
+        /* Container principal */
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem 2rem 2rem;
+        }
+        
+        /* Hero section - Formule principale */
+        .formula-hero {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(0, 217, 255, 0.1));
+            border: 2px solid var(--purple-accent);
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 2rem 0;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(139, 92, 246, 0.3);
+        }
+        
+        .formula-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--cyan-accent);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        .formula-main {
+            font-size: 2.5rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-primary);
+            margin: 2rem 0;
+            padding: 2rem;
+            background: rgba(10, 10, 15, 0.6);
+            border-radius: 15px;
+            border: 2px solid var(--cyan-accent);
+        }
+        
+        .formula-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .formula-component {
+            background: rgba(10, 10, 15, 0.5);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid;
+            transition: all 0.3s ease;
+        }
+        
+        .formula-component:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .component-g { border-left-color: var(--color-g); }
+        .component-k { border-left-color: var(--color-k); }
+        .component-s { border-left-color: var(--color-s); }
+        .component-c { border-left-color: var(--color-c); }
+        
+        .component-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .component-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .component-weight {
+            font-size: 2rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 0.5rem 0;
+        }
+        
+        .component-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Section components */
+        .component-section {
+            background: rgba(26, 26, 46, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid;
+        }
+        
+        .section-header-g { border-bottom-color: var(--color-g); }
+        .section-header-k { border-bottom-color: var(--color-k); }
+        .section-header-s { border-bottom-color: var(--color-s); }
+        .section-header-c { border-bottom-color: var(--color-c); }
+        
+        .section-icon {
+            font-size: 3rem;
+        }
+        
+        .section-title {
+            flex: 1;
+        }
+        
+        .section-title h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .section-title p {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+        
+        .section-weight {
+            font-size: 3rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        /* Sub-variables grid */
+        .subvars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .subvar-card {
+            background: rgba(10, 10, 15, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .subvar-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--cyan-accent);
+            box-shadow: 0 8px 25px rgba(0, 217, 255, 0.2);
+        }
+        
+        .subvar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .subvar-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .subvar-weight {
+            background: var(--purple-accent);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .subvar-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .subvar-formula {
+            background: rgba(0, 217, 255, 0.1);
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--cyan-accent);
+            border-left: 3px solid var(--cyan-accent);
+        }
+        
+        /* Échelle d'interprétation */
+        .interpretation-scale {
+            background: rgba(26, 26, 46, 0.6);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .scale-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--cyan-accent);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .scale-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .scale-bar {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(10, 10, 15, 0.5);
+            border-radius: 10px;
+            border-left: 6px solid;
+            transition: all 0.3s ease;
+        }
+        
+        .scale-bar:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .scale-range {
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            min-width: 80px;
+        }
+        
+        .scale-label {
+            flex: 1;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .scale-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .scale-conventional { border-left-color: #10b981; }
+        .scale-unusual { border-left-color: #3b82f6; }
+        .scale-abnormal { border-left-color: #f59e0b; }
+        .scale-very-abnormal { border-left-color: #ef4444; }
+        .scale-extreme { border-left-color: #dc2626; }
+        
+        /* Exemples calculés */
+        .examples-section {
+            margin: 3rem 0;
+        }
+        
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .example-card {
+            background: rgba(26, 26, 46, 0.6);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .example-card:hover {
+            transform: scale(1.05);
+            border-color: var(--cyan-accent);
+            box-shadow: 0 15px 40px rgba(0, 217, 255, 0.3);
+        }
+        
+        .example-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .example-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--cyan-accent);
+            margin-bottom: 0.5rem;
+        }
+        
+        .example-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .example-score {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 900;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(0, 217, 255, 0.1);
+            border-radius: 10px;
+            border: 2px solid var(--cyan-accent);
+        }
+        
+        .example-components {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .example-component {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: rgba(10, 10, 15, 0.5);
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .example-component-label {
+            font-weight: 600;
+        }
+        
+        .example-component-value {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        /* Graphique radar */
+        .radar-container {
+            background: rgba(26, 26, 46, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .radar-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--cyan-accent);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .radar-wrapper {
+            position: relative;
+            height: 500px;
+        }
+        
+        /* Footer */
+        footer {
+            background: rgba(10, 10, 15, 0.95);
+            border-top: 2px solid var(--border-color);
+            padding: 2rem;
+            margin-top: 4rem;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--cyan-accent);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .formula-main {
+                font-size: 1.5rem;
+            }
+            
+            .formula-breakdown {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .subvars-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .examples-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Code styling */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(0, 217, 255, 0.1);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            color: var(--cyan-accent);
+        }
+        
+        /* Info box */
+        .info-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #3b82f6;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+        
+        .info-box-title {
+            font-weight: 600;
+            color: #3b82f6;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="header-left">
+                <img src="https://thibequation.com/images/logo-thibequation-simple.png" alt="ThibEquation Logo" class="logo-header">
+                <div class="header-title">
+                    <h1>ThibScore - Détails du Modèle</h1>
+                    <p>Décomposition complète de la formule GKSC</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <i class="fas fa-calendar-alt"></i>
+                <span><strong>Dernière mise à jour</strong> : 3 novembre 2025</span>
+            </div>
+        </div>
+        <nav class="nav-links">
+            <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
+            <a href="calculateur-v2.html"><i class="fas fa-calculator"></i> Calculateur</a>
+            <a href="sources.html"><i class="fas fa-book"></i> Sources & Méthodes</a>
+            <a href="thibscore-details.html" style="color: var(--cyan-accent);"><i class="fas fa-chart-line"></i> Détails ThibScore</a>
+            <a href="comparaison-jpl-mpc.html"><i class="fas fa-balance-scale"></i> Validation JPL/MPC</a>
+        </nav>
+    </header>
+
+    <!-- Container principal -->
+    <div class="container">
+        
+        <!-- Hero - Formule principale -->
+        <div class="formula-hero">
+            <div class="formula-title">
+                <i class="fas fa-calculator"></i>
+                Formule ThibScore
+            </div>
+            
+            <div class="formula-main">
+                ThibScore = (0.28 × G) + (0.32 × K) + (0.23 × S) + (0.17 × C)
+            </div>
+            
+            <p style="color: var(--text-secondary); font-size: 1.1rem; margin-top: 1rem;">
+                Score quantitatif d'anomalie sur une échelle de 0 à 10, 
+                calculé à partir de quatre composantes pondérées représentant différents aspects observables.
+            </p>
+            
+            <div class="formula-breakdown">
+                <div class="formula-component component-g">
+                    <div class="component-icon">📐</div>
+                    <div class="component-name" style="color: var(--color-g);">G - Géométrie</div>
+                    <div class="component-weight" style="color: var(--color-g);">30%</div>
+                    <div class="component-desc">Forme, structure, dimensions</div>
+                </div>
+                
+                <div class="formula-component component-k">
+                    <div class="component-icon">⚡</div>
+                    <div class="component-name" style="color: var(--color-k);">K - Kinétique</div>
+                    <div class="component-weight" style="color: var(--color-k);">30%</div>
+                    <div class="component-desc">Mouvement, accélération, trajectoire</div>
+                </div>
+                
+                <div class="formula-component component-s">
+                    <div class="component-icon">🔬</div>
+                    <div class="component-name" style="color: var(--color-s);">S - Signature</div>
+                    <div class="component-weight" style="color: var(--color-s);">25%</div>
+                    <div class="component-desc">Émissions, détection, spectre</div>
+                </div>
+                
+                <div class="formula-component component-c">
+                    <div class="component-name" style="color: var(--color-c);">C - Contextuel</div>
+                    <div class="component-icon">🌍</div>
+                    <div class="component-weight" style="color: var(--color-c);">15%</div>
+                    <div class="component-desc">Environnement, durée, témoins</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info box méthodologique -->
+        <div class="info-box">
+            <div class="info-box-title">
+                <i class="fas fa-info-circle"></i>
+                Note Méthodologique
+            </div>
+            <p>
+                Le ThibScore utilise une approche multicritère inspirée de l'<strong>Analytic Hierarchy Process (AHP)</strong> de Saaty. 
+                Chaque composante (G, K, S, C) est elle-même calculée à partir de 4 sous-variables pondérées, 
+                permettant une évaluation granulaire et reproductible de l'anomalie d'un phénomène observé.
+            </p>
+        </div>
+
+        <!-- COMPOSANTE G - GÉOMÉTRIE -->
+        <div class="component-section">
+            <div class="section-header section-header-g">
+                <div class="section-icon" style="color: var(--color-g);">📐</div>
+                <div class="section-title">
+                    <h2 style="color: var(--color-g);">G - Composante Géométrie</h2>
+                    <p>Analyse de la forme, structure et dimensions de l'objet observé</p>
+                </div>
+                <div class="section-weight" style="color: var(--color-g);">30%</div>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem; color: var(--text-secondary);">
+                La composante géométrique évalue l'écart entre la morphologie observée et les formes conventionnelles 
+                (avions, ballons, satellites, météores). Elle intègre la complexité structurelle, la symétrie, 
+                les proportions et la rigidité apparente.
+            </p>
+            
+            <div class="subvars-grid">
+                <div class="subvar-card">
+                    <div class="subvar-header">
+                        <span class="subvar-name">G1 - Forme</span>
+                        <span class="subvar-weight">30%</span>
+                    </div>
+                    <div class="subvar-desc">
+                        Évaluation de la géométrie globale : sphère, disque, cylindre, forme irrégulière, 
+                        morphing. Plus la forme est non-conventionnelle ou changeante, plus le score est élevé.
+                    </div>
+                    <div class="subvar-formula">
+                        G1 ∈ [0, 10] : 0 = forme conventionnelle, 10 = morphologie extrême
+                    </div>
+                </div>
+                
+                <div class="subvar-card">
+                    <div class="subvar-header">
+                        <span class="subvar-name">G2 - Complexité</span>
+                        <span class="subvar-weight">25%</span>
+                    </div>
+                    <div class="subvar-desc">
+                        Nombre et agencement de structures visibles : ailettes, protubérances, panneaux, 
+                        détails de surface. Mesure la richesse structurelle observable.
+                    </div>
+                    <div class="subvar-formula">
+                        G2 ∈ [0, 10] : 0 = simple/uniforme, 10 = hautement complexe
+                    </div>
+                </div>
+                
+                <div class="subvar-card">
+                    <div class="subvar-header">
+                        <span class="subvar-name">G3 - Dimensions</span>
+                        <span class="subvar-weight">25%</span>
+                    </div>
+                    <div class="subvar-desc">
+                        Taille estimée de l'objet et rapport d'aspect (longueur/largeur). 
+                        Les dimensions extrêmes (très petites ou très grandes) et les proportions inhabituelles augmentent le score.
+                    </div>
+                    <div class="subvar-formula">
+                        G3 ∈ [0, 10] : 0 = dimensions typiques, 10 = proportions extrêmes
+                    </div>
+                </div>
+                
+                <div class="subvar-card">
+                    <div class="subvar-header">
+                        <span class="subvar-name">G4 - Symétrie/Rigidité</span>
+                        <span class="subvar-weight">20%</span>
+                    </div>
+                    <div class="subvar-desc">
+                        Degré de symétrie axiale et rigidité structurelle apparente. 
+                        Les objets parfaitement symétriques et rigides (non-déformables) reçoivent des scores plus bas.
+                    </div>
+                    <div class="subvar-formula">
+                        G4 ∈ [0, 10] : 0 = rigide symétrique, 10 = asymétrique fluide
+                    </div>
+                </div>
+            </div>
+            
+            <div class="subvar-formula" style="margin-top: 1.5rem; font-size: 1.1rem; padding: 1rem;">
+                <strong>G = (0.30 × G1) + (0.25 × G2) + (0.25 × G3) + (0.20 × G4)</strong>
+            </div>
+        </div>
+
+        <!-- COMPOSANTE K - KINÉTIQUE -->
+        <div class="component-section">
+            <div class="section-header section-header-k">
+                <div class="section-icon" style="color: var(--color-k);">⚡</div>
+                <div class="section-title">
+                    <h2 style="color: var(--color-k);">K - Composante Kinétique</h2>
+                    <p>Analyse du mouvement, des accélérations et de la trajectoire</p>
+                </div>
+                <div class="section-weight" style="color: var(--color-k);">30%</div>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem; color: var(--text-secondary);">
+                La composante cinétique quantifie les comportements dynamiques observés : vitesse, accélérations, 
+                changements de trajectoire, hovering (vol stationnaire). Elle capture les écarts par rapport aux 
+                lois balistiques et aérodynamiques conventionnelles.
+            </p>
+            
+            <div class="subvars-grid">
+                <div class="subvar-card">
+                    <div class="subvar-header">
+                        <span class="subvar-name">K1 - Vitesse</span>
+                        <span class="subvar-weight">30%</span>
+                    </div>
+                    <div class="subvar-desc">
+                        Vitesse estimée de l'objet (km/h ou Mach). Les vitesses extrêmes (subsoniques très lentes 
+                        en hovering ou hypersoniques > Mach 5) augmentent le score.
+                    </div>
+                    <div class="subvar-formula">
+                        K1 ∈ [0, 10] : 0 = vitesse conventionnelle, 10 = vitesse extrême
+                    </div>
+                </div>
+                
+                <div class="subvar-card">
+                    <div class="subvar-header">
+                        <span class="subvar-name">K2 - Accélération</span>
+                        <span class="subvar-weight">30%</span>
+                    </div>
+                    <div class="subvar-desc">
+                        Magnitude des accélérations observées (en g). Valeurs > 10g dépassent les capacités 
+                        humaines et la plupart des systèmes conventionnels.
+                    </div>
+                    <div class="subvar-formula">
+                        K2 ∈ [0, 10] : 0 = &lt; 1g, 10 = &gt; 100g
+                    </div>
+                </div>
+                
+                <div class="subvar-card">
+                    <div class="subvar-header">
+                        <span class="subvar-name">K3 - Manœuvres</span>
+                        <span class="subvar-weight">25%</span>
+                    </div>
+                    <div class="subvar-desc">
+                        Type et fréquence des changements de trajectoire : virages brusques, angles aigus, 
+                        inversions instantanées, zigzags. Les manœuvres non-inertielles (sans rayon de courbure) 
+                        reçoivent des scores élevés.
+                    </div>
+                    <div class="subvar-formula">
+                        K3 ∈ [0, 10] : 0 = trajectoire rectiligne, 10 = manœuvres impossibles
+                    </div>
+                </div>
+                
+                <div class="subvar-card">
+                    <div class="subvar-header">
+                        <span class="subvar-name">K4 - Hovering/Arrêt</span>
+                        <span class="subvar-weight">15%</span>
+                    </div>
+                    <div class="subvar-desc">
+                        Capacité à maintenir une position stationnaire prolongée sans système de sustentation visible 
+                        (hélices, jet, ballonnet). Durée et stabilité du hovering.
+                    </div>
+                    <div class="subvar-formula">
+                        K4 ∈ [0, 10] : 0 = pas d'arrêt, 10 = hovering prolongé inexpliqué
+                    </div>
+                </div>
+            </div>
+            
+            <div class="subvar-formula" style="margin-top: 1.5rem; font-size: 1.1rem; padding: 1rem;">
+                <strong>K = (0.30 × K1) + (0.30 × K2) + (0.25 × K3) + (0.15 × K4)</strong>
+            </div>
+        </div>
+
+        <!-- COMPOSANTE S - SIGNATURE -->
+        <div class="component-section">
+            <div class="section-header section-header-s">
+                <div class="section-icon" style="color: var(--color-s);">🔬</div>
+                <div class="section-title">
+                    <h2 style="color: var(--color-s);">S - Composante Signature</h2>
+                    <p>Analyse des émissions, détections instrumentales et effets physiques</p>
+                </div>
+                <div class="section-weight" style="color: var(--color-s);">25%</div>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem; color: var(--text-secondary);">
+                La composante signature évalue les signaux physiques émis ou détectés : luminosité, 
+                signature radar, effets électromagnétiques, thermiques ou gravitationnels. Elle privilégie 
+                les détections instrumentales multi-capteurs.
+            </p>
+            
+            <div class="subvars-grid">
+                <div class="subvar-card">
+                    <div class="subvar-header">
+                        <span class="subvar-name">S1 - Luminosité</span>
+                        <span class="subvar-weight">30%</span>
+                    </div>
+                    <div class="subvar-desc">
+                        Intensité, couleur, modulation de la lumière émise. Les sources lumineuses intenses 
+                        sans source de chaleur apparente, ou les changements de couleur rapides augmentent le score.
+                    </div>
+                    <div class="subvar-formula">
+                        S1 ∈ [0, 10] : 0 = pas de lumière, 10 = luminosité intense anomale
+                    </div>
+                </div>
+                
+                <div class="subvar-card">
+                    <div class="subvar-header">
+                        <span class="subvar-name">S2 - Radar</span>
+                        <span class="subvar-weight">30%</span>
+                    </div>
+                    <div class="subvar-desc">
+                        Détection radar (primaire/secondaire), section radar (RCS), comportement de l'écho. 
+                        Les objets avec RCS incohérente (trop faible ou trop forte) ou disparitions radar reçoivent 
+                        des scores élevés.
+                    </div>
+                    <div class="subvar-formula">
+                        S2 ∈ [0, 10] : 0 = pas de détection, 10 = signature radar extrême
+                    </div>
+                </div>
+                
+                <div class="subvar-card">
+                    <div class="subvar-header">
+                        <span class="subvar-name">S3 - EM/Thermique</span>
+                        <span class="subvar-weight">25%</span>
+                    </div>
+                    <div class="subvar-desc">
+                        Effets électromagnétiques (interférences radio, perturbations électroniques) et signature 
+                        infrarouge. Absence de signature thermique malgré haute vitesse = anomalie.
+                    </div>
+                    <div class="subvar-formula">
+                        S3 ∈ [0, 10] : 0 = signature normale, 10 = effets EM/thermiques extrêmes
+                    </div>
+                </div>
+                
+                <div class="subvar-card">
+                    <div class="subvar-header">
+                        <span class="subvar-name">S4 - Autres</span>
+                        <span class="subvar-weight">15%</span>
+                    </div>
+                    <div class="subvar-desc">
+                        Autres signaux instrumentaux : gravitationnels, acoustiques, magnétiques, radiations. 
+                        Inclut également les détections multi-capteurs convergentes.
+                    </div>
+                    <div class="subvar-formula">
+                        S4 ∈ [0, 10] : 0 = pas d'autre signal, 10 = multi-capteurs convergents
+                    </div>
+                </div>
+            </div>
+            
+            <div class="subvar-formula" style="margin-top: 1.5rem; font-size: 1.1rem; padding: 1rem;">
+                <strong>S = (0.30 × S1) + (0.30 × S2) + (0.25 × S3) + (0.15 × S4)</strong>
+            </div>
+        </div>
+
+        <!-- COMPOSANTE C - CONTEXTUEL -->
+        <div class="component-section">
+            <div class="section-header section-header-c">
+                <div class="section-icon" style="color: var(--color-c);">🌍</div>
+                <div class="section-title">
+                    <h2 style="color: var(--color-c);">C - Composante Contextuelle</h2>
+                    <p>Analyse de l'environnement, durée d'observation et qualité des témoignages</p>
+                </div>
+                <div class="section-weight" style="color: var(--color-c);">15%</div>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem; color: var(--text-secondary);">
+                La composante contextuelle évalue la qualité et la cohérence de l'observation : 
+                conditions météorologiques, durée d'observation, nombre et fiabilité des témoins, 
+                documentation disponible (photos, vidéos, données instrumentales).
+            </p>
+            
+            <div class="subvars-grid">
+                <div class="subvar-card">
+                    <div class="subvar-header">
+                        <span class="subvar-name">C1 - Environnement</span>
+                        <span class="subvar-weight">30%</span>
+                    </div>
+                    <div class="subvar-desc">
+                        Conditions d'observation : météo, visibilité, heure (jour/nuit), altitude, zone géographique. 
+                        Observations en conditions optimales (ciel clair, visibilité excellente) reçoivent des scores 
+                        plus élevés car elles réduisent les confusions.
+                    </div>
+                    <div class="subvar-formula">
+                        C1 ∈ [0, 10] : 0 = conditions médiocres, 10 = conditions optimales
+                    </div>
+                </div>
+                
+                <div class="subvar-card">
+                    <div class="subvar-header">
+                        <span class="subvar-name">C2 - Durée</span>
+                        <span class="subvar-weight">25%</span>
+                    </div>
+                    <div class="subvar-desc">
+                        Durée totale de l'observation en secondes/minutes. Les observations prolongées (> 5 min) 
+                        permettent une analyse plus détaillée et réduisent les erreurs d'identification.
+                    </div>
+                    <div class="subvar-formula">
+                        C2 ∈ [0, 10] : 0 = &lt; 5s, 10 = &gt; 30 min
+                    </div>
+                </div>
+                
+                <div class="subvar-card">
+                    <div class="subvar-header">
+                        <span class="subvar-name">C3 - Témoins</span>
+                        <span class="subvar-weight">25%</span>
+                    </div>
+                    <div class="subvar-desc">
+                        Nombre de témoins indépendants et leur fiabilité (pilotes, militaires, scientifiques vs grand public). 
+                        Témoignages multiples convergents augmentent la crédibilité.
+                    </div>
+                    <div class="subvar-formula">
+                        C3 ∈ [0, 10] : 0 = 1 témoin non-expert, 10 = multiples experts convergents
+                    </div>
+                </div>
+                
+                <div class="subvar-card">
+                    <div class="subvar-header">
+                        <span class="subvar-name">C4 - Documentation</span>
+                        <span class="subvar-weight">20%</span>
+                    </div>
+                    <div class="subvar-desc">
+                        Qualité et quantité de preuves matérielles : photos, vidéos, enregistrements radar, 
+                        données télémétriques. Les données instrumentales multi-sources reçoivent les scores les plus élevés.
+                    </div>
+                    <div class="subvar-formula">
+                        C4 ∈ [0, 10] : 0 = témoignage seul, 10 = multi-capteurs documentés
+                    </div>
+                </div>
+            </div>
+            
+            <div class="subvar-formula" style="margin-top: 1.5rem; font-size: 1.1rem; padding: 1rem;">
+                <strong>C = (0.30 × C1) + (0.25 × C2) + (0.25 × C3) + (0.20 × C4)</strong>
+            </div>
+        </div>
+
+        <!-- Échelle d'interprétation -->
+        <div class="interpretation-scale">
+            <div class="scale-title">
+                <i class="fas fa-ruler-horizontal"></i>
+                Échelle d'Interprétation ThibScore
+            </div>
+            
+            <div class="scale-bars">
+                <div class="scale-bar scale-conventional">
+                    <div class="scale-range" style="color: #10b981;">0.0 - 2.0</div>
+                    <div>
+                        <div class="scale-label" style="color: #10b981;">Conventionnel</div>
+                        <div class="scale-desc">
+                            Objet/phénomène facilement identifiable (avion, ballon, satellite, météore, etc.). 
+                            Aucune anomalie significative détectée.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="scale-bar scale-unusual">
+                    <div class="scale-range" style="color: #3b82f6;">2.1 - 4.0</div>
+                    <div>
+                        <div class="scale-label" style="color: #3b82f6;">Inhabituel</div>
+                        <div class="scale-desc">
+                            Caractéristiques sortant légèrement de l'ordinaire mais potentiellement explicables 
+                            (prototype, conditions rares, confusion possible).
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="scale-bar scale-abnormal">
+                    <div class="scale-range" style="color: #f59e0b;">4.1 - 6.0</div>
+                    <div>
+                        <div class="scale-label" style="color: #f59e0b;">Anormal</div>
+                        <div class="scale-desc">
+                            Plusieurs anomalies significatives détectées. L'objet/phénomène défie les explications 
+                            conventionnelles immédiates. Nécessite investigation approfondie.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="scale-bar scale-very-abnormal">
+                    <div class="scale-range" style="color: #ef4444;">6.1 - 8.0</div>
+                    <div>
+                        <div class="scale-label" style="color: #ef4444;">Très Anormal</div>
+                        <div class="scale-desc">
+                            Multiples anomalies majeures dans plusieurs composantes. Comportements clairement 
+                            en rupture avec les technologies et phénomènes connus. Haute priorité scientifique.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="scale-bar scale-extreme">
+                    <div class="scale-range" style="color: #dc2626;">8.1 - 10.0</div>
+                    <div>
+                        <div class="scale-label" style="color: #dc2626;">Extrêmement Anormal</div>
+                        <div class="scale-desc">
+                            Anomalies extrêmes dans toutes les composantes. Violation apparente de lois physiques 
+                            établies. Cas exceptionnels nécessitant enquête scientifique immédiate et exhaustive.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exemples calculés -->
+        <div class="examples-section">
+            <h2 style="font-size: 2rem; color: var(--cyan-accent); margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem;">
+                <i class="fas fa-flask"></i>
+                Exemples de Cas Calculés
+            </h2>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+                Application de la formule ThibScore à quatre cas réels documentés, 
+                démontrant la capacité du modèle à discriminer entre phénomènes conventionnels et anomalies significatives.
+            </p>
+            
+            <div class="examples-grid">
+                <!-- Exemple 1 : Nimitz 2004 -->
+                <div class="example-card">
+                    <div class="example-header">
+                        <div class="example-title">USS Nimitz 2004</div>
+                        <div class="example-subtitle">"Tic-Tac" - Californie</div>
+                    </div>
+                    <div class="example-score" style="color: #ef4444;">7.83</div>
+                    <div class="example-components">
+                        <div class="example-component">
+                            <span class="example-component-label" style="color: var(--color-g);">G (Géométrie)</span>
+                            <span class="example-component-value" style="color: var(--color-g);">7.5</span>
+                        </div>
+                        <div class="example-component">
+                            <span class="example-component-label" style="color: var(--color-k);">K (Kinétique)</span>
+                            <span class="example-component-value" style="color: var(--color-k);">9.2</span>
+                        </div>
+                        <div class="example-component">
+                            <span class="example-component-label" style="color: var(--color-s);">S (Signature)</span>
+                            <span class="example-component-value" style="color: var(--color-s);">8.0</span>
+                        </div>
+                        <div class="example-component">
+                            <span class="example-component-label" style="color: var(--color-c);">C (Contextuel)</span>
+                            <span class="example-component-value" style="color: var(--color-c);">6.5</span>
+                        </div>
+                    </div>
+                    <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary); text-align: center;">
+                        <strong style="color: #ef4444;">Très Anormal</strong> - Multiples capteurs, pilotes militaires, 
+                        accélérations > 100g estimées.
+                    </p>
+                </div>
+
+                <!-- Exemple 2 : Ballon météo -->
+                <div class="example-card">
+                    <div class="example-header">
+                        <div class="example-title">Ballon Météo</div>
+                        <div class="example-subtitle">Observation typique</div>
+                    </div>
+                    <div class="example-score" style="color: #10b981;">1.60</div>
+                    <div class="example-components">
+                        <div class="example-component">
+                            <span class="example-component-label" style="color: var(--color-g);">G (Géométrie)</span>
+                            <span class="example-component-value" style="color: var(--color-g);">2.0</span>
+                        </div>
+                        <div class="example-component">
+                            <span class="example-component-label" style="color: var(--color-k);">K (Kinétique)</span>
+                            <span class="example-component-value" style="color: var(--color-k);">1.5</span>
+                        </div>
+                        <div class="example-component">
+                            <span class="example-component-label" style="color: var(--color-s);">S (Signature)</span>
+                            <span class="example-component-value" style="color: var(--color-s);">1.0</span>
+                        </div>
+                        <div class="example-component">
+                            <span class="example-component-label" style="color: var(--color-c);">C (Contextuel)</span>
+                            <span class="example-component-value" style="color: var(--color-c);">2.5</span>
+                        </div>
+                    </div>
+                    <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary); text-align: center;">
+                        <strong style="color: #10b981;">Conventionnel</strong> - Forme sphérique, dérive lente avec le vent, 
+                        pas de signature inhabituelle.
+                    </p>
+                </div>
+
+                <!-- Exemple 3 : Phoenix Lights 1997 -->
+                <div class="example-card">
+                    <div class="example-header">
+                        <div class="example-title">Phoenix Lights 1997</div>
+                        <div class="example-subtitle">Arizona - Formation en V</div>
+                    </div>
+                    <div class="example-score" style="color: #f59e0b;">6.45</div>
+                    <div class="example-components">
+                        <div class="example-component">
+                            <span class="example-component-label" style="color: var(--color-g);">G (Géométrie)</span>
+                            <span class="example-component-value" style="color: var(--color-g);">7.0</span>
+                        </div>
+                        <div class="example-component">
+                            <span class="example-component-label" style="color: var(--color-k);">K (Kinétique)</span>
+                            <span class="example-component-value" style="color: var(--color-k);">5.5</span>
+                        </div>
+                        <div class="example-component">
+                            <span class="example-component-label" style="color: var(--color-s);">S (Signature)</span>
+                            <span class="example-component-value" style="color: var(--color-s);">7.5</span>
+                        </div>
+                        <div class="example-component">
+                            <span class="example-component-label" style="color: var(--color-c);">C (Contextuel)</span>
+                            <span class="example-component-value" style="color: var(--color-c);">6.0</span>
+                        </div>
+                    </div>
+                    <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary); text-align: center;">
+                        <strong style="color: #f59e0b;">Anormal</strong> - Formation massive (1,6 km estimé), 
+                        centaines de témoins, silence anormal.
+                    </p>
+                </div>
+
+                <!-- Exemple 4 : Avion de ligne -->
+                <div class="example-card">
+                    <div class="example-header">
+                        <div class="example-title">Avion de Ligne</div>
+                        <div class="example-subtitle">Vol commercial standard</div>
+                    </div>
+                    <div class="example-score" style="color: #10b981;">0.53</div>
+                    <div class="example-components">
+                        <div class="example-component">
+                            <span class="example-component-label" style="color: var(--color-g);">G (Géométrie)</span>
+                            <span class="example-component-value" style="color: var(--color-g);">0.5</span>
+                        </div>
+                        <div class="example-component">
+                            <span class="example-component-label" style="color: var(--color-k);">K (Kinétique)</span>
+                            <span class="example-component-value" style="color: var(--color-k);">0.3</span>
+                        </div>
+                        <div class="example-component">
+                            <span class="example-component-label" style="color: var(--color-s);">S (Signature)</span>
+                            <span class="example-component-value" style="color: var(--color-s);">0.5</span>
+                        </div>
+                        <div class="example-component">
+                            <span class="example-component-label" style="color: var(--color-c);">C (Contextuel)</span>
+                            <span class="example-component-value" style="color: var(--color-c);">1.0</span>
+                        </div>
+                    </div>
+                    <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary); text-align: center;">
+                        <strong style="color: #10b981;">Conventionnel</strong> - Forme aérodynamique classique, 
+                        trajectoire rectiligne, transponder actif.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Graphique radar comparatif -->
+        <div class="radar-container">
+            <div class="radar-title">
+                <i class="fas fa-chart-radar"></i>
+                Comparaison Radar des 4 Exemples
+            </div>
+            <p style="text-align: center; color: var(--text-secondary); margin-bottom: 1.5rem;">
+                Visualisation comparative des scores G, K, S, C pour chaque cas d'étude
+            </p>
+            <div class="radar-wrapper">
+                <canvas id="radarChart"></canvas>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 ThibEquation Framework V2.0-BETA | Développé par <strong>Thib</strong></p>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.5rem;">
+            Méthodologie quantitative pour l'analyse d'objets interstellaires et phénomènes aérospatiaux anomaux
+        </p>
+        <div class="footer-links">
+            <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
+            <a href="calculateur-v2.html"><i class="fas fa-calculator"></i> Calculateur</a>
+            <a href="sources.html"><i class="fas fa-book"></i> Sources & Méthodes</a>
+            <a href="thibscore-details.html"><i class="fas fa-chart-line"></i> Détails ThibScore</a>
+            <a href="comparaison-jpl-mpc.html"><i class="fas fa-balance-scale"></i> Validation JPL/MPC</a>
+        </div>
+        <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-secondary);">
+            <i class="fas fa-github"></i> GitHub: <a href="https://github.com/Thib4204" style="color: var(--cyan-accent);">Thib4204</a> | 
+            <i class="fas fa-globe"></i> Déployé via Netlify
+        </p>
+    </footer>
+
+    <!-- JavaScript pour le graphique radar -->
+    <script>
+        // Configuration Chart.js
+        Chart.defaults.color = '#9ca3af';
+        Chart.defaults.borderColor = 'rgba(139, 92, 246, 0.2)';
+        Chart.defaults.font.family = "'Inter', sans-serif";
+
+        // Données des 4 exemples
+        const radarData = {
+            labels: ['G - Géométrie', 'K - Kinétique', 'S - Signature', 'C - Contextuel'],
+            datasets: [
+                {
+                    label: 'USS Nimitz 2004',
+                    data: [7.5, 9.2, 8.0, 6.5],
+                    backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                    borderColor: '#ef4444',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#ef4444',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#ef4444'
+                },
+                {
+                    label: 'Phoenix Lights 1997',
+                    data: [7.0, 5.5, 7.5, 6.0],
+                    backgroundColor: 'rgba(245, 158, 11, 0.2)',
+                    borderColor: '#f59e0b',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#f59e0b',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#f59e0b'
+                },
+                {
+                    label: 'Ballon Météo',
+                    data: [2.0, 1.5, 1.0, 2.5],
+                    backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                    borderColor: '#10b981',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#10b981',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#10b981'
+                },
+                {
+                    label: 'Avion de Ligne',
+                    data: [0.5, 0.3, 0.5, 1.0],
+                    backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                    borderColor: '#3b82f6',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#3b82f6',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#3b82f6'
+                }
+            ]
+        };
+
+        const ctxRadar = document.getElementById('radarChart').getContext('2d');
+        new Chart(ctxRadar, {
+            type: 'radar',
+            data: radarData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 10,
+                        ticks: {
+                            stepSize: 2,
+                            color: '#9ca3af',
+                            backdropColor: 'transparent'
+                        },
+                        grid: {
+                            color: 'rgba(139, 92, 246, 0.2)'
+                        },
+                        pointLabels: {
+                            color: '#e5e7eb',
+                            font: {
+                                size: 14,
+                                weight: '600'
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#e5e7eb',
+                            usePointStyle: true,
+                            padding: 20,
+                            font: {
+                                size: 13
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(10, 10, 15, 0.95)',
+                        titleColor: '#00d9ff',
+                        bodyColor: '#e5e7eb',
+                        borderColor: '#8b5cf6',
+                        borderWidth: 1,
+                        padding: 12,
+                        displayColors: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

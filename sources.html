@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Framework Scientifique - ThibEquation v5.0</title>
+    <link rel="icon" type="image/png" href="images/logo-thibequation-official.png">
+    
+    <!-- Modern Pale Theme -->
+    <link rel="stylesheet" href="css/modern-pale-theme-v2.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --deep-space: #f8fafb; --navy-dark: #ffffff; --navy-mid: #f3f6f9;
+            --gold: #b8860b; --gold-light: #daa520; --white: #0d1117;
+            --gray-light: #0d1117; --gray-mid: #2d3748;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            background: linear-gradient(180deg, #f8fafb 0%, #ffffff 100%);
+            color: #0d1117; font-family: 'Inter', sans-serif;
+            min-height: 100vh; overflow-x: hidden;
+        }
+        body::before {
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20% 30%, white, transparent),
+                radial-gradient(1px 1px at 50% 50%, white, transparent);
+            background-size: 200% 200%; animation: stars 80s linear infinite;
+            opacity: 0.5; pointer-events: none; z-index: 0;
+        }
+        @keyframes stars { 0% { background-position: 0% 0%; } 100% { background-position: 100% 100%; } }
+        header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(10, 22, 40, 0.97); backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.4);
+        }
+        .header-container {
+            max-width: 1800px; margin: 0 auto; padding: 12px 30px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .logo-section { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo-emblem { width: 50px; height: 50px; transition: transform 0.6s ease; border-radius: 50%; overflow: hidden; }
+        .logo-emblem img { width: 100%; height: 100%; object-fit: cover; filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.5)); }
+        .logo-section:hover .logo-emblem { transform: rotate(180deg); }
+        .logo-text { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600; color: var(--white); letter-spacing: 1px; }
+        nav ul { display: flex; gap: 25px; list-style: none; }
+        nav a {
+            color: var(--gray-light); text-decoration: none; font-size: 12px; font-weight: 500;
+            letter-spacing: 0.5px; transition: all 0.3s ease; position: relative; padding: 8px 0; text-transform: uppercase;
+        }
+        nav a::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px;
+            background: var(--gold); transition: width 0.3s ease;
+        }
+        nav a:hover::after, nav a.active::after { width: 100%; }
+        nav a:hover, nav a.active { color: var(--gold); }
+        .container { position: relative; z-index: 1; max-width: 1400px; margin: 0 auto; padding: 120px 40px 80px; }
+        .page-header { text-align: center; margin-bottom: 80px; }
+        .page-title {
+            font-family: 'Space Grotesk', sans-serif; font-size: 56px; font-weight: 700;
+            background: linear-gradient(135deg, var(--white), var(--gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 20px;
+        }
+        .page-subtitle { font-size: 18px; color: var(--gray-mid); max-width: 700px; margin: 0 auto; }
+        .section { margin-bottom: 80px; }
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif; font-size: 36px; color: var(--gold);
+            margin-bottom: 30px; padding-bottom: 15px; border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+        }
+        .content-card {
+            background: rgba(27, 38, 59, 0.7); border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px; padding: 30px; backdrop-filter: blur(10px);
+            margin-bottom: 30px; transition: all 0.3s ease;
+        }
+        .content-card:hover {
+            border-color: var(--gold); box-shadow: 0 0 25px rgba(212, 175, 55, 0.2);
+            transform: translateY(-3px);
+        }
+        .content-card h3 { font-size: 24px; color: var(--gold-light); margin-bottom: 15px; }
+        .content-card p { color: var(--gray-light); line-height: 1.8; font-size: 16px; margin-bottom: 15px; }
+        .data-table {
+            width: 100%; border-collapse: collapse; margin: 20px 0;
+        }
+        .data-table th, .data-table td {
+            padding: 15px; text-align: left; border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        .data-table th {
+            background: rgba(212, 175, 55, 0.1); color: var(--gold);
+            font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 1px;
+        }
+        .data-table td { color: var(--gray-light); }
+        .stat-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 30px 0;
+        }
+        .stat-box {
+            background: rgba(13, 27, 42, 0.9); border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 10px; padding: 25px; text-align: center;
+        }
+        .stat-value {
+            font-size: 48px; color: var(--gold); font-weight: 700; margin-bottom: 10px;
+        }
+        .stat-label {
+            font-size: 12px; color: var(--gray-mid); text-transform: uppercase; letter-spacing: 1px;
+        }
+        @media (max-width: 768px) {
+            .header-container { flex-direction: column; gap: 15px; }
+            nav ul { flex-wrap: wrap; justify-content: center; gap: 12px; }
+            .page-title { font-size: 36px; }
+            .stat-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo-section">
+                <div class="logo-emblem"><img src="images/logo-thibequation-round.png" alt="ThibEquation Logo"></div>
+                <span class="logo-text">THIBEQUATION</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="methodologie.html">Méthodologie GKSC</a></li>
+                    <li><a href="calculateur.html">Calculateur Détaillé</a></li>
+                    <li><a href="donnees.html">Données Sources</a></li>
+                    <li><a href="outils.html">Outils & Visualisations</a></li>
+                    <li><a href="collaboration.html">Collaboration v5.0</a></li>
+                    <li><a href="sources.html" class="active">Framework Scientifique</a></li>
+                    <li><a href="bibliographie.html">Recherche Interstellaire</a></li>
+                    <li><a href="feedback.html">Feedback</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Framework Scientifique</h1>
+            <p class="page-subtitle">Architecture complète du système d'analyse quantitative</p>
+        </div>
+
+        <div class="stat-grid">
+            <div class="stat-box">
+                <div class="stat-value">46</div>
+                <div class="stat-label">Objets Analysés</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">460</div>
+                <div class="stat-label">Valeurs GKSC</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">98.5%</div>
+                <div class="stat-label">Complétude Dataset</div>
+            </div>
+        </div>
+
+        <section class="section">
+    <h2 class="section-title">🧬 Architecture du Framework</h2>
+    
+    <div class="content-card">
+        <h3>ThibEquation v5.0 : Formule Fondamentale</h3>
+        <div style="background: rgba(13, 27, 42, 0.9); padding: 30px; border-radius: 8px; margin: 20px 0; text-align: center;">
+            <p style="font-size: 32px; color: var(--gold); font-family: 'Times New Roman', serif; margin-bottom: 15px;">
+                <strong>ThibScore = Σ (w<sub>i</sub> × P<sub>i</sub>)</strong>
+            </p>
+            <p style="font-size: 18px; color: var(--gray-light); margin-top: 20px;">
+                où <strong>w<sub>i</sub></strong> = pondération de la composante <em>i</em> (G/K/S/C)<br>
+                et <strong>P<sub>i</sub></strong> = score normalisé de la composante <em>i</em> (0-10)
+            </p>
+        </div>
+        <p>
+            <strong>Objectif:</strong> Quantifier le degré d'anomalie d'un objet céleste sur une échelle 0-10, 
+            où un score élevé indique une priorité scientifique accrue pour investigation approfondie.
+        </p>
+    </div>
+
+    <div class="content-card">
+        <h3>Les 4 Composantes GKSC</h3>
+        <p>Méthodologie multi-critères intégrant les dimensions physiques, cinématiques, spectroscopiques et contextuelles:</p>
+        
+        <table class="data-table" style="margin-top: 20px;">
+            <thead>
+                <tr>
+                    <th>Composante</th>
+                    <th>Pondération</th>
+                    <th>Sous-Paramètres</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong style="color: var(--gold);">G</strong> - Géométrique</td>
+                    <td><strong>28%</strong></td>
+                    <td>Ratio d'allongement, Albédo, Rotation</td>
+                </tr>
+                <tr>
+                    <td><strong style="color: var(--gold);">K</strong> - Cinématique</td>
+                    <td><strong>32%</strong></td>
+                    <td>Excentricité, V<sub>∞</sub>, Accélération non-gravitationnelle</td>
+                </tr>
+                <tr>
+                    <td><strong style="color: var(--gold);">S</strong> - Spectroscopique</td>
+                    <td><strong>23%</strong></td>
+                    <td>Composition chimique, Absence de coma, Réflectance</td>
+                </tr>
+                <tr>
+                    <td><strong style="color: var(--gold);">C</strong> - Contextuel</td>
+                    <td><strong>17%</strong></td>
+                    <td>Origine galactique, Détection préalable, Timing découverte</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section class="section">
+    <h2 class="section-title">📐 Détails des 10 Sous-Paramètres</h2>
+    
+    <div class="content-card">
+        <h3>Composante G (Géométrique) - 28%</h3>
+        <ul style="color: var(--gray-light); line-height: 2;">
+            <li><strong>G1 - Ratio d'Allongement (10%):</strong> Mesure de la forme non-sphérique. 
+                'Oumuamua: ~10:1 (exceptionnel), Référence: ~1.5:1</li>
+            <li><strong>G2 - Albédo (9%):</strong> Réflectivité de surface. 
+                Valeurs basses (<0.1) = anomalie potentielle</li>
+            <li><strong>G3 - Période de Rotation (9%):</strong> Vitesse de rotation atypique 
+                (>8h ou <2h) indique anomalie structurelle</li>
+        </ul>
+    </div>
+
+    <div class="content-card">
+        <h3>Composante K (Cinématique) - 32%</h3>
+        <ul style="color: var(--gray-light); line-height: 2;">
+            <li><strong>K1 - Excentricité (12%):</strong> e > 1.0 = trajectoire hyperbolique interstellaire. 
+                3I/ATLAS: e=6.137 (record absolu)</li>
+            <li><strong>K2 - Vitesse à l'Infini V<sub>∞</sub> (11%):</strong> Vitesse hors système solaire. 
+                'Oumuamua: 26.3 km/s, 2I/Borisov: 32.3 km/s</li>
+            <li><strong>K3 - Accélération Non-Gravitationnelle (9%):</strong> Déviation inexpliquée par gravité seule. 
+                'Oumuamua: +2.5×10⁻⁶ m/s² (débat scientifique actif)</li>
+        </ul>
+    </div>
+
+    <div class="content-card">
+        <h3>Composante S (Spectroscopique) - 23%</h3>
+        <ul style="color: var(--gray-light); line-height: 2;">
+            <li><strong>S1 - Composition Chimique (10%):</strong> Signature spectrale anormale. 
+                3I/ATLAS: ratio CO/H₂O > 200 (JWST 2025)</li>
+            <li><strong>S2 - Absence de Coma (7%):</strong> Pas d'activité cométaire malgré trajectoire. 
+                'Oumuamua: 0% coma détectée</li>
+            <li><strong>S3 - Courbe de Réflectance (6%):</strong> Distribution spectrale inhabituelle 
+                (rouge extrême = anomalie)</li>
+        </ul>
+    </div>
+
+    <div class="content-card">
+        <h3>Composante C (Contextuel) - 17%</h3>
+        <ul style="color: var(--gray-light); line-height: 2;">
+            <li><strong>C1 - Origine Galactique (7%):</strong> Provenance hors disque galactique = score élevé</li>
+            <li><strong>C2 - Détection Préalable (6%):</strong> Premier objet de son type = bonus anomalie</li>
+            <li><strong>C3 - Timing Découverte (4%):</strong> Détection post-périhélie (déjà sortant) = données limitées</li>
+        </ul>
+    </div>
+</section>
+
+<section class="section">
+    <h2 class="section-title">🔬 Validation Statistique</h2>
+    
+    <div class="content-card">
+        <h3>Métriques de Performance (Dataset 46 objets)</h3>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Métrique</th>
+                    <th>Valeur</th>
+                    <th>Interprétation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>R² Score (Coefficient de Détermination)</strong></td>
+                    <td style="color: var(--gold);">0.85</td>
+                    <td>Bon ajustement : 85% de variance expliquée</td>
+                </tr>
+                <tr>
+                    <td><strong>MAE (Mean Absolute Error)</strong></td>
+                    <td style="color: var(--gold);">0.48</td>
+                    <td>Erreur moyenne < 0.5 point sur échelle 0-10</td>
+                </tr>
+                <tr>
+                    <td><strong>Régularisation Ridge (α)</strong></td>
+                    <td style="color: var(--gold);">0.1</td>
+                    <td>Prévention du surapprentissage</td>
+                </tr>
+                <tr>
+                    <td><strong>Cross-Validation K-Fold</strong></td>
+                    <td style="color: var(--gold);">k=5</td>
+                    <td>Validation robuste sur 5 segments</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="content-card">
+        <h3>Benchmark Objets de Référence</h3>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Objet</th>
+                    <th>ThibScore</th>
+                    <th>Classification</th>
+                    <th>Justification</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1I/'Oumuamua</td>
+                    <td style="color: var(--gold); font-size: 18px;"><strong>8.7</strong></td>
+                    <td><span style="background: #d4af37; color: #0a1628; padding: 4px 8px; border-radius: 4px; font-weight: 700;">EXO</span></td>
+                    <td>e=1.2, V∞=26.3 km/s, allongement 10:1, accélération non-gravitationnelle</td>
+                </tr>
+                <tr>
+                    <td>3I/ATLAS</td>
+                    <td style="color: var(--gold); font-size: 18px;"><strong>8.2</strong></td>
+                    <td><span style="background: #d4af37; color: #0a1628; padding: 4px 8px; border-radius: 4px; font-weight: 700;">EXO</span></td>
+                    <td>e=6.137 (record), V∞=68 km/s, ratio CO/H₂O > 200</td>
+                </tr>
+                <tr>
+                    <td>2I/Borisov</td>
+                    <td style="color: var(--gold); font-size: 18px;"><strong>7.2</strong></td>
+                    <td><span style="background: #66b3ff; color: #0a1628; padding: 4px 8px; border-radius: 4px; font-weight: 700;">COM</span></td>
+                    <td>e=3.36, V∞=32.3 km/s, coma cométaire confirmée</td>
+                </tr>
+                <tr>
+                    <td>9P/Tempel 1</td>
+                    <td style="color: var(--gold); font-size: 18px;"><strong>5.3</strong></td>
+                    <td><span style="background: #90ee90; color: #0a1628; padding: 4px 8px; border-radius: 4px; font-weight: 700;">PER</span></td>
+                    <td>Comète périodique classique (e=0.52, mission Deep Impact)</td>
+                </tr>
+                <tr>
+                    <td>67P/Churyumov</td>
+                    <td style="color: var(--gold); font-size: 18px;"><strong>4.8</strong></td>
+                    <td><span style="background: #90ee90; color: #0a1628; padding: 4px 8px; border-radius: 4px; font-weight: 700;">PER</span></td>
+                    <td>Comète de Jupiter, mission Rosetta (e=0.64, très étudié)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section class="section">
+    <h2 class="section-title">🎓 Références Académiques</h2>
+    
+    <div class="content-card">
+        <h3>Fondements Théoriques</h3>
+        <ul style="color: var(--gray-light); line-height: 2;">
+            <li><strong>Meech et al. (2017):</strong> "A brief visit from a red and extremely elongated interstellar asteroid" 
+                - <em>Nature</em>, 552, 378-381 (1I/'Oumuamua découverte)</li>
+            <li><strong>Jewitt et al. (2019):</strong> "Interstellar Interloper 2I/Borisov" 
+                - <em>The Astrophysical Journal</em>, 886, L29</li>
+            <li><strong>Bialy & Loeb (2018):</strong> "Could Solar Radiation Pressure Explain 'Oumuamua's Peculiar Acceleration?" 
+                - <em>The Astrophysical Journal Letters</em>, 868, L1</li>
+            <li><strong>JWST Observations (2025):</strong> "Exceptional CO/H₂O Ratio in 3I/ATLAS" 
+                - (HYPOTHÈSE - Publication à confirmer)</li>
+        </ul>
+    </div>
+
+    <div class="content-card">
+        <h3>Sources de Données</h3>
+        <p><strong>NASA JPL HORIZONS:</strong> <a href="https://ssd.jpl.nasa.gov/horizons/" style="color: var(--gold);">https://ssd.jpl.nasa.gov/horizons/</a></p>
+        <p><strong>Minor Planet Center (IAU):</strong> <a href="https://minorplanetcenter.net/" style="color: var(--gold);">https://minorplanetcenter.net/</a></p>
+        <p><strong>Galileo Project:</strong> <a href="https://projects.iq.harvard.edu/galileo" style="color: var(--gold);">https://projects.iq.harvard.edu/galileo</a></p>
+    </div>
+</section>
+    </div>
+
+    <!-- Bouton Patreon Flottant -->
+    <a href="https://www.patreon.com/c/ThibodeauInnovations" target="_blank" rel="noopener noreferrer" class="patreon-float" aria-label="Supporter sur Patreon">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+            <path d="M15.386.524c-4.764 0-8.64 3.876-8.64 8.64 0 4.75 3.876 8.613 8.64 8.613 4.75 0 8.614-3.864 8.614-8.613C24 4.4 20.136.524 15.386.524M.003 23.537h4.22V.524H.003"/>
+        </svg>
+        <span>Supporter</span>
+    </a>
+
+    <style>
+        .patreon-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #ff424d 0%, #d91c23 100%);
+            color: white;
+            padding: 14px 22px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 15px;
+            text-decoration: none;
+            box-shadow: 0 8px 25px rgba(255, 66, 77, 0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 10000;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .patreon-float:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 12px 35px rgba(255, 66, 77, 0.6);
+            background: linear-gradient(135deg, #ff5562 0%, #e92d35 100%);
+        }
+
+        .patreon-float:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .patreon-float svg {
+            flex-shrink: 0;
+        }
+
+        .patreon-float span {
+            white-space: nowrap;
+        }
+
+        @keyframes patreon-pulse {
+            0%, 100% { box-shadow: 0 8px 25px rgba(255, 66, 77, 0.4); }
+            50% { box-shadow: 0 8px 35px rgba(255, 66, 77, 0.6); }
+        }
+
+        .patreon-float {
+            animation: patreon-pulse 3s ease-in-out infinite;
+        }
+
+        @media (max-width: 768px) {
+            .patreon-float {
+                bottom: 20px;
+                right: 20px;
+                padding: 12px 18px;
+                font-size: 14px;
+            }
+
+            .patreon-float svg {
+                width: 24px;
+                height: 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .patreon-float span {
+                display: none;
+            }
+
+            .patreon-float {
+                width: 56px;
+                height: 56px;
+                padding: 0;
+                justify-content: center;
+                border-radius: 50%;
+            }
+        }
+    </style>
+</body>
+</html>

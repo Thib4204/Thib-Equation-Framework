@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur ThibScore GKSC ⚜️ - ThibEquation V2.0-BETA</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/logo-thibequation-official.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ===== VARIABLES CSS (THÈME CLAIR/SOMBRE) ===== */
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #1a1a2e;
+            --bg-tertiary: #2d2d4f;
+            --text-primary: #e5e7eb;
+            --text-secondary: #9ca3af;
+            --border-color: rgba(139, 92, 246, 0.2);
+            --accent-cyan: #00d9ff;
+            --accent-purple: #8b5cf6;
+            
+            /* Couleurs composantes */
+            --color-g: #10b981;
+            --color-k: #f59e0b;
+            --color-s: #ef4444;
+            --color-c: #8b5cf6;
+        }
+        
+        [data-theme="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f3f4f6;
+            --bg-tertiary: #e5e7eb;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --border-color: rgba(139, 92, 246, 0.3);
+        }
+        
+        /* ===== BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        /* ===== HEADER NAVIGATION ===== */
+        .header-nav {
+            position: sticky;
+            top: 0;
+            background: var(--bg-secondary);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--border-color);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-cyan);
+            box-shadow: 0 0 15px rgba(0, 217, 255, 0.3);
+        }
+        
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo-text h1 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+        
+        .logo-text span {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .theme-toggle {
+            background: var(--bg-tertiary);
+            border: 2px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle:hover {
+            background: var(--accent-purple);
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .update-badge {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* ===== MAIN CONTAINER ===== */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        /* ===== TABS NAVIGATION ===== */
+        .tabs-nav {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            background: var(--bg-secondary);
+            padding: 0.5rem;
+            border-radius: 12px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .tab-btn {
+            flex: 1;
+            min-width: 120px;
+            padding: 1rem;
+            background: transparent;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .tab-btn i {
+            font-size: 1.5rem;
+        }
+        
+        .tab-btn.active {
+            background: var(--bg-tertiary);
+            border-color: currentColor;
+            color: var(--text-primary);
+        }
+        
+        .tab-btn-g.active { border-color: var(--color-g); color: var(--color-g); }
+        .tab-btn-k.active { border-color: var(--color-k); color: var(--color-k); }
+        .tab-btn-s.active { border-color: var(--color-s); color: var(--color-s); }
+        .tab-btn-c.active { border-color: var(--color-c); color: var(--color-c); }
+        
+        .tab-btn:hover:not(.active) {
+            background: var(--bg-tertiary);
+            transform: translateY(-2px);
+        }
+        
+        .tab-weight {
+            font-size: 0.75rem;
+            opacity: 0.7;
+        }
+        
+        /* ===== TAB CONTENT ===== */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .tab-panel {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 2px solid var(--border-color);
+        }
+        
+        .panel-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .panel-icon {
+            font-size: 2.5rem;
+        }
+        
+        .panel-icon-g { color: var(--color-g); }
+        .panel-icon-k { color: var(--color-k); }
+        .panel-icon-s { color: var(--color-s); }
+        .panel-icon-c { color: var(--color-c); }
+        
+        .panel-info h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .panel-info p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+        
+        /* ===== INPUT GROUPS ===== */
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .input-label {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg-primary);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.1);
+        }
+        
+        .input-help {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        
+        /* ===== RESULT PANEL ===== */
+        .result-panel {
+            position: sticky;
+            top: 100px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 2px solid var(--border-color);
+            margin-top: 2rem;
+        }
+        
+        .result-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .result-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+        
+        .thibscore-display {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.1), rgba(139, 92, 246, 0.1));
+            border-radius: 12px;
+            border: 2px solid var(--accent-cyan);
+            margin-bottom: 1.5rem;
+        }
+        
+        .score-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .score-value {
+            font-size: 4rem;
+            font-weight: 900;
+            font-family: 'JetBrains Mono', monospace;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .score-interpretation {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            display: inline-block;
+        }
+        
+        .interpretation-0 { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+        .interpretation-1 { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+        .interpretation-2 { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+        .interpretation-3 { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+        .interpretation-4 { background: rgba(220, 38, 38, 0.2); color: #dc2626; }
+        
+        .components-breakdown {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .component-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .component-label {
+            font-weight: 600;
+        }
+        
+        .component-value {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .component-g { border-left: 4px solid var(--color-g); }
+        .component-k { border-left: 4px solid var(--color-k); }
+        .component-s { border-left: 4px solid var(--color-s); }
+        .component-c { border-left: 4px solid var(--color-c); }
+        
+        /* ===== BUTTONS ===== */
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* ===== RESPONSIVE MOBILE ===== */
+        @media (max-width: 768px) {
+            .header-nav {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            .tabs-nav {
+                flex-direction: column;
+            }
+            
+            .tab-btn {
+                min-width: 100%;
+                flex-direction: row;
+                justify-content: flex-start;
+            }
+            
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .score-value {
+                font-size: 3rem;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .result-panel {
+                position: static;
+                margin-top: 2rem;
+            }
+        }
+        
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--bg-secondary);
+            border-top: 2px solid var(--border-color);
+            padding: 2rem;
+            margin-top: 4rem;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent-cyan);
+        }
+    </style>
+</head>
+<body>
+    <!-- Bannière Prototype de Validation Publique -->
+    <div style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%); 
+                color: white; 
+                text-align: center; 
+                padding: 0.75rem 1rem; 
+                font-weight: 600;
+                font-size: 0.95rem;
+                box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+                position: relative;
+                z-index: 10000;">
+        <i class="fas fa-flask" style="margin-right: 0.5rem;"></i>
+        <strong>PROTOTYPE DE VALIDATION PUBLIQUE</strong> 
+        <span style="opacity: 0.9; font-weight: 400; margin-left: 0.5rem;">⚜️ V2.0-BETA</span>
+        <span style="opacity: 0.85; font-weight: 400; margin-left: 1rem; font-size: 0.9rem;">| Calculateur expérimental - Feedback bienvenu</span>
+    </div>
+    
+    <!-- Header Navigation -->
+    <header class="header-nav">
+        <div class="logo-section">
+            <img src="images/logo-thibequation-official.png" alt="ThibEquation Official Logo" class="logo-img">
+            <div class="logo-text">
+                <h1>ThibEquation Calculator ⚜️</h1>
+                <span>Framework V2.0-BETA</span>
+            </div>
+        </div>
+        
+        <div class="nav-controls">
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                <i class="fas fa-moon" id="themeIcon"></i>
+                <span id="themeText">Thème Sombre</span>
+            </button>
+            
+            <div class="update-badge">
+                <i class="fas fa-calendar-alt"></i>
+                <span><strong>Mise à jour</strong> : 3 nov. 2025</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Tabs Navigation -->
+        <nav class="tabs-nav" role="tablist">
+            <button class="tab-btn tab-btn-g active" role="tab" aria-selected="true" data-tab="tab-g">
+                <i class="fas fa-shapes"></i>
+                <span>G - Géométrie</span>
+                <span class="tab-weight">30%</span>
+            </button>
+            <button class="tab-btn tab-btn-k" role="tab" aria-selected="false" data-tab="tab-k">
+                <i class="fas fa-arrows-alt"></i>
+                <span>K - Kinétique</span>
+                <span class="tab-weight">30%</span>
+            </button>
+            <button class="tab-btn tab-btn-s" role="tab" aria-selected="false" data-tab="tab-s">
+                <i class="fas fa-satellite"></i>
+                <span>S - Signature</span>
+                <span class="tab-weight">25%</span>
+            </button>
+            <button class="tab-btn tab-btn-c" role="tab" aria-selected="false" data-tab="tab-c">
+                <i class="fas fa-globe"></i>
+                <span>C - Contextuel</span>
+                <span class="tab-weight">15%</span>
+            </button>
+        </nav>
+
+        <!-- Tab Content: G - Géométrie -->
+        <div class="tab-content active" id="tab-g" role="tabpanel">
+            <div class="tab-panel">
+                <div class="panel-header">
+                    <i class="fas fa-shapes panel-icon panel-icon-g"></i>
+                    <div class="panel-info">
+                        <h2>G - Composante Géométrique (30%)</h2>
+                        <p>Analyse de la forme, structure et dimensions de l'objet observé</p>
+                    </div>
+                </div>
+                
+                <form class="input-grid">
+                    <div class="input-group">
+                        <label for="g1" class="input-label">
+                            <i class="fas fa-ruler-combined"></i> G1 - Forme (30%)
+                        </label>
+                        <input type="number" id="g1" class="input-field" min="0" max="10" step="0.1" value="0" placeholder="0.0">
+                        <p class="input-help">Géométrie globale : sphère, disque, cylindre, forme irrégulière</p>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="g2" class="input-label">
+                            <i class="fas fa-cube"></i> G2 - Complexité (25%)
+                        </label>
+                        <input type="number" id="g2" class="input-field" min="0" max="10" step="0.1" value="0" placeholder="0.0">
+                        <p class="input-help">Nombre et agencement de structures visibles</p>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="g3" class="input-label">
+                            <i class="fas fa-expand-arrows-alt"></i> G3 - Dimensions (25%)
+                        </label>
+                        <input type="number" id="g3" class="input-field" min="0" max="10" step="0.1" value="0" placeholder="0.0">
+                        <p class="input-help">Taille estimée et rapport d'aspect (longueur/largeur)</p>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="g4" class="input-label">
+                            <i class="fas fa-balance-scale"></i> G4 - Symétrie/Rigidité (20%)
+                        </label>
+                        <input type="number" id="g4" class="input-field" min="0" max="10" step="0.1" value="0" placeholder="0.0">
+                        <p class="input-help">Degré de symétrie axiale et rigidité structurelle</p>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tab Content: K - Kinétique -->
+        <div class="tab-content" id="tab-k" role="tabpanel">
+            <div class="tab-panel">
+                <div class="panel-header">
+                    <i class="fas fa-arrows-alt panel-icon panel-icon-k"></i>
+                    <div class="panel-info">
+                        <h2>K - Composante Kinétique (30%)</h2>
+                        <p>Analyse du mouvement, des accélérations et de la trajectoire</p>
+                    </div>
+                </div>
+                
+                <form class="input-grid">
+                    <div class="input-group">
+                        <label for="k1" class="input-label">
+                            <i class="fas fa-tachometer-alt"></i> K1 - Vitesse (30%)
+                        </label>
+                        <input type="number" id="k1" class="input-field" min="0" max="10" step="0.1" value="0" placeholder="0.0">
+                        <p class="input-help">Vitesse estimée (km/h ou Mach)</p>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="k2" class="input-label">
+                            <i class="fas fa-rocket"></i> K2 - Accélération (30%)
+                        </label>
+                        <input type="number" id="k2" class="input-field" min="0" max="10" step="0.1" value="0" placeholder="0.0">
+                        <p class="input-help">Magnitude des accélérations observées (en g)</p>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="k3" class="input-label">
+                            <i class="fas fa-route"></i> K3 - Manœuvres (25%)
+                        </label>
+                        <input type="number" id="k3" class="input-field" min="0" max="10" step="0.1" value="0" placeholder="0.0">
+                        <p class="input-help">Type et fréquence des changements de trajectoire</p>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="k4" class="input-label">
+                            <i class="fas fa-pause"></i> K4 - Hovering (15%)
+                        </label>
+                        <input type="number" id="k4" class="input-field" min="0" max="10" step="0.1" value="0" placeholder="0.0">
+                        <p class="input-help">Capacité à maintenir une position stationnaire</p>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tab Content: S - Signature -->
+        <div class="tab-content" id="tab-s" role="tabpanel">
+            <div class="tab-panel">
+                <div class="panel-header">
+                    <i class="fas fa-satellite panel-icon panel-icon-s"></i>
+                    <div class="panel-info">
+                        <h2>S - Composante Signature (25%)</h2>
+                        <p>Analyse des émissions, détections instrumentales et effets physiques</p>
+                    </div>
+                </div>
+                
+                <form class="input-grid">
+                    <div class="input-group">
+                        <label for="s1" class="input-label">
+                            <i class="fas fa-lightbulb"></i> S1 - Luminosité (30%)
+                        </label>
+                        <input type="number" id="s1" class="input-field" min="0" max="10" step="0.1" value="0" placeholder="0.0">
+                        <p class="input-help">Intensité, couleur, modulation de la lumière émise</p>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="s2" class="input-label">
+                            <i class="fas fa-broadcast-tower"></i> S2 - Radar (30%)
+                        </label>
+                        <input type="number" id="s2" class="input-field" min="0" max="10" step="0.1" value="0" placeholder="0.0">
+                        <p class="input-help">Détection radar (RCS, comportement de l'écho)</p>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="s3" class="input-label">
+                            <i class="fas fa-fire"></i> S3 - EM/Thermique (25%)
+                        </label>
+                        <input type="number" id="s3" class="input-field" min="0" max="10" step="0.1" value="0" placeholder="0.0">
+                        <p class="input-help">Effets électromagnétiques et signature infrarouge</p>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="s4" class="input-label">
+                            <i class="fas fa-atom"></i> S4 - Autres (15%)
+                        </label>
+                        <input type="number" id="s4" class="input-field" min="0" max="10" step="0.1" value="0" placeholder="0.0">
+                        <p class="input-help">Autres signaux instrumentaux (gravitationnels, acoustiques)</p>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tab Content: C - Contextuel -->
+        <div class="tab-content" id="tab-c" role="tabpanel">
+            <div class="tab-panel">
+                <div class="panel-header">
+                    <i class="fas fa-globe panel-icon panel-icon-c"></i>
+                    <div class="panel-info">
+                        <h2>C - Composante Contextuelle (15%)</h2>
+                        <p>Analyse de l'environnement, durée d'observation et qualité des témoignages</p>
+                    </div>
+                </div>
+                
+                <form class="input-grid">
+                    <div class="input-group">
+                        <label for="c1" class="input-label">
+                            <i class="fas fa-cloud-sun"></i> C1 - Environnement (30%)
+                        </label>
+                        <input type="number" id="c1" class="input-field" min="0" max="10" step="0.1" value="0" placeholder="0.0">
+                        <p class="input-help">Conditions d'observation (météo, visibilité, heure)</p>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="c2" class="input-label">
+                            <i class="fas fa-clock"></i> C2 - Durée (25%)
+                        </label>
+                        <input type="number" id="c2" class="input-field" min="0" max="10" step="0.1" value="0" placeholder="0.0">
+                        <p class="input-help">Durée totale de l'observation (secondes/minutes)</p>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="c3" class="input-label">
+                            <i class="fas fa-users"></i> C3 - Témoins (25%)
+                        </label>
+                        <input type="number" id="c3" class="input-field" min="0" max="10" step="0.1" value="0" placeholder="0.0">
+                        <p class="input-help">Nombre et fiabilité des témoins indépendants</p>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="c4" class="input-label">
+                            <i class="fas fa-camera"></i> C4 - Documentation (20%)
+                        </label>
+                        <input type="number" id="c4" class="input-field" min="0" max="10" step="0.1" value="0" placeholder="0.0">
+                        <p class="input-help">Qualité et quantité de preuves matérielles</p>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Result Panel -->
+        <div class="result-panel">
+            <div class="result-header">
+                <h2><i class="fas fa-calculator"></i> Résultat ThibScore</h2>
+            </div>
+            
+            <div class="thibscore-display">
+                <p class="score-label">Score d'Anomalie Global</p>
+                <div class="score-value" id="finalScore">0.00</div>
+                <span class="score-interpretation interpretation-0" id="interpretation">Conventionnel</span>
+            </div>
+            
+            <div class="components-breakdown">
+                <div class="component-row component-g">
+                    <span class="component-label">G (Géométrie) × 0.30</span>
+                    <span class="component-value" id="scoreG">0.00</span>
+                </div>
+                <div class="component-row component-k">
+                    <span class="component-label">K (Kinétique) × 0.30</span>
+                    <span class="component-value" id="scoreK">0.00</span>
+                </div>
+                <div class="component-row component-s">
+                    <span class="component-label">S (Signature) × 0.25</span>
+                    <span class="component-value" id="scoreS">0.00</span>
+                </div>
+                <div class="component-row component-c">
+                    <span class="component-label">C (Contextuel) × 0.15</span>
+                    <span class="component-value" id="scoreC">0.00</span>
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <button class="btn btn-primary" id="calculateBtn">
+                    <i class="fas fa-calculator"></i> Calculer
+                </button>
+                <button class="btn btn-secondary" id="resetBtn">
+                    <i class="fas fa-redo"></i> Réinitialiser
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 ThibEquation Framework V2.0-BETA | Développé par <strong>Thib</strong></p>
+        <div class="footer-links">
+            <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
+            <a href="sources.html"><i class="fas fa-book"></i> Sources & Méthodes</a>
+            <a href="thibscore-details.html"><i class="fas fa-chart-line"></i> Détails ThibScore</a>
+            <a href="comparaison-jpl-mpc.html"><i class="fas fa-balance-scale"></i> Validation JPL/MPC</a>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // ===== THEME TOGGLE =====
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        const html = document.documentElement;
+        
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        html.setAttribute('data-theme', savedTheme);
+        updateThemeUI(savedTheme);
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeUI(newTheme);
+        });
+        
+        function updateThemeUI(theme) {
+            if (theme === 'light') {
+                themeIcon.className = 'fas fa-sun';
+                themeText.textContent = 'Thème Clair';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+                themeText.textContent = 'Thème Sombre';
+            }
+        }
+        
+        // ===== TABS NAVIGATION =====
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetTab = button.getAttribute('data-tab');
+                
+                // Remove active from all
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.setAttribute('aria-selected', 'false');
+                });
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                // Add active to clicked
+                button.classList.add('active');
+                button.setAttribute('aria-selected', 'true');
+                document.getElementById(targetTab).classList.add('active');
+            });
+        });
+        
+        // ===== CALCULATOR LOGIC =====
+        const inputs = {
+            g1: document.getElementById('g1'),
+            g2: document.getElementById('g2'),
+            g3: document.getElementById('g3'),
+            g4: document.getElementById('g4'),
+            k1: document.getElementById('k1'),
+            k2: document.getElementById('k2'),
+            k3: document.getElementById('k3'),
+            k4: document.getElementById('k4'),
+            s1: document.getElementById('s1'),
+            s2: document.getElementById('s2'),
+            s3: document.getElementById('s3'),
+            s4: document.getElementById('s4'),
+            c1: document.getElementById('c1'),
+            c2: document.getElementById('c2'),
+            c3: document.getElementById('c3'),
+            c4: document.getElementById('c4')
+        };
+        
+        const calculateBtn = document.getElementById('calculateBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        
+        // Auto-calculate on input
+        Object.values(inputs).forEach(input => {
+            input.addEventListener('input', calculateScore);
+        });
+        
+        calculateBtn.addEventListener('click', calculateScore);
+        resetBtn.addEventListener('click', resetForm);
+        
+        function calculateScore() {
+            // Get values
+            const g1 = parseFloat(inputs.g1.value) || 0;
+            const g2 = parseFloat(inputs.g2.value) || 0;
+            const g3 = parseFloat(inputs.g3.value) || 0;
+            const g4 = parseFloat(inputs.g4.value) || 0;
+            
+            const k1 = parseFloat(inputs.k1.value) || 0;
+            const k2 = parseFloat(inputs.k2.value) || 0;
+            const k3 = parseFloat(inputs.k3.value) || 0;
+            const k4 = parseFloat(inputs.k4.value) || 0;
+            
+            const s1 = parseFloat(inputs.s1.value) || 0;
+            const s2 = parseFloat(inputs.s2.value) || 0;
+            const s3 = parseFloat(inputs.s3.value) || 0;
+            const s4 = parseFloat(inputs.s4.value) || 0;
+            
+            const c1 = parseFloat(inputs.c1.value) || 0;
+            const c2 = parseFloat(inputs.c2.value) || 0;
+            const c3 = parseFloat(inputs.c3.value) || 0;
+            const c4 = parseFloat(inputs.c4.value) || 0;
+            
+            // Calculate components
+            const G = (0.30 * g1) + (0.25 * g2) + (0.25 * g3) + (0.20 * g4);
+            const K = (0.30 * k1) + (0.30 * k2) + (0.25 * k3) + (0.15 * k4);
+            const S = (0.30 * s1) + (0.30 * s2) + (0.25 * s3) + (0.15 * s4);
+            const C = (0.30 * c1) + (0.25 * c2) + (0.25 * c3) + (0.20 * c4);
+            
+            // Calculate ThibScore
+            const ThibScore = (0.30 * G) + (0.30 * K) + (0.25 * S) + (0.15 * C);
+            
+            // Update display
+            document.getElementById('scoreG').textContent = G.toFixed(2);
+            document.getElementById('scoreK').textContent = K.toFixed(2);
+            document.getElementById('scoreS').textContent = S.toFixed(2);
+            document.getElementById('scoreC').textContent = C.toFixed(2);
+            document.getElementById('finalScore').textContent = ThibScore.toFixed(2);
+            
+            // Update interpretation
+            updateInterpretation(ThibScore);
+        }
+        
+        function updateInterpretation(score) {
+            const interpretationEl = document.getElementById('interpretation');
+            let text = '';
+            let className = 'score-interpretation ';
+            
+            if (score <= 2.0) {
+                text = 'Conventionnel';
+                className += 'interpretation-0';
+            } else if (score <= 4.0) {
+                text = 'Inhabituel';
+                className += 'interpretation-1';
+            } else if (score <= 6.0) {
+                text = 'Anormal';
+                className += 'interpretation-2';
+            } else if (score <= 8.0) {
+                text = 'Très Anormal';
+                className += 'interpretation-3';
+            } else {
+                text = 'Extrêmement Anormal';
+                className += 'interpretation-4';
+            }
+            
+            interpretationEl.textContent = text;
+            interpretationEl.className = className;
+        }
+        
+        function resetForm() {
+            Object.values(inputs).forEach(input => input.value = 0);
+            calculateScore();
+        }
+        
+        // Initial calculation
+        calculateScore();
+    </script>
+</body>
+</html>

@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historique du Projet ⚜️ - ThibEquation Framework V2.0-BETA</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/logo-thibequation-official.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --cosmic-dark: #0a0a0f;
+            --space-blue: #1a1a2e;
+            --cyan-accent: #00d9ff;
+            --purple-accent: #8b5cf6;
+            --text-primary: #e5e7eb;
+            --text-secondary: #9ca3af;
+            --border-color: rgba(139, 92, 246, 0.2);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--cosmic-dark) 0%, var(--space-blue) 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--border-color);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo-header {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 2px solid var(--cyan-accent);
+            box-shadow: 0 0 15px rgba(0, 217, 255, 0.3);
+        }
+        
+        .header-title h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--cyan-accent), var(--purple-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header-title p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem 2rem 2rem;
+        }
+        
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 3rem 1rem;
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.1), rgba(139, 92, 246, 0.1));
+            border-radius: 20px;
+            border: 2px solid var(--border-color);
+            margin-bottom: 3rem;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--cyan-accent), var(--purple-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, var(--cyan-accent), var(--purple-accent));
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            padding-left: 2rem;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: -2.5rem;
+            top: 0.5rem;
+            width: 20px;
+            height: 20px;
+            background: var(--cyan-accent);
+            border: 4px solid var(--cosmic-dark);
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px rgba(0, 217, 255, 0.2);
+        }
+        
+        .timeline-card {
+            background: rgba(26, 26, 46, 0.6);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-card:hover {
+            transform: translateX(10px);
+            border-color: var(--cyan-accent);
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.2);
+        }
+        
+        .timeline-date {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--purple-accent);
+            color: white;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .timeline-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--cyan-accent);
+            margin-bottom: 1rem;
+        }
+        
+        .timeline-content {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+        
+        .timeline-content ul {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 1rem;
+        }
+        
+        .timeline-content li {
+            padding-left: 1.5rem;
+            margin: 0.5rem 0;
+            position: relative;
+        }
+        
+        .timeline-content li::before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: var(--cyan-accent);
+            font-weight: 700;
+        }
+        
+        .highlight-box {
+            background: rgba(0, 217, 255, 0.1);
+            border-left: 4px solid var(--cyan-accent);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .highlight-box strong {
+            color: var(--cyan-accent);
+        }
+        
+        /* Version Badge */
+        .version-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, var(--cyan-accent), var(--purple-accent));
+            color: white;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .stat-card {
+            background: rgba(26, 26, 46, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--cyan-accent);
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.2);
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            font-family: 'JetBrains Mono', monospace;
+            background: linear-gradient(135deg, var(--cyan-accent), var(--purple-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+        
+        /* Footer */
+        footer {
+            background: rgba(10, 10, 15, 0.95);
+            border-top: 2px solid var(--border-color);
+            padding: 2rem;
+            margin-top: 4rem;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--cyan-accent);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .timeline {
+                padding-left: 1rem;
+            }
+            
+            .timeline-item {
+                padding-left: 1.5rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Bannière Prototype de Validation Publique -->
+    <div style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%); 
+                color: white; 
+                text-align: center; 
+                padding: 0.75rem 1rem; 
+                font-weight: 600;
+                font-size: 0.95rem;
+                box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);">
+        <i class="fas fa-flask" style="margin-right: 0.5rem;"></i>
+        <strong>PROTOTYPE DE VALIDATION PUBLIQUE</strong> 
+        <span style="opacity: 0.9; font-weight: 400; margin-left: 0.5rem;">⚜️ V2.0-BETA</span>
+    </div>
+    
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="header-left">
+                <img src="images/logo-thibequation-official.png" alt="ThibEquation Official Logo" class="logo-header">
+                <div class="header-title">
+                    <h1>Historique du Projet</h1>
+                    <p>ThibEquation Framework - Transparence & Évolution</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <i class="fas fa-calendar-alt"></i>
+                <span><strong>Dernière mise à jour</strong> : 3 novembre 2025</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Container -->
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1><i class="fas fa-history"></i> Chronologie Complète ⚜️</h1>
+            <p>
+                Du concept initial à la version V2.0-BETA : 60 jours d'itérations continues, 
+                validations scientifiques et améliorations méthodologiques pour créer un framework 
+                quantitatif d'analyse d'objets interstellaires.
+            </p>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon" style="color: var(--cyan-accent);">📅</div>
+                <div class="stat-value">60</div>
+                <div class="stat-label">Jours de Développement</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon" style="color: var(--purple-accent);">🔄</div>
+                <div class="stat-value">3.5</div>
+                <div class="stat-label">Versions Majeures</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon" style="color: #10b981;">📄</div>
+                <div class="stat-value">5</div>
+                <div class="stat-label">Pages Documentation</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon" style="color: #f59e0b;">✅</div>
+                <div class="stat-value">100%</div>
+                <div class="stat-label">Transparence Scientifique</div>
+            </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="timeline">
+            <!-- Version 0.1 - Concept Initial -->
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-card">
+                    <span class="timeline-date"><i class="fas fa-calendar"></i> 4 septembre 2025</span>
+                    <h2 class="timeline-title">🌱 Version 0.1 - Concept Initial</h2>
+                    <div class="timeline-content">
+                        <div class="highlight-box">
+                            <strong>Idée fondatrice</strong> : Créer une méthodologie quantitative standardisée 
+                            pour transformer observations qualitatives en métriques analysables.
+                        </div>
+                        <p><strong>Premiers jalons :</strong></p>
+                        <ul>
+                            <li>Définition du cadre conceptuel GKSC (Géométrie, Kinétique, Signature, Contextuel)</li>
+                            <li>Inspiration des travaux de J. Allen Hynek et Jacques Vallée</li>
+                            <li>Réflexion sur l'Analytic Hierarchy Process (AHP) de Saaty</li>
+                            <li>Première ébauche des pondérations (30/30/25/15 — obsolète, remplacée par 28/32/23/17 en v5.0)</li>
+                        </ul>
+                        <span class="version-badge"><i class="fas fa-code-branch"></i> v0.1-alpha</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Version 1.0 - Framework de Base -->
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-card">
+                    <span class="timeline-date"><i class="fas fa-calendar"></i> 15 septembre 2025</span>
+                    <h2 class="timeline-title">🚀 Version 1.0 - Framework de Base</h2>
+                    <div class="timeline-content">
+                        <p><strong>Avancées majeures :</strong></p>
+                        <ul>
+                            <li><strong>Formule ThibScore établie</strong> : ThibScore = (0.30 × G) + (0.30 × K) + (0.25 × S) + (0.15 × C) <em style="color: #ff6b6b; font-size: 0.9em;">(v1.0 — Obsolète, remplacée par 0.28×G + 0.32×K + 0.23×S + 0.17×C en v5.0)</em></li>
+                            <li>Décomposition des 4 composantes en 16 sous-variables (G1-G4, K1-K4, S1-S4, C1-C4)</li>
+                            <li>Définition des poids internes pour chaque sous-variable</li>
+                            <li>Création de l'échelle d'interprétation 0-10 (5 niveaux)</li>
+                            <li>Premier calculateur web en HTML/CSS/JavaScript</li>
+                            <li>Tests préliminaires sur cas historiques (Nimitz 2004, Phoenix Lights 1997)</li>
+                        </ul>
+                        <div class="highlight-box">
+                            <strong>Milestone</strong> : Formule mathématique opérationnelle avec reproductibilité algorithmique
+                        </div>
+                        <span class="version-badge"><i class="fas fa-check-circle"></i> v2.0-stable ⚜️</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Version 2.0 - Validation Scientifique -->
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-card">
+                    <span class="timeline-date"><i class="fas fa-calendar"></i> 10 octobre 2025</span>
+                    <h2 class="timeline-title">🔬 Version 2.0 - Validation Scientifique</h2>
+                    <div class="timeline-content">
+                        <p><strong>Phase de rigueur académique :</strong></p>
+                        <ul>
+                            <li>Rédaction du document METHODS_TEMPLATE.md (méthodologie exhaustive)</li>
+                            <li>Création de la bibliographie académique (14 sources peer-reviewed)</li>
+                            <li>Analyse de 4 cas d'étude avec calculs détaillés</li>
+                            <li>Intégration du disclaimer BETA (statut expérimental transparent)</li>
+                            <li>Création des logos officiels ThibEquation (4 variations)</li>
+                            <li>Mise en place du système de session auto-save</li>
+                        </ul>
+                        <div class="highlight-box">
+                            <strong>Focus</strong> : Crédibilité scientifique et transparence méthodologique
+                        </div>
+                        <span class="version-badge"><i class="fas fa-flask"></i> v2.0-beta</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Version 2.5 - Trajectoires & Visualisations -->
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-card">
+                    <span class="timeline-date"><i class="fas fa-calendar"></i> 20 octobre 2025</span>
+                    <h2 class="timeline-title">📊 Version 2.5 - Trajectoires & Visualisations</h2>
+                    <div class="timeline-content">
+                        <p><strong>Innovations techniques :</strong></p>
+                        <ul>
+                            <li><strong>Système de trajectoires 3D</strong> avec Three.js (RK4/Monte-Carlo)</li>
+                            <li>Import/export CSV bidirectionnel Python ↔ Web</li>
+                            <li>Visualisation spectaculaire avec gradient vitesse et enveloppes quantiles</li>
+                            <li>Animation temporelle fluide avec curseur doré</li>
+                            <li>Validation physique robuste (temps monotone, vitesses < c)</li>
+                            <li>Export screenshot HD 1920×1080 publication-ready</li>
+                            <li>Accessibilité WCAG 2.1 AA (navigation clavier, ARIA)</li>
+                        </ul>
+                        <div class="highlight-box">
+                            <strong>Avancée</strong> : Capacité de validation orbitale comparative avec standards JPL/MPC
+                        </div>
+                        <span class="version-badge"><i class="fas fa-rocket"></i> v2.5-trajectories</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Version 3.0 - Notebook Jupyter & RK4 -->
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-card">
+                    <span class="timeline-date"><i class="fas fa-calendar"></i> 2 novembre 2025</span>
+                    <h2 class="timeline-title">🧮 Version 3.0 - Notebook Jupyter & RK4</h2>
+                    <div class="timeline-content">
+                        <p><strong>Reproductibilité scientifique complète :</strong></p>
+                        <ul>
+                            <li>Création du notebook <code>ThibTrajectory_Notebook.ipynb</code></li>
+                            <li>Implémentation Runge-Kutta 4ème ordre (RK4) pour intégration orbitale</li>
+                            <li>Simulation Monte-Carlo avec seed fixe (42) pour reproductibilité</li>
+                            <li>Validation 2-corps (Soleil + objet) avec pas de temps 3600s</li>
+                            <li>Calcul des métriques d'écart : Δr, Δv, along/cross track</li>
+                            <li>Comparaison avec éphémérides JPL HORIZONS (TDB, ECLIPJ2000)</li>
+                        </ul>
+                        <div class="highlight-box">
+                            <strong>PDF Audit v3.0</strong> : Documentation technique complète du processus de validation
+                        </div>
+                        <span class="version-badge"><i class="fas fa-code"></i> v3.0-jupyter</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Version 3.5 - Documentation Complète -->
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-card">
+                    <span class="timeline-date"><i class="fas fa-calendar"></i> 3 novembre 2025</span>
+                    <h2 class="timeline-title">📚 Version 3.5 - Documentation Scientifique Complète</h2>
+                    <div class="timeline-content">
+                        <p><strong>Création de 5 pages documentation académique :</strong></p>
+                        <ul>
+                            <li><strong>sources.html</strong> (50 Ko) : Méthodologie exhaustive GKSC avec 10 sections structurées</li>
+                            <li><strong>thibscore-details.html</strong> (56 Ko) : Décomposition formule + 16 sous-variables + graphique radar</li>
+                            <li><strong>comparaison-jpl-mpc.html</strong> (44 Ko) : Validation JPL/MPC avec 4 graphiques Chart.js</li>
+                            <li><strong>calculateur-v3-simplifie.html</strong> (36 Ko) : Interface simplifiée 4 onglets G/K/S/C + thème clair/sombre</li>
+                            <li><strong>historique-projet.html</strong> : Cette page - Chronologie transparente du projet</li>
+                        </ul>
+                        <div class="highlight-box">
+                            <strong>PDF Audit v3.5</strong> : Rapport final de validation notebook RK4/Monte-Carlo téléchargeable
+                        </div>
+                        <p style="margin-top: 1rem;"><strong>Fonctionnalités UX :</strong></p>
+                        <ul>
+                            <li>✅ Navigation simplifiée avec onglets clairs G/K/S/C</li>
+                            <li>✅ Toggle thème clair/sombre avec localStorage</li>
+                            <li>✅ Mode mobile optimisé (Flexbox, pas de scroll horizontal)</li>
+                            <li>✅ Logo ThibEquation intégré sur toutes les pages</li>
+                            <li>✅ Timestamps "Dernière mise à jour" uniformes</li>
+                        </ul>
+                        <span class="version-badge"><i class="fas fa-certificate"></i> v3.5-final-beta</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Prochaines étapes -->
+        <div class="timeline-item">
+            <div class="timeline-dot" style="background: var(--purple-accent);"></div>
+            <div class="timeline-card" style="border-color: var(--purple-accent);">
+                <span class="timeline-date" style="background: linear-gradient(135deg, var(--cyan-accent), var(--purple-accent));"><i class="fas fa-road"></i> Futur</span>
+                <h2 class="timeline-title" style="color: var(--purple-accent);">🚀 Prochaines Étapes (V4.0)</h2>
+                <div class="timeline-content">
+                    <p><strong>Roadmap envisagée :</strong></p>
+                    <ul>
+                        <li>Soumission académique HAL/Zenodo pour archivage scientifique</li>
+                        <li>Intégration perturbations N-corps (planètes) dans notebook</li>
+                        <li>API REST pour accès programmatique au calculateur ThibScore</li>
+                        <li>Base de données publique de cas analysés avec ThibScore</li>
+                        <li>Collaboration avec observatoires (Vera Rubin, LSST)</li>
+                        <li>Publication peer-review dans journal astrophysique</li>
+                        <li>Développement application mobile Android/iOS</li>
+                    </ul>
+                    <div class="highlight-box">
+                        <strong>Vision</strong> : Établir ThibEquation comme standard de facto pour l'analyse quantitative 
+                        d'objets interstellaires et phénomènes aérospatiaux anomaux
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 ThibEquation Framework V2.0-BETA | Développé par <strong>Thib (Pascal Thibodeau)</strong></p>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.5rem;">
+            <i class="fas fa-lightbulb"></i> Transparence scientifique et rigueur méthodologique au service de la découverte
+        </p>
+        <div class="footer-links">
+            <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
+            <a href="calculateur-v3-simplifie.html"><i class="fas fa-calculator"></i> Calculateur Simplifié</a>
+            <a href="sources.html"><i class="fas fa-book"></i> Sources & Méthodes</a>
+            <a href="thibscore-details.html"><i class="fas fa-chart-line"></i> Détails ThibScore</a>
+            <a href="comparaison-jpl-mpc.html"><i class="fas fa-balance-scale"></i> Validation JPL/MPC</a>
+            <a href="historique-projet.html" style="color: var(--cyan-accent);"><i class="fas fa-history"></i> Historique</a>
+        </div>
+        <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-secondary);">
+            <i class="fas fa-github"></i> GitHub: <a href="https://github.com/Thib4204" style="color: var(--cyan-accent);">Thib4204</a> | 
+            <i class="fas fa-globe"></i> Déployé via Netlify
+        </p>
+    </footer>
+</body>
+</html>

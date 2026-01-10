@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liens Organismes Scientifiques - Dépôt Observations | ThibEquation</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0e27;
+            --bg-card: #1a1f3a;
+            --primary: #00d4ff;
+            --success: #00c853;
+            --gold: #ffd700;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --text-light: #e0e6ed;
+            --text-muted: #8b95a5;
+            --border: #2a3f5f;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5em;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 1.1em;
+            margin-bottom: 50px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 30px;
+            padding: 12px 24px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(0, 212, 255, 0.2);
+            transform: translateX(-5px);
+        }
+
+        .organisms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .organism-card {
+            background: rgba(26, 31, 58, 0.8);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .organism-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+        }
+
+        .organism-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .organism-icon {
+            font-size: 3em;
+            color: var(--primary);
+        }
+
+        .organism-card.astrophysics .organism-icon {
+            color: var(--primary);
+        }
+
+        .organism-card.ufology .organism-icon {
+            color: var(--warning);
+        }
+
+        .organism-card.meteorology .organism-icon {
+            color: var(--success);
+        }
+
+        .organism-card.open-data .organism-icon {
+            color: var(--gold);
+        }
+
+        .organism-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .organism-subtitle {
+            color: var(--text-muted);
+            font-size: 0.9em;
+        }
+
+        .organism-description {
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .submission-types {
+            margin-bottom: 20px;
+        }
+
+        .submission-types h4 {
+            color: var(--primary);
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .submission-types ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .submission-types li {
+            padding: 8px 0;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .submission-types li i {
+            color: var(--success);
+        }
+
+        .links-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .link-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .link-btn:hover {
+            background: rgba(0, 212, 255, 0.2);
+            transform: translateX(5px);
+        }
+
+        .link-btn i {
+            font-size: 1.2em;
+        }
+
+        .organism-card.astrophysics .link-btn {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .organism-card.ufology .link-btn {
+            border-color: var(--warning);
+            color: var(--warning);
+            background: rgba(255, 152, 0, 0.1);
+        }
+
+        .organism-card.meteorology .link-btn {
+            border-color: var(--success);
+            color: var(--success);
+            background: rgba(0, 200, 83, 0.1);
+        }
+
+        .organism-card.open-data .link-btn {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .note {
+            background: rgba(0, 212, 255, 0.05);
+            border-left: 4px solid var(--primary);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        .note h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .note p {
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+
+        @media (max-width: 768px) {
+            .organisms-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">
+            <i class="fas fa-arrow-left"></i>
+            Retour à l'accueil
+        </a>
+
+        <h1><i class="fas fa-satellite"></i> Liens vers Organismes Scientifiques</h1>
+        <p class="subtitle">
+            Déposer vos observations, travaux et résultats compilés avec ThibEquation
+        </p>
+
+        <div class="organisms-grid">
+            <!-- JPL - NASA -->
+            <div class="organism-card astrophysics">
+                <div class="organism-header">
+                    <i class="fas fa-rocket organism-icon"></i>
+                    <div>
+                        <h2 class="organism-title">JPL/NASA</h2>
+                        <p class="organism-subtitle">Jet Propulsion Laboratory - Small-Body Database</p>
+                    </div>
+                </div>
+                <p class="organism-description">
+                    Base de données de référence mondiale pour les objets du système solaire : 
+                    comètes, astéroïdes, TNOs, NEAs. Idéal pour objets interstellaires confirmés.
+                </p>
+                <div class="submission-types">
+                    <h4><i class="fas fa-check-circle"></i> Types d'observations acceptées</h4>
+                    <ul>
+                        <li><i class="fas fa-circle"></i> Objets interstellaires (1I, 2I, 3I...)</li>
+                        <li><i class="fas fa-circle"></i> Trajectoires hyperboliques</li>
+                        <li><i class="fas fa-circle"></i> Paramètres orbitaux précis</li>
+                        <li><i class="fas fa-circle"></i> Données photométriques</li>
+                    </ul>
+                </div>
+                <div class="links-group">
+                    <a href="https://ssd.jpl.nasa.gov/sbdb.cgi" target="_blank" class="link-btn">
+                        <span><i class="fas fa-database"></i> Small-Body Database Browser</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                    <a href="https://ssd.jpl.nasa.gov/horizons/" target="_blank" class="link-btn">
+                        <span><i class="fas fa-crosshairs"></i> HORIZONS System</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                    <a href="https://cneos.jpl.nasa.gov/" target="_blank" class="link-btn">
+                        <span><i class="fas fa-meteor"></i> CNEOS (Météores interstellaires)</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Minor Planet Center -->
+            <div class="organism-card astrophysics">
+                <div class="organism-header">
+                    <i class="fas fa-globe organism-icon"></i>
+                    <div>
+                        <h2 class="organism-title">MPC</h2>
+                        <p class="organism-subtitle">Minor Planet Center (IAU)</p>
+                    </div>
+                </div>
+                <p class="organism-description">
+                    Centre officiel de l'Union Astronomique Internationale pour la désignation 
+                    et le suivi des objets mineurs : astéroïdes, comètes, TNOs, objets interstellaires.
+                </p>
+                <div class="submission-types">
+                    <h4><i class="fas fa-check-circle"></i> Soumissions scientifiques</h4>
+                    <ul>
+                        <li><i class="fas fa-circle"></i> Observations astrométriques</li>
+                        <li><i class="fas fa-circle"></i> Nouvelles découvertes</li>
+                        <li><i class="fas fa-circle"></i> Corrections d'orbites</li>
+                        <li><i class="fas fa-circle"></i> Rapports détaillés</li>
+                    </ul>
+                </div>
+                <div class="links-group">
+                    <a href="https://www.minorplanetcenter.net/" target="_blank" class="link-btn">
+                        <span><i class="fas fa-home"></i> MPC Homepage</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                    <a href="https://www.minorplanetcenter.net/iau/MPEph/MPEph.html" target="_blank" class="link-btn">
+                        <span><i class="fas fa-calculator"></i> Ephemeris Service</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                    <a href="https://www.minorplanetcenter.net/db_search" target="_blank" class="link-btn">
+                        <span><i class="fas fa-search"></i> Database Search</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- MUFON -->
+            <div class="organism-card ufology">
+                <div class="organism-header">
+                    <i class="fas fa-ufo-beam organism-icon"></i>
+                    <div>
+                        <h2 class="organism-title">MUFON</h2>
+                        <p class="organism-subtitle">Mutual UFO Network</p>
+                    </div>
+                </div>
+                <p class="organism-description">
+                    Plus grande organisation mondiale d'investigation ufologique. Collecte systématique 
+                    de témoignages, analyse scientifique, base de données des observations UAP/UFO.
+                </p>
+                <div class="submission-types">
+                    <h4><i class="fas fa-check-circle"></i> Observations UAP acceptées</h4>
+                    <ul>
+                        <li><i class="fas fa-circle"></i> Témoignages visuels</li>
+                        <li><i class="fas fa-circle"></i> Photos/vidéos</li>
+                        <li><i class="fas fa-circle"></i> Traces physiques</li>
+                        <li><i class="fas fa-circle"></i> Données radar</li>
+                    </ul>
+                </div>
+                <div class="links-group">
+                    <a href="https://www.mufon.com/" target="_blank" class="link-btn">
+                        <span><i class="fas fa-home"></i> MUFON Homepage</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                    <a href="https://mufoncms.com/report_ufo_sighting/" target="_blank" class="link-btn">
+                        <span><i class="fas fa-file-upload"></i> Report UFO Sighting</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                    <a href="https://www.mufon.com/ufo-news.html" target="_blank" class="link-btn">
+                        <span><i class="fas fa-newspaper"></i> UFO News</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- NUFORC -->
+            <div class="organism-card ufology">
+                <div class="organism-header">
+                    <i class="fas fa-satellite-dish organism-icon"></i>
+                    <div>
+                        <h2 class="organism-title">NUFORC</h2>
+                        <p class="organism-subtitle">National UFO Reporting Center</p>
+                    </div>
+                </div>
+                <p class="organism-description">
+                    Centre américain de collecte d'observations UFO/UAP. Base de données publique 
+                    consultable en ligne, hotline téléphonique 24/7, archivage systématique.
+                </p>
+                <div class="submission-types">
+                    <h4><i class="fas fa-check-circle"></i> Rapports UFO/UAP</h4>
+                    <ul>
+                        <li><i class="fas fa-circle"></i> Observations récentes</li>
+                        <li><i class="fas fa-circle"></i> Témoignages historiques</li>
+                        <li><i class="fas fa-circle"></i> Phénomènes lumineux</li>
+                        <li><i class="fas fa-circle"></i> Rencontres rapprochées</li>
+                    </ul>
+                </div>
+                <div class="links-group">
+                    <a href="https://nuforc.org/" target="_blank" class="link-btn">
+                        <span><i class="fas fa-home"></i> NUFORC Homepage</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                    <a href="https://nuforc.org/webreports/" target="_blank" class="link-btn">
+                        <span><i class="fas fa-file-upload"></i> Submit Report</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                    <a href="https://nuforc.org/ndx/" target="_blank" class="link-btn">
+                        <span><i class="fas fa-database"></i> Database Search</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- American Meteor Society -->
+            <div class="organism-card meteorology">
+                <div class="organism-header">
+                    <i class="fas fa-meteor organism-icon"></i>
+                    <div>
+                        <h2 class="organism-title">AMS</h2>
+                        <p class="organism-subtitle">American Meteor Society</p>
+                    </div>
+                </div>
+                <p class="organism-description">
+                    Organisation dédiée à l'étude des météores et bolides. Collecte systématique 
+                    d'observations visuelles, calcul de trajectoires, identification d'origine.
+                </p>
+                <div class="submission-types">
+                    <h4><i class="fas fa-check-circle"></i> Observations de météores</h4>
+                    <ul>
+                        <li><i class="fas fa-circle"></i> Bolides brillants (fireballs)</li>
+                        <li><i class="fas fa-circle"></i> Trajectoires atmosphériques</li>
+                        <li><i class="fas fa-circle"></i> Météoroïdes interstellaires</li>
+                        <li><i class="fas fa-circle"></i> Pluies d'étoiles filantes</li>
+                    </ul>
+                </div>
+                <div class="links-group">
+                    <a href="https://www.amsmeteors.org/" target="_blank" class="link-btn">
+                        <span><i class="fas fa-home"></i> AMS Homepage</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                    <a href="https://www.amsmeteors.org/members/fireball/report-a-fireball/" target="_blank" class="link-btn">
+                        <span><i class="fas fa-fire"></i> Report a Fireball</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                    <a href="https://www.amsmeteors.org/meteor-showers/meteor-shower-calendar/" target="_blank" class="link-btn">
+                        <span><i class="fas fa-calendar-alt"></i> Meteor Shower Calendar</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Zenodo (Open Science) -->
+            <div class="organism-card open-data">
+                <div class="organism-header">
+                    <i class="fas fa-archive organism-icon"></i>
+                    <div>
+                        <h2 class="organism-title">Zenodo</h2>
+                        <p class="organism-subtitle">Open Research Repository (CERN)</p>
+                    </div>
+                </div>
+                <p class="organism-description">
+                    Plateforme open-science du CERN pour l'archivage permanent de données scientifiques. 
+                    Génération de DOI, versioning, citation académique, accessibilité mondiale.
+                </p>
+                <div class="submission-types">
+                    <h4><i class="fas fa-check-circle"></i> Données scientifiques</h4>
+                    <ul>
+                        <li><i class="fas fa-circle"></i> Datasets ThibScore</li>
+                        <li><i class="fas fa-circle"></i> Résultats de calculateurs</li>
+                        <li><i class="fas fa-circle"></i> Publications pre-print</li>
+                        <li><i class="fas fa-circle"></i> Logiciels/code source</li>
+                    </ul>
+                </div>
+                <div class="links-group">
+                    <a href="https://zenodo.org/" target="_blank" class="link-btn">
+                        <span><i class="fas fa-home"></i> Zenodo Homepage</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                    <a href="https://zenodo.org/deposit/new" target="_blank" class="link-btn">
+                        <span><i class="fas fa-upload"></i> Upload New Record</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                    <a href="https://zenodo.org/communities/thibequation/" target="_blank" class="link-btn">
+                        <span><i class="fas fa-users"></i> ThibEquation Community</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- arXiv -->
+            <div class="organism-card open-data">
+                <div class="organism-header">
+                    <i class="fas fa-book-open organism-icon"></i>
+                    <div>
+                        <h2 class="organism-title">arXiv</h2>
+                        <p class="organism-subtitle">Open Access Archive (Cornell University)</p>
+                    </div>
+                </div>
+                <p class="organism-description">
+                    Archive de pré-publications scientifiques en physique, astrophysique, mathématiques. 
+                    Soumission libre, peer-review optionnel, consultation mondiale gratuite.
+                </p>
+                <div class="submission-types">
+                    <h4><i class="fas fa-check-circle"></i> Pre-prints acceptés</h4>
+                    <ul>
+                        <li><i class="fas fa-circle"></i> Articles astrophysiques</li>
+                        <li><i class="fas fa-circle"></i> Méthodologies mathématiques</li>
+                        <li><i class="fas fa-circle"></i> Analyses d'objets interstellaires</li>
+                        <li><i class="fas fa-circle"></i> Frameworks scientifiques</li>
+                    </ul>
+                </div>
+                <div class="links-group">
+                    <a href="https://arxiv.org/" target="_blank" class="link-btn">
+                        <span><i class="fas fa-home"></i> arXiv Homepage</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                    <a href="https://arxiv.org/help/submit" target="_blank" class="link-btn">
+                        <span><i class="fas fa-file-upload"></i> Submit Article</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                    <a href="https://arxiv.org/list/astro-ph/recent" target="_blank" class="link-btn">
+                        <span><i class="fas fa-star"></i> Astrophysics Section</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- HAL (France) -->
+            <div class="organism-card open-data">
+                <div class="organism-header">
+                    <i class="fas fa-university organism-icon"></i>
+                    <div>
+                        <h2 class="organism-title">HAL</h2>
+                        <p class="organism-subtitle">Hyper Articles en Ligne (CNRS)</p>
+                    </div>
+                </div>
+                <p class="organism-description">
+                    Archive ouverte française pour la recherche scientifique. Multidisciplinaire, 
+                    archivage pérenne, reconnaissance institutionnelle, DOI automatique.
+                </p>
+                <div class="submission-types">
+                    <h4><i class="fas fa-check-circle"></i> Publications scientifiques</h4>
+                    <ul>
+                        <li><i class="fas fa-circle"></i> Articles de recherche</li>
+                        <li><i class="fas fa-circle"></i> Thèses et mémoires</li>
+                        <li><i class="fas fa-circle"></i> Rapports techniques</li>
+                        <li><i class="fas fa-circle"></i> Données de recherche</li>
+                    </ul>
+                </div>
+                <div class="links-group">
+                    <a href="https://hal.science/" target="_blank" class="link-btn">
+                        <span><i class="fas fa-home"></i> HAL Homepage</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                    <a href="https://hal.science/page/deposit" target="_blank" class="link-btn">
+                        <span><i class="fas fa-upload"></i> Déposer une publication</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                    <a href="https://hal.science/search/index/?q=*&rows=30&sort=producedDate_tdate+desc" target="_blank" class="link-btn">
+                        <span><i class="fas fa-search"></i> Rechercher</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="note">
+            <h3><i class="fas fa-info-circle"></i> Comment utiliser ces liens avec ThibEquation ?</h3>
+            <p>
+                <strong>1. Compilez vos résultats</strong> avec les calculateurs ThibEquation (UFO Analytics, Premium, Standard).<br>
+                <strong>2. Exportez vos données</strong> au format CSV, JSON ou Markdown via les boutons d'export.<br>
+                <strong>3. Soumettez aux organismes appropriés</strong> selon le type d'observation :<br>
+                &nbsp;&nbsp;&nbsp;• <strong>Objets astrophysiques confirmés</strong> → JPL/NASA, MPC<br>
+                &nbsp;&nbsp;&nbsp;• <strong>Phénomènes UAP/UFO</strong> → MUFON, NUFORC<br>
+                &nbsp;&nbsp;&nbsp;• <strong>Météores/bolides</strong> → American Meteor Society<br>
+                &nbsp;&nbsp;&nbsp;• <strong>Datasets scientifiques</strong> → Zenodo (DOI automatique)<br>
+                &nbsp;&nbsp;&nbsp;• <strong>Publications académiques</strong> → arXiv, HAL<br>
+                <strong>4. Citez ThibEquation Framework v5.0.0-EMPIRICAL</strong> (DOI: 10.5281/zenodo.17717380) dans vos soumissions.<br>
+                <strong>5. Partagez vos résultats</strong> avec la communauté ThibEquation via <a href="https://thibequation.com/cdn-cgi/l/email-protection#5f0b37363d303b3a3e2a36313130293e2b3630312c1f2f2d302b3031323e3633713c3032" style="color: var(--primary);"><span class="__cf_email__" data-cfemail="17437f7e7578737276627e7979786176637e787964576765786378797a767e7b3974787a">[email&#160;protected]</span></a>
+            </p>
+        </div>
+    </div>
+<script data-cfasync="false" src="cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body>
+</html>

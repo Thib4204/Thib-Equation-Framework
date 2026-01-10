@@ -1,0 +1,11 @@
+# Fichiers système
+.DS_Store
+Thumbs.db
+*.log
+
+# Fichiers temporaires wget
+*.tmp
+*.orig
+
+# Node modules (si ajout futur)
+node_modules/

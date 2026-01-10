@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualisation 3D Trajectoires - ThibEquation Framework</title>
+    <link rel="icon" type="image/png" href="images/logo-thibequation-official.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/modern-pale-theme-v2.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --deep-space: #f8fafb; --navy-dark: #ffffff; --navy-mid: #f3f6f9;
+            --gold: #b8860b; --gold-light: #daa520; --white: #0d1117;
+            --gray-light: #0d1117; --gray-mid: #2d3748;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            background: linear-gradient(180deg, #f8fafb 0%, #ffffff 100%);
+            color: #0d1117; font-family: 'Inter', sans-serif;
+            min-height: 100vh; overflow-x: hidden;
+        }
+        body::before {
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20% 30%, white, transparent),
+                radial-gradient(1px 1px at 50% 50%, white, transparent);
+            background-size: 200% 200%; animation: stars 80s linear infinite;
+            opacity: 0.5; pointer-events: none; z-index: 0;
+        }
+        @keyframes stars { 0% { background-position: 0% 0%; } 100% { background-position: 100% 100%; } }
+        header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(10, 22, 40, 0.97); backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.4);
+        }
+        .header-container {
+            max-width: 1800px; margin: 0 auto; padding: 12px 30px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .logo-section { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo-emblem { width: 50px; height: 50px; transition: transform 0.6s ease; border-radius: 50%; overflow: hidden; }
+        .logo-emblem img { width: 100%; height: 100%; object-fit: cover; filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.5)); }
+        .logo-section:hover .logo-emblem { transform: rotate(180deg); }
+        .logo-text { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600; color: var(--white); letter-spacing: 1px; }
+        nav ul { display: flex; gap: 25px; list-style: none; }
+        nav a {
+            color: var(--gray-light); text-decoration: none; font-size: 12px; font-weight: 500;
+            letter-spacing: 0.5px; transition: all 0.3s ease; position: relative; padding: 8px 0; text-transform: uppercase;
+        }
+        nav a::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px;
+            background: var(--gold); transition: width 0.3s ease;
+        }
+        nav a:hover::after, nav a.active::after { width: 100%; }
+        nav a:hover, nav a.active { color: var(--gold); }
+        .container { position: relative; z-index: 1; max-width: 1600px; margin: 0 auto; padding: 120px 40px 80px; }
+        .page-header { text-align: center; margin-bottom: 50px; }
+        .page-title {
+            font-family: 'Space Grotesk', sans-serif; font-size: 56px; font-weight: 700;
+            background: linear-gradient(135deg, var(--white), var(--gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 20px;
+        }
+        .page-subtitle { font-size: 18px; color: var(--gray-mid); max-width: 800px; margin: 0 auto; line-height: 1.6; }
+        
+        .canvas-3d {
+            width: 100%; height: 700px; background: rgba(13, 27, 42, 0.9);
+            border: 2px solid rgba(212, 175, 55, 0.4); border-radius: 12px;
+            margin: 30px 0; position: relative; overflow: hidden;
+        }
+        
+        .controls-panel {
+            background: rgba(27, 38, 59, 0.7); border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px; padding: 30px; margin: 30px 0;
+        }
+        .controls-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+        }
+        .control-group {
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        .control-label {
+            font-size: 13px; color: var(--gray-light); font-weight: 500;
+        }
+        .control-input, .control-select {
+            background: rgba(13, 27, 42, 0.9); border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 6px; padding: 12px 15px; color: var(--white);
+            font-size: 14px;
+        }
+        .btn-action {
+            background: linear-gradient(135deg, var(--gold), #b8941f);
+            border: none; border-radius: 8px; padding: 12px 30px;
+            color: var(--navy-dark); font-weight: 600; font-size: 14px;
+            cursor: pointer; transition: all 0.3s ease;
+        }
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
+        }
+        
+        .legend-panel {
+            background: rgba(27, 38, 59, 0.7); border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px; padding: 25px; margin: 30px 0;
+        }
+        .legend-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+        }
+        .legend-item {
+            display: flex; align-items: center; gap: 12px;
+        }
+        .legend-color {
+            width: 30px; height: 30px; border-radius: 6px;
+        }
+        .legend-text {
+            font-size: 14px; color: var(--gray-light);
+        }
+        
+        @media (max-width: 768px) {
+            .controls-grid { grid-template-columns: 1fr; }
+            .legend-grid { grid-template-columns: 1fr; }
+            .page-title { font-size: 36px; }
+            .canvas-3d { height: 500px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo-section">
+                <div class="logo-emblem"><img src="images/logo-thibequation-round.png" alt="ThibEquation Logo"></div>
+                <span class="logo-text">THIBEQUATION</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="methodologie.html">Méthodologie GKSC</a></li>
+                    <li><a href="calculateur.html">Calculateur Détaillé</a></li>
+                    <li><a href="donnees.html">Données Sources</a></li>
+                    <li><a href="outils.html">Outils & Visualisations</a></li>
+                    <li><a href="collaboration.html">Collaboration v5.0</a></li>
+                    <li><a href="sources.html">Framework Scientifique</a></li>
+                    <li><a href="bibliographie.html">Recherche Interstellaire</a></li>
+                    <li><a href="feedback.html">Feedback</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">🌐 Visualisation 3D Trajectoires</h1>
+            <p class="page-subtitle">
+                Simulation 3D interactive des orbites d'objets interstellaires et solaires avec rotation temps réel
+            </p>
+        </div>
+
+        <div class="canvas-3d">
+            <canvas id="orbit3D" width="1400" height="700"></canvas>
+        </div>
+
+        <div class="controls-panel">
+            <h3 style="color: var(--gold); margin-bottom: 25px; font-size: 22px;">🎛️ Contrôles de Simulation</h3>
+            <div class="controls-grid">
+                <div class="control-group">
+                    <label class="control-label">Objet à Visualiser</label>
+                    <select class="control-select" id="objectSelect">
+                        <option value="oumuamua">1I/'Oumuamua</option>
+                        <option value="borisov">2I/Borisov</option>
+                        <option value="atlas">3I/ATLAS</option>
+                        <option value="halley">1P/Halley</option>
+                        <option value="churyumov">67P/Churyumov</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Angle de Rotation</label>
+                    <input type="range" class="control-input" id="rotationAngle" min="0" max="360" value="45">
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Zoom</label>
+                    <input type="range" class="control-input" id="zoomLevel" min="50" max="200" value="100">
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Vitesse Animation</label>
+                    <select class="control-select" id="animSpeed">
+                        <option value="0.5">Lent</option>
+                        <option value="1" selected>Normal</option>
+                        <option value="2">Rapide</option>
+                    </select>
+                </div>
+            </div>
+            <div style="display: flex; gap: 15px; margin-top: 25px;">
+                <button class="btn-action" onclick="startAnimation()">▶️ Démarrer Animation</button>
+                <button class="btn-action" onclick="stopAnimation()">⏸️ Pause</button>
+                <button class="btn-action" onclick="resetView()">🔄 Réinitialiser</button>
+            </div>
+        </div>
+
+        <div class="legend-panel">
+            <h3 style="color: var(--gold); margin-bottom: 20px; font-size: 20px;">🎨 Légende</h3>
+            <div class="legend-grid">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #FFD700;"></div>
+                    <span class="legend-text">☀️ Soleil</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #d4af37;"></div>
+                    <span class="legend-text">🛸 'Oumuamua</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #00d4ff;"></div>
+                    <span class="legend-text">☄️ Borisov</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #ff0066;"></div>
+                    <span class="legend-text">⚡ ATLAS</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #00ff88;"></div>
+                    <span class="legend-text">🌌 Orbites</span>
+                </div>
+            </div>
+        </div>
+
+        <div style="background: rgba(27, 38, 59, 0.7); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 12px; padding: 25px; margin: 30px 0;">
+            <h4 style="color: var(--gold); margin-bottom: 15px;">📚 Informations Techniques</h4>
+            <p style="color: var(--gray-light); font-size: 14px; line-height: 1.8;">
+                <strong>Système de coordonnées</strong> : Écliptique héliocentrique J2000<br>
+                <strong>Échelle</strong> : 1 UA = 149,597,870.7 km<br>
+                <strong>Perspective</strong> : Vue isométrique 3D avec rotation libre<br>
+                <strong>Source orbites</strong> : JPL HORIZONS Small-Body Database
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('orbit3D');
+        const ctx = canvas.getContext('2d');
+        let animationId;
+        let rotation = 0;
+
+        function draw3DOrbit() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const scale = 120;
+
+            // Soleil
+            ctx.fillStyle = '#FFD700';
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 25, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.shadowBlur = 30;
+            ctx.shadowColor = '#FFD700';
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            // Orbite 'Oumuamua (hyperbolique)
+            ctx.strokeStyle = 'rgba(212, 175, 55, 0.6)';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            for (let t = -Math.PI/2; t < Math.PI/2; t += 0.01) {
+                const a = -1.279;
+                const e = 1.201;
+                const r = Math.abs(a) * (1 - e*e) / (1 + e * Math.cos(t));
+                const x = centerX + r * scale * Math.cos(t + rotation);
+                const y = centerY + r * scale * Math.sin(t + rotation) * 0.5;
+                if (t === -Math.PI/2) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+
+            // Orbite 3I/ATLAS (hyperbolique extrême)
+            ctx.strokeStyle = 'rgba(255, 0, 102, 0.6)';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            for (let t = -Math.PI/3; t < Math.PI/3; t += 0.01) {
+                const a = -0.4275;
+                const e = 6.137;
+                const r = Math.abs(a) * (1 - e*e) / (1 + e * Math.cos(t));
+                const x = centerX + r * scale * Math.cos(t + rotation + Math.PI/4);
+                const y = centerY + r * scale * Math.sin(t + rotation + Math.PI/4) * 0.6;
+                if (t === -Math.PI/3) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+
+            // Position 'Oumuamua
+            const oumuamuaX = centerX + 200 * Math.cos(rotation);
+            const oumuamuaY = centerY + 100 * Math.sin(rotation);
+            ctx.fillStyle = '#d4af37';
+            ctx.beginPath();
+            ctx.arc(oumuamuaX, oumuamuaY, 12, 0, 2 * Math.PI);
+            ctx.fill();
+
+            // Position 3I/ATLAS
+            const atlasX = centerX + 250 * Math.cos(rotation + Math.PI/4);
+            const atlasY = centerY + 150 * Math.sin(rotation + Math.PI/4);
+            ctx.fillStyle = '#ff0066';
+            ctx.beginPath();
+            ctx.arc(atlasX, atlasY, 14, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = '#ff0066';
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            rotation += 0.01;
+            if (rotation > 2 * Math.PI) rotation = 0;
+        }
+
+        function startAnimation() {
+            if (!animationId) {
+                function animate() {
+                    draw3DOrbit();
+                    animationId = requestAnimationFrame(animate);
+                }
+                animate();
+            }
+        }
+
+        function stopAnimation() {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+            }
+        }
+
+        function resetView() {
+            rotation = 0;
+            document.getElementById('rotationAngle').value = 45;
+            document.getElementById('zoomLevel').value = 100;
+            draw3DOrbit();
+        }
+
+        // Dessiner une fois au chargement
+        draw3DOrbit();
+    </script>
+</body>
+</html>

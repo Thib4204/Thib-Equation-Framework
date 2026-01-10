@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulateur Unifié - ThibEquation Framework</title>
+    <link rel="icon" type="image/png" href="images/logo-thibequation-official.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Modern Pale Theme -->
+    <link rel="stylesheet" href="css/modern-pale-theme-v2.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --deep-space: #f8fafb; --navy-dark: #ffffff; --navy-mid: #f3f6f9;
+            --gold: #b8860b; --gold-light: #daa520; --white: #0d1117;
+            --gray-light: #0d1117; --gray-mid: #2d3748;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            background: linear-gradient(180deg, #f8fafb 0%, #ffffff 100%);
+            color: #0d1117; font-family: 'Inter', sans-serif;
+            min-height: 100vh; overflow-x: hidden;
+        }
+        body::before {
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20% 30%, white, transparent),
+                radial-gradient(1px 1px at 50% 50%, white, transparent);
+            background-size: 200% 200%; animation: stars 80s linear infinite;
+            opacity: 0.5; pointer-events: none; z-index: 0;
+        }
+        @keyframes stars { 0% { background-position: 0% 0%; } 100% { background-position: 100% 100%; } }
+        header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(10, 22, 40, 0.97); backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.4);
+        }
+        .header-container {
+            max-width: 1800px; margin: 0 auto; padding: 12px 30px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .logo-section { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo-emblem { width: 50px; height: 50px; transition: transform 0.6s ease; border-radius: 50%; overflow: hidden; }
+        .logo-emblem img { width: 100%; height: 100%; object-fit: cover; filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.5)); }
+        .logo-section:hover .logo-emblem { transform: rotate(180deg); }
+        .logo-text { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600; color: var(--white); letter-spacing: 1px; }
+        nav ul { display: flex; gap: 25px; list-style: none; }
+        nav a {
+            color: var(--gray-light); text-decoration: none; font-size: 12px; font-weight: 500;
+            letter-spacing: 0.5px; transition: all 0.3s ease; position: relative; padding: 8px 0; text-transform: uppercase;
+        }
+        nav a::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px;
+            background: var(--gold); transition: width 0.3s ease;
+        }
+        nav a:hover::after, nav a.active::after { width: 100%; }
+        nav a:hover, nav a.active { color: var(--gold); }
+        .container { position: relative; z-index: 1; max-width: 1600px; margin: 0 auto; padding: 120px 40px 80px; }
+        .page-header { text-align: center; margin-bottom: 50px; }
+        .page-title {
+            font-family: 'Space Grotesk', sans-serif; font-size: 56px; font-weight: 700;
+            background: linear-gradient(135deg, var(--white), var(--gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 20px;
+        }
+        .page-subtitle { font-size: 18px; color: var(--gray-mid); max-width: 900px; margin: 0 auto; line-height: 1.6; }
+        
+        .tools-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin: 40px 0;
+        }
+        .tool-card {
+            background: rgba(27, 38, 59, 0.7); border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px; padding: 30px; text-align: center;
+            transition: all 0.3s ease; cursor: pointer;
+            text-decoration: none; color: inherit;
+        }
+        .tool-card:hover {
+            border-color: var(--gold);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+            transform: translateY(-5px);
+        }
+        .tool-icon {
+            font-size: 56px; margin-bottom: 20px;
+        }
+        .tool-title {
+            font-size: 22px; color: var(--gold-light); font-weight: 600; margin-bottom: 15px;
+        }
+        .tool-desc {
+            font-size: 14px; color: var(--gray-light); line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            .tools-grid { grid-template-columns: 1fr; }
+            .page-title { font-size: 36px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo-section">
+                <div class="logo-emblem"><img src="images/logo-thibequation-round.png" alt="ThibEquation Logo"></div>
+                <span class="logo-text">THIBEQUATION</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="methodologie.html">Méthodologie GKSC</a></li>
+                    <li><a href="calculateur.html">Calculateur Détaillé</a></li>
+                    <li><a href="donnees.html">Données Sources</a></li>
+                    <li><a href="outils.html">Outils & Visualisations</a></li>
+                    <li><a href="collaboration.html">Collaboration v5.0</a></li>
+                    <li><a href="sources.html">Framework Scientifique</a></li>
+                    <li><a href="bibliographie.html">Recherche Interstellaire</a></li>
+                    <li><a href="feedback.html">Feedback</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">🎯 Simulateur Unifié</h1>
+            <p class="page-subtitle">
+                Hub central donnant accès à tous les outils et calculateurs du framework ThibEquation
+            </p>
+        </div>
+
+        <div class="tools-grid">
+            <a href="calculateur.html" class="tool-card">
+                <div class="tool-icon">🧮</div>
+                <div class="tool-title">Calculateur GKSC</div>
+                <div class="tool-desc">
+                    Mode auto/manuel pour calcul ThibScore avec 12 sous-variables
+                </div>
+            </a>
+
+            <a href="trajectoires-interstellaires.html" class="tool-card">
+                <div class="tool-icon">🛸</div>
+                <div class="tool-title">Trajectoires Interstellaires</div>
+                <div class="tool-desc">
+                    Visualisation orbites hyperboliques et paramètres JPL HORIZONS
+                </div>
+            </a>
+
+            <a href="status-validation-empirique.html" class="tool-card">
+                <div class="tool-icon">✅</div>
+                <div class="tool-title">Validation Empirique</div>
+                <div class="tool-desc">
+                    Métriques R²=0.85, MAE=0.48, RMSE=0.62 sur 46 objets
+                </div>
+            </a>
+
+            <a href="catalogue-objets-interstellaires.html" class="tool-card">
+                <div class="tool-icon">📚</div>
+                <div class="tool-title">Catalogue Objets</div>
+                <div class="tool-desc">
+                    Base de données complète 46 objets avec filtres avancés
+                </div>
+            </a>
+
+            <a href="dashboard-temps-reel.html" class="tool-card">
+                <div class="tool-icon">⚡</div>
+                <div class="tool-title">Dashboard Temps Réel</div>
+                <div class="tool-desc">
+                    Monitoring JPL HORIZONS et détection anomalies en direct
+                </div>
+            </a>
+
+            <a href="visualisation-3d-trajectoires.html" class="tool-card">
+                <div class="tool-icon">🌐</div>
+                <div class="tool-title">Visualisation 3D</div>
+                <div class="tool-desc">
+                    Simulation 3D interactive avec rotation temps réel
+                </div>
+            </a>
+
+            <a href="simulateur-pvrelSQ-interactif.html" class="tool-card">
+                <div class="tool-icon">⚡</div>
+                <div class="tool-title">Simulateur pvrelSQ</div>
+                <div class="tool-desc">
+                    Calcul vitesse relative quadratique rencontres stellaires
+                </div>
+            </a>
+
+            <a href="composition-metallique.html" class="tool-card">
+                <div class="tool-icon">🧪</div>
+                <div class="tool-title">Composition Métallique</div>
+                <div class="tool-desc">
+                    Analyse spectroscopique et abondances élémentaires
+                </div>
+            </a>
+
+            <a href="systeme-solaire.html" class="tool-card">
+                <div class="tool-icon">☀️</div>
+                <div class="tool-title">Système Solaire</div>
+                <div class="tool-desc">
+                    Vue d'ensemble avec trajectoires objets interstellaires
+                </div>
+            </a>
+
+            <a href="variables-gksc-detaillees.html" class="tool-card">
+                <div class="tool-icon">📖</div>
+                <div class="tool-title">Variables GKSC</div>
+                <div class="tool-desc">
+                    Encyclopédie complète 12 sous-variables avec formules
+                </div>
+            </a>
+
+            <a href="comparaison-jpl-mpc.html" class="tool-card">
+                <div class="tool-icon">⚖️</div>
+                <div class="tool-title">Comparaison JPL-MPC</div>
+                <div class="tool-desc">
+                    Validation croisée NASA/IAU avec concordance 100%
+                </div>
+            </a>
+
+            <a href="simulateur-thibequation.html" class="tool-card">
+                <div class="tool-icon">🧮</div>
+                <div class="tool-title">Simulateur Ridge</div>
+                <div class="tool-desc">
+                    Ridge Regression α=0.1 avec régularisation L2
+                </div>
+            </a>
+        </div>
+
+        <div style="background: rgba(27, 38, 59, 0.7); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 12px; padding: 35px; margin: 40px 0; text-align: center;">
+            <h3 style="color: var(--gold); font-size: 28px; margin-bottom: 20px;">🚀 Framework ThibEquation Complet</h3>
+            <p style="color: var(--gray-light); font-size: 16px; line-height: 1.8; max-width: 800px; margin: 0 auto;">
+                12 outils professionnels pour l'analyse d'objets interstellaires basés sur la méthodologie GKSC validée empiriquement (R²=0.85) sur 46 objets du système solaire.
+            </p>
+            <div style="margin-top: 30px;">
+                <strong style="color: var(--gold); font-size: 18px;">Sources Officielles :</strong><br>
+                <span style="color: var(--gray-light); font-size: 14px;">
+                    JPL HORIZONS (NASA) • Minor Planet Center (IAU) • Publications Peer-Reviewed
+                </span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

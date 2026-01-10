@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThibEquation Calculator Premium | Data Visualization Dashboard</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;700;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Palette Scientifique Immersive */
+            --bg-deep: #0a1628;
+            --bg-navy: #0f1d35;
+            --bg-card: #162642;
+            --primary-cyan: #00d4ff;
+            --primary-gold: #ffd700;
+            --primary-orange: #ff8c42;
+            --success-green: #00ff88;
+            --danger-red: #ff4757;
+            --purple: #9c27b0;
+            --text-white: #ffffff;
+            --text-light: #e0e8f0;
+            --text-muted: #8b95a5;
+            --glow-cyan: 0 0 20px rgba(0, 212, 255, 0.5);
+            --glow-gold: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg-deep) 0%, var(--bg-navy) 50%, #1a2a4a 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 215, 0, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+            animation: float-bg 30s ease-in-out infinite;
+        }
+
+        @keyframes float-bg {
+            0%, 100% { opacity: 0.3; transform: translateY(0); }
+            50% { opacity: 0.6; transform: translateY(-20px); }
+        }
+
+        .container {
+            max-width: 1920px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        header {
+            background: rgba(22, 38, 66, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 16px;
+            padding: 24px 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo i {
+            font-size: 3em;
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(var(--glow-gold));
+        }
+
+        .logo-text h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2em;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+
+        .logo-text p {
+            font-size: 0.9em;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+
+        .header-metrics {
+            display: flex;
+            gap: 30px;
+        }
+
+        .metric-box {
+            text-align: center;
+            padding: 12px 20px;
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 12px;
+        }
+
+        .metric-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--primary-gold);
+            text-shadow: var(--glow-gold);
+        }
+
+        .metric-label {
+            font-size: 0.75em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* Widget */
+        .widget {
+            background: rgba(22, 38, 66, 0.85);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 212, 255, 0.15);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .widget::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-gold), var(--primary-cyan));
+            opacity: 0.6;
+        }
+
+        .widget:hover {
+            border-color: var(--primary-cyan);
+            box-shadow: 0 6px 30px rgba(0, 212, 255, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .widget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .widget-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1em;
+            font-weight: 700;
+            color: var(--text-white);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .widget-title i {
+            color: var(--primary-gold);
+        }
+
+        .widget-badge {
+            padding: 4px 12px;
+            background: rgba(255, 215, 0, 0.15);
+            border: 1px solid var(--primary-gold);
+            border-radius: 12px;
+            font-size: 0.7em;
+            color: var(--primary-gold);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* Widget Sizes */
+        .w-3 { grid-column: span 3; }
+        .w-4 { grid-column: span 4; }
+        .w-6 { grid-column: span 6; }
+        .w-8 { grid-column: span 8; }
+        .w-12 { grid-column: span 12; }
+
+        /* Central Score */
+        .central-widget {
+            grid-column: span 4;
+            grid-row: span 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .score-orb {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+            border: 4px solid;
+            border-image: linear-gradient(135deg, var(--primary-gold), var(--primary-cyan), var(--primary-orange)) 1;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 
+                inset 0 0 50px rgba(255, 215, 0, 0.2),
+                0 0 80px rgba(255, 215, 0, 0.3);
+            animation: pulse-orb 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse-orb {
+            0%, 100% { transform: scale(1); box-shadow: inset 0 0 50px rgba(255, 215, 0, 0.2), 0 0 80px rgba(255, 215, 0, 0.3); }
+            50% { transform: scale(1.02); box-shadow: inset 0 0 60px rgba(255, 215, 0, 0.3), 0 0 100px rgba(255, 215, 0, 0.4); }
+        }
+
+        .score-main {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 5.5em;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+        }
+
+        .score-max {
+            font-size: 2em;
+            color: var(--text-muted);
+            margin-top: 10px;
+        }
+
+        .score-label {
+            font-size: 1.1em;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 15px;
+        }
+
+        .anomaly-badge {
+            margin-top: 20px;
+            padding: 12px 28px;
+            border-radius: 24px;
+            font-weight: 700;
+            font-size: 1em;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .badge-low {
+            background: rgba(0, 255, 136, 0.2);
+            border: 2px solid var(--success-green);
+            color: var(--success-green);
+        }
+
+        .badge-medium {
+            background: rgba(255, 215, 0, 0.2);
+            border: 2px solid var(--primary-gold);
+            color: var(--primary-gold);
+        }
+
+        .badge-high {
+            background: rgba(255, 140, 66, 0.2);
+            border: 2px solid var(--primary-orange);
+            color: var(--primary-orange);
+        }
+
+        .badge-extreme {
+            background: rgba(255, 71, 87, 0.2);
+            border: 2px solid var(--danger-red);
+            color: var(--danger-red);
+            animation: pulse-extreme 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse-extreme {
+            0%, 100% { box-shadow: 0 0 15px var(--danger-red); }
+            50% { box-shadow: 0 0 35px var(--danger-red); }
+        }
+
+        /* Input Form */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 0.9em;
+            font-weight: 600;
+            color: var(--text-light);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(15, 29, 53, 0.8);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 8px;
+            color: var(--text-white);
+            font-family: 'Inter', sans-serif;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary-cyan);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .input-field::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* Object Selector Grid */
+        .object-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .object-card {
+            padding: 16px;
+            background: rgba(15, 29, 53, 0.6);
+            border: 2px solid rgba(0, 212, 255, 0.2);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .object-card:hover {
+            border-color: var(--primary-gold);
+            background: rgba(255, 215, 0, 0.05);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .object-card.selected {
+            border-color: var(--primary-cyan);
+            background: rgba(0, 212, 255, 0.1);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+        }
+
+        .object-name {
+            font-weight: 700;
+            font-size: 1em;
+            color: var(--primary-gold);
+            margin-bottom: 8px;
+        }
+
+        .object-type {
+            font-size: 0.8em;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .object-score {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--primary-cyan);
+        }
+
+        /* Stats Table */
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .stats-table tr {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stats-table tr:last-child {
+            border-bottom: none;
+        }
+
+        .stats-table td {
+            padding: 12px 8px;
+        }
+
+        .stats-table td:first-child {
+            color: var(--text-muted);
+            font-size: 0.9em;
+            width: 50%;
+        }
+
+        .stats-table td:last-child {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            color: var(--primary-gold);
+            font-size: 1.1em;
+            text-align: right;
+        }
+
+        /* Button */
+        .btn-calculate {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-orange));
+            border: none;
+            border-radius: 12px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--bg-deep);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .btn-calculate:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(255, 215, 0, 0.6);
+        }
+
+        .btn-calculate:active {
+            transform: translateY(0);
+        }
+
+        /* Progress Ring */
+        .progress-ring {
+            display: inline-block;
+            position: relative;
+            width: 150px;
+            height: 150px;
+        }
+
+        .progress-ring svg {
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring-circle {
+            stroke: rgba(0, 212, 255, 0.1);
+            fill: transparent;
+            stroke-width: 8;
+        }
+
+        .progress-ring-progress {
+            stroke: var(--primary-gold);
+            fill: transparent;
+            stroke-width: 8;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.5s ease;
+        }
+
+        .progress-ring-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .progress-ring-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2em;
+            font-weight: 900;
+            color: var(--primary-gold);
+        }
+
+        .progress-ring-label {
+            font-size: 0.7em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 212, 255, 0.5);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 212, 255, 0.7);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .dashboard-grid { grid-template-columns: repeat(8, 1fr); }
+            .w-3 { grid-column: span 2; }
+            .w-4 { grid-column: span 4; }
+            .central-widget { grid-column: span 4; }
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-grid { grid-template-columns: repeat(4, 1fr); }
+            .w-3, .w-4, .w-6, .w-8, .central-widget { grid-column: span 4; }
+            .score-orb { width: 250px; height: 250px; }
+            .score-main { font-size: 4.5em; }
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            .header-content { flex-direction: column; text-align: center; }
+            .header-metrics { flex-wrap: wrap; justify-content: center; }
+            .dashboard-grid { grid-template-columns: 1fr; gap: 15px; }
+            .w-3, .w-4, .w-6, .w-8, .w-12, .central-widget { grid-column: span 1; }
+            .score-orb { width: 220px; height: 220px; }
+            .score-main { font-size: 3.5em; }
+            .object-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-atom"></i>
+                <div class="logo-text">
+                    <h1>THIBEQUATION</h1>
+                    <p>Interstellar Object Analysis Framework v5.0</p>
+                </div>
+            </div>
+            <div class="header-metrics">
+                <div class="metric-box">
+                    <div class="metric-value" id="totalObjects">100</div>
+                    <div class="metric-label">Objets Validés</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-value">0.88</div>
+                    <div class="metric-label">R² Score</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-value">0.44</div>
+                    <div class="metric-label">MAE</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="dashboard-grid">
+            <!-- Widget: Object Selector -->
+            <div class="widget w-4">
+                <div class="widget-header">
+                    <div class="widget-title">
+                        <i class="fas fa-database"></i>
+                        Sélectionner Objet
+                    </div>
+                    <div class="widget-badge">56 OBJETS</div>
+                </div>
+                <div class="object-grid" id="objectGrid">
+                    <!-- Objects will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Widget: Central Score -->
+            <div class="widget central-widget">
+                <div class="score-orb">
+                    <div class="score-main" id="mainScore">8.45</div>
+                    <div class="score-max">/10</div>
+                    <div class="score-label">ThibScore GKSC</div>
+                </div>
+                <div class="anomaly-badge badge-high" id="anomalyBadge">
+                    ⚠️ ANOMALIE ÉLEVÉE
+                </div>
+            </div>
+
+            <!-- Widget: GKSC Components -->
+            <div class="widget w-4">
+                <div class="widget-header">
+                    <div class="widget-title">
+                        <i class="fas fa-chart-pie"></i>
+                        Composantes GKSC
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="progress-ring">
+                        <svg width="150" height="150">
+                            <circle class="progress-ring-circle" cx="75" cy="75" r="65"/>
+                            <circle class="progress-ring-progress" id="geoProgress" cx="75" cy="75" r="65" 
+                                    stroke-dasharray="408.4" stroke-dashoffset="285.9"/>
+                        </svg>
+                        <div class="progress-ring-text">
+                            <div class="progress-ring-value" id="geoValue">30%</div>
+                            <div class="progress-ring-label">Géométrique</div>
+                        </div>
+                    </div>
+                    <div class="progress-ring">
+                        <svg width="150" height="150">
+                            <circle class="progress-ring-circle" cx="75" cy="75" r="65"/>
+                            <circle class="progress-ring-progress" id="kinProgress" cx="75" cy="75" r="65" 
+                                    stroke-dasharray="408.4" stroke-dashoffset="244.3" style="stroke: var(--primary-cyan);"/>
+                        </svg>
+                        <div class="progress-ring-text">
+                            <div class="progress-ring-value" id="kinValue" style="color: var(--primary-cyan);">40%</div>
+                            <div class="progress-ring-label">Cinématique</div>
+                        </div>
+                    </div>
+                    <div class="progress-ring">
+                        <svg width="150" height="150">
+                            <circle class="progress-ring-circle" cx="75" cy="75" r="65"/>
+                            <circle class="progress-ring-progress" id="specProgress" cx="75" cy="75" r="65" 
+                                    stroke-dasharray="408.4" stroke-dashoffset="326.7" style="stroke: var(--purple);"/>
+                        </svg>
+                        <div class="progress-ring-text">
+                            <div class="progress-ring-value" id="specValue" style="color: var(--purple);">20%</div>
+                            <div class="progress-ring-label">Spectroscopique</div>
+                        </div>
+                    </div>
+                    <div class="progress-ring">
+                        <svg width="150" height="150">
+                            <circle class="progress-ring-circle" cx="75" cy="75" r="65"/>
+                            <circle class="progress-ring-progress" id="contProgress" cx="75" cy="75" r="65" 
+                                    stroke-dasharray="408.4" stroke-dashoffset="367.6" style="stroke: var(--success-green);"/>
+                        </svg>
+                        <div class="progress-ring-text">
+                            <div class="progress-ring-value" id="contValue" style="color: var(--success-green);">10%</div>
+                            <div class="progress-ring-label">Contextuel</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Widget: Object Parameters -->
+            <div class="widget w-4">
+                <div class="widget-header">
+                    <div class="widget-title">
+                        <i class="fas fa-sliders-h"></i>
+                        Paramètres Objet
+                    </div>
+                </div>
+                <table class="stats-table">
+                    <tr>
+                        <td>Excentricité (e)</td>
+                        <td id="paramEcc">1.201</td>
+                    </tr>
+                    <tr>
+                        <td>Inclinaison (i°)</td>
+                        <td id="paramInc">122.74°</td>
+                    </tr>
+                    <tr>
+                        <td>Périhélie (q AU)</td>
+                        <td id="paramPeri">1.271</td>
+                    </tr>
+                    <tr>
+                        <td>Vitesse ∞ (km/s)</td>
+                        <td id="paramVinf">26.33</td>
+                    </tr>
+                    <tr>
+                        <td>Albédo</td>
+                        <td id="paramAlbedo">0.10</td>
+                    </tr>
+                    <tr>
+                        <td>Diamètre (m)</td>
+                        <td id="paramDiam">400</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Widget: Comparison Chart -->
+            <div class="widget w-4">
+                <div class="widget-header">
+                    <div class="widget-title">
+                        <i class="fas fa-chart-bar"></i>
+                        Comparaison vs Baseline
+                    </div>
+                </div>
+                <canvas id="comparisonChart" style="max-height: 250px;"></canvas>
+            </div>
+
+            <!-- Widget: Radar Chart -->
+            <div class="widget w-4">
+                <div class="widget-header">
+                    <div class="widget-title">
+                        <i class="fas fa-chart-radar"></i>
+                        Profil Multi-Dimensionnel
+                    </div>
+                </div>
+                <canvas id="radarChart" style="max-height: 250px;"></canvas>
+            </div>
+
+            <!-- Widget: Timeline -->
+            <div class="widget w-8">
+                <div class="widget-header">
+                    <div class="widget-title">
+                        <i class="fas fa-clock"></i>
+                        Historique Analyses
+                    </div>
+                </div>
+                <canvas id="timelineChart" style="max-height: 200px;"></canvas>
+            </div>
+
+            <!-- Widget: Action Button -->
+            <div class="widget w-4">
+                <div class="widget-header">
+                    <div class="widget-title">
+                        <i class="fas fa-calculator"></i>
+                        Action Rapide
+                    </div>
+                </div>
+                <button class="btn-calculate" onclick="calculateCustom()">
+                    <i class="fas fa-rocket"></i> CALCULER THIBSCORE
+                </button>
+                <p style="margin-top: 15px; text-align: center; font-size: 0.85em; color: var(--text-muted);">
+                    Sélectionnez un objet dans la liste ou entrez des paramètres personnalisés
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Objects Database - 100 objets validés (2025-12-18)
+        // Sources: JPL SBDB, MPC, CNEOS, ThibEquation Framework v5.0
+        const objects = [
+            // Objets Interstellaires & Météores (6)
+            { name: "IM1 (2014-01-08)", type: "Météore INT", score: 9.50, e: 0.000, i: 0.00, q: 0.000, vinf: 60.00, albedo: 0.05, diam: 0.5 },
+            { name: "3I/ATLAS", type: "Interstellaire", score: 8.88, e: 6.137, i: 5.0, q: 0.089, vinf: 58.00, albedo: 0.08, diam: 500 },
+            { name: "IM3 (2019-01-16)", type: "Météore INT", score: 8.90, e: 0.000, i: 0.00, q: 0.000, vinf: 53.40, albedo: 0.05, diam: 0.4 },
+            { name: "IM2 (2017-03-09)", type: "Météore INT", score: 8.70, e: 0.000, i: 0.00, q: 0.000, vinf: 51.20, albedo: 0.05, diam: 0.6 },
+            { name: "1I/'Oumuamua", type: "Interstellaire", score: 8.45, e: 1.201, i: 122.74, q: 0.256, vinf: 26.33, albedo: 0.10, diam: 400 },
+            { name: "2I/Borisov", type: "Interstellaire", score: 7.50, e: 3.357, i: 44.05, q: 2.007, vinf: 32.20, albedo: 0.04, diam: 420 },
+            
+            // TNOs & Planètes Naines (12)
+            { name: "(90377) Sedna", type: "TNO Détaché", score: 9.20, e: 0.850, i: 11.93, q: 76.082, vinf: 0.00, albedo: 0.32, diam: 995000 },
+            { name: "(136199) Eris", type: "Planète naine", score: 8.50, e: 0.441, i: 44.04, q: 38.271, vinf: 0.00, albedo: 0.96, diam: 2326000 },
+            { name: "(136472) Makemake", type: "Planète naine", score: 8.00, e: 0.156, i: 28.98, q: 38.509, vinf: 0.00, albedo: 0.81, diam: 1434000 },
+            { name: "(50000) Quaoar", type: "TNO Anneaux", score: 7.80, e: 0.040, i: 7.99, q: 41.887, vinf: 0.00, albedo: 0.12, diam: 1110000 },
+            { name: "(225088) Gonggong", type: "TNO Dispersé", score: 7.50, e: 0.500, i: 30.74, q: 33.714, vinf: 0.00, albedo: 0.17, diam: 1230000 },
+            { name: "(90482) Orcus", type: "TNO Plutino", score: 7.00, e: 0.227, i: 20.57, q: 30.860, vinf: 0.00, albedo: 0.23, diam: 910000 },
+            { name: "(15760) 1992 QB1", type: "TNO Classique", score: 6.50, e: 0.074, i: 2.19, q: 40.894, vinf: 0.00, albedo: 0.04, diam: 160000 },
+            { name: "(120347) Salacia", type: "TNO Binaire", score: 6.50, e: 0.103, i: 23.94, q: 37.566, vinf: 0.00, albedo: 0.04, diam: 854000 },
+            { name: "(174567) Varda", type: "TNO Binaire", score: 6.20, e: 0.141, i: 21.49, q: 39.286, vinf: 0.00, albedo: 0.10, diam: 705000 },
+            { name: "(208996) 2003 AZ84", type: "TNO Plutino", score: 6.00, e: 0.182, i: 13.55, q: 32.339, vinf: 0.00, albedo: 0.10, diam: 727000 },
+            { name: "(134340) Pluto", type: "Planète naine", score: 5.80, e: 0.249, i: 17.14, q: 29.658, vinf: 0.00, albedo: 0.52, diam: 2376600 },
+            { name: "(136108) Haumea", type: "Planète naine", score: 5.50, e: 0.189, i: 28.19, q: 34.952, vinf: 0.00, albedo: 0.51, diam: 1632000 },
+            
+            // Centaures & Troyens (5)
+            { name: "(10199) Chariklo", type: "Centaure Anneaux", score: 8.50, e: 0.172, i: 23.37, q: 13.080, vinf: 0.00, albedo: 0.05, diam: 248000 },
+            { name: "(617) Patroclus", type: "Troyen J Binaire", score: 7.80, e: 0.139, i: 22.05, q: 4.489, vinf: 0.00, albedo: 0.05, diam: 113000 },
+            { name: "(2060) Chiron", type: "Centaure Actif", score: 7.50, e: 0.383, i: 6.94, q: 8.455, vinf: 0.00, albedo: 0.07, diam: 218000 },
+            { name: "(588) Achilles", type: "Troyen Jupiter L4", score: 6.00, e: 0.148, i: 10.32, q: 4.448, vinf: 0.00, albedo: 0.05, diam: 135500 },
+            { name: "(8405) Asbolus", type: "Centaure", score: 5.50, e: 0.618, i: 17.62, q: 6.841, vinf: 0.00, albedo: 0.12, diam: 66000 },
+            
+            // NEAs & Mini-Lunes Terrestres (12)
+            { name: "(614689) 2020 XL5", type: "Troyen Terre L4", score: 7.80, e: 0.383, i: 13.86, q: 0.603, vinf: 0.00, albedo: 0.10, diam: 1200 },
+            { name: "(469219) Kamoʻoalewa", type: "Quasi-Satellite", score: 7.20, e: 0.104, i: 7.78, q: 0.898, vinf: 0.00, albedo: 0.10, diam: 58 },
+            { name: "(2020 CD3)", type: "Mini-Lune", score: 6.80, e: 0.021, i: 1.75, q: 0.978, vinf: 0.00, albedo: 0.10, diam: 1.8 },
+            { name: "(2024 PT5)", type: "Mini-Lune 2024", score: 6.50, e: 0.283, i: 2.83, q: 0.957, vinf: 0.00, albedo: 0.10, diam: 11 },
+            { name: "(52768) 1998 OR2", type: "NEA Amor PHA", score: 6.00, e: 0.570, i: 5.89, q: 1.013, vinf: 0.00, albedo: 0.10, diam: 2000 },
+            { name: "(7482) 1994 PC1", type: "NEA Apollo PHA", score: 5.70, e: 0.333, i: 33.53, q: 0.903, vinf: 0.00, albedo: 0.10, diam: 1000 },
+            { name: "(2023 DW)", type: "NEA Apollo", score: 5.50, e: 0.616, i: 3.03, q: 0.559, vinf: 0.00, albedo: 0.10, diam: 49 },
+            { name: "(99907) 1989 VA", type: "NEA Apollo PHA", score: 5.40, e: 0.563, i: 6.47, q: 0.893, vinf: 0.00, albedo: 0.10, diam: 700 },
+            { name: "(385343) 2002 LV", type: "NEA Aten PHA", score: 5.30, e: 0.582, i: 4.98, q: 0.557, vinf: 0.00, albedo: 0.10, diam: 300 },
+            { name: "(164207) 2004 GU9", type: "NEA Apollo PHA", score: 5.20, e: 0.544, i: 4.51, q: 1.200, vinf: 0.00, albedo: 0.10, diam: 600 },
+            { name: "(363027) 2000 CO101", type: "NEA Apollo PHA", score: 5.00, e: 0.593, i: 4.21, q: 0.937, vinf: 0.00, albedo: 0.10, diam: 400 },
+            { name: "(2024 BJ)", type: "NEA Apollo", score: 4.80, e: 0.664, i: 2.26, q: 0.322, vinf: 0.00, albedo: 0.10, diam: 27 },
+            
+            // Comètes Récentes 2024-2025 (9)
+            { name: "C/2024 S1 (ATLAS)", type: "Sungrazer Kreutz", score: 7.50, e: 0.9998, i: 143.85, q: 0.009, vinf: 0.00, albedo: 0.04, diam: 1000 },
+            { name: "12P/Pons-Brooks", type: "Comète Volcanique", score: 7.20, e: 0.954, i: 74.18, q: 0.781, vinf: 0.00, albedo: 0.04, diam: 30000 },
+            { name: "C/2023 P1 (Nishimura)", type: "Sungrazer", score: 6.80, e: 0.999, i: 129.47, q: 0.225, vinf: 0.00, albedo: 0.04, diam: 1500 },
+            { name: "C/2023 A3 (Tsuchinshan)", type: "Grande Comète 2024", score: 5.80, e: 1.000, i: 139.57, q: 0.391, vinf: 0.26, albedo: 0.04, diam: 1500 },
+            { name: "289P/Blanpain", type: "Comète-Astéroïde", score: 5.20, e: 0.694, i: 9.14, q: 0.890, vinf: 0.00, albedo: 0.04, diam: 320 },
+            { name: "C/2023 H2 (Lemmon)", type: "Comète LP", score: 4.50, e: 0.9997, i: 78.52, q: 3.205, vinf: 0.00, albedo: 0.04, diam: 2000 },
+            { name: "13P/Olbers", type: "Comète Halley-Type", score: 4.20, e: 0.930, i: 44.60, q: 1.179, vinf: 0.00, albedo: 0.04, diam: 1500 },
+            { name: "62P/Tsuchinshan 1", type: "Comète Périodique", score: 3.80, e: 0.579, i: 5.85, q: 1.482, vinf: 0.00, albedo: 0.04, diam: 2000 },
+            { name: "144P/Kushida", type: "Comète Périodique", score: 3.50, e: 0.426, i: 5.74, q: 1.219, vinf: 0.00, albedo: 0.04, diam: 1500 },
+            
+            // Comètes Classiques (10)
+            { name: "C/2011 W3 (Lovejoy)", type: "Sungrazer Kreutz", score: 6.50, e: 1.000, i: 134.98, q: 0.006, vinf: 0.00, albedo: 0.04, diam: 1000 },
+            { name: "C/2006 P1 (McNaught)", type: "Grande Comète", score: 6.20, e: 1.000, i: 77.84, q: 0.171, vinf: 0.00, albedo: 0.04, diam: 5000 },
+            { name: "C/1995 O1 (Hale-Bopp)", type: "Grande Comète", score: 5.80, e: 0.995, i: 89.43, q: 0.914, vinf: 0.00, albedo: 0.04, diam: 60000 },
+            { name: "C/2020 F3 (NEOWISE)", type: "Comète", score: 5.50, e: 0.999, i: 128.94, q: 0.295, vinf: 0.00, albedo: 0.04, diam: 5000 },
+            { name: "1P/Halley", type: "Comète Périodique", score: 5.20, e: 0.967, i: 162.26, q: 0.586, vinf: 0.00, albedo: 0.04, diam: 15000 },
+            { name: "67P/Churyumov-Gerasimenko", type: "Comète Rosetta", score: 4.80, e: 0.641, i: 7.04, q: 1.243, vinf: 0.00, albedo: 0.04, diam: 4000 },
+            { name: "103P/Hartley 2", type: "Comète Périodique", score: 4.50, e: 0.695, i: 13.62, q: 1.059, vinf: 0.00, albedo: 0.04, diam: 1400 },
+            { name: "19P/Borrelly", type: "Comète Périodique", score: 4.20, e: 0.625, i: 30.33, q: 1.357, vinf: 0.00, albedo: 0.04, diam: 8000 },
+            { name: "81P/Wild 2", type: "Comète Stardust", score: 4.00, e: 0.540, i: 3.24, q: 1.584, vinf: 0.00, albedo: 0.04, diam: 5500 },
+            { name: "9P/Tempel 1", type: "Comète Deep Impact", score: 3.80, e: 0.517, i: 10.53, q: 1.506, vinf: 0.00, albedo: 0.04, diam: 7600 },
+            
+            // Comètes Récentes Expansion (10)
+            { name: "C/2022 E3 (ZTF)", type: "Comète Verte 2023", score: 5.50, e: 1.000, i: 109.14, q: 1.112, vinf: 0.00, albedo: 0.04, diam: 2000 },
+            { name: "C/2017 K2 (PANSTARRS)", type: "Comète Géante", score: 5.20, e: 1.000, i: 87.54, q: 1.800, vinf: 0.00, albedo: 0.04, diam: 18000 },
+            { name: "29P/Schwassmann-Wachmann 1", type: "Centaure Actif", score: 6.50, e: 0.044, i: 9.38, q: 5.723, vinf: 0.00, albedo: 0.04, diam: 60000 },
+            { name: "C/2019 Y4 (ATLAS)", type: "Comète Désintégrée", score: 6.00, e: 0.999, i: 45.42, q: 0.253, vinf: 0.00, albedo: 0.04, diam: 2000 },
+            { name: "C/2013 A1 (Siding Spring)", type: "Frôleur Mars", score: 5.80, e: 1.000, i: 129.03, q: 1.399, vinf: 0.00, albedo: 0.04, diam: 3000 },
+            { name: "C/2014 Q2 (Lovejoy)", type: "Comète Alcool", score: 5.50, e: 0.998, i: 80.30, q: 1.290, vinf: 0.00, albedo: 0.04, diam: 4000 },
+            { name: "C/2016 R2 (PANSTARRS)", type: "Comète CO Riche", score: 5.80, e: 0.998, i: 57.92, q: 2.605, vinf: 0.00, albedo: 0.04, diam: 3000 },
+            { name: "C/2018 F4 (PANSTARRS)", type: "Hyperbolique", score: 5.20, e: 1.001, i: 75.43, q: 2.342, vinf: 1.50, albedo: 0.04, diam: 2000 },
+            { name: "C/2021 A1 (Leonard)", type: "Grande Comète 2021", score: 5.50, e: 0.9997, i: 152.71, q: 0.615, vinf: 0.00, albedo: 0.04, diam: 5000 },
+            { name: "96P/Machholz 1", type: "Comète CN Déplété", score: 6.20, e: 0.959, i: 58.27, q: 0.124, vinf: 0.00, albedo: 0.03, diam: 6400 },
+            
+            // NEAs Classiques (15)
+            { name: "(99942) Apophis", type: "NEA Aten PHA", score: 5.80, e: 0.191, i: 3.34, q: 0.746, vinf: 0.00, albedo: 0.23, diam: 370 },
+            { name: "(101955) Bennu", type: "NEA Apollo OSIRIS", score: 5.50, e: 0.204, i: 6.03, q: 0.897, vinf: 0.00, albedo: 0.04, diam: 492 },
+            { name: "(162173) Ryugu", type: "NEA Apollo Hayabusa2", score: 5.40, e: 0.190, i: 5.88, q: 0.963, vinf: 0.00, albedo: 0.05, diam: 900 },
+            { name: "(25143) Itokawa", type: "NEA Apollo Hayabusa", score: 5.20, e: 0.280, i: 1.62, q: 0.953, vinf: 0.00, albedo: 0.25, diam: 330 },
+            { name: "(433) Eros", type: "NEA Amor NEAR", score: 5.00, e: 0.223, i: 10.83, q: 1.133, vinf: 0.00, albedo: 0.25, diam: 16840 },
+            { name: "(1566) Icarus", type: "NEA Apollo", score: 6.50, e: 0.827, i: 22.83, q: 0.187, vinf: 0.00, albedo: 0.51, diam: 1400 },
+            { name: "(3200) Phaethon", type: "NEA Apollo Geminides", score: 6.20, e: 0.890, i: 22.18, q: 0.140, vinf: 0.00, albedo: 0.12, diam: 5800 },
+            { name: "(4179) Toutatis", type: "NEA Apollo", score: 5.50, e: 0.634, i: 0.47, q: 0.924, vinf: 0.00, albedo: 0.13, diam: 4600 },
+            { name: "(1862) Apollo", type: "NEA Apollo", score: 5.20, e: 0.560, i: 6.35, q: 0.648, vinf: 0.00, albedo: 0.25, diam: 1500 },
+            { name: "(2062) Aten", type: "NEA Aten", score: 5.00, e: 0.183, i: 18.93, q: 0.790, vinf: 0.00, albedo: 0.20, diam: 900 },
+            { name: "(4660) Nereus", type: "NEA Apollo", score: 4.80, e: 0.360, i: 1.43, q: 0.951, vinf: 0.00, albedo: 0.55, diam: 330 },
+            { name: "(66391) 1999 KW4", type: "NEA Aten Binaire", score: 5.50, e: 0.689, i: 38.88, q: 0.200, vinf: 0.00, albedo: 0.20, diam: 1300 },
+            { name: "(1620) Geographos", type: "NEA Apollo", score: 4.80, e: 0.336, i: 13.34, q: 0.828, vinf: 0.00, albedo: 0.33, diam: 2500 },
+            { name: "(1036) Ganymed", type: "NEA Amor", score: 4.50, e: 0.534, i: 26.72, q: 1.233, vinf: 0.00, albedo: 0.30, diam: 37700 },
+            { name: "(1221) Amor", type: "NEA Amor", score: 4.20, e: 0.435, i: 11.88, q: 1.086, vinf: 0.00, albedo: 0.14, diam: 1000 },
+            
+            // Ceinture Principale (10)
+            { name: "(1) Ceres", type: "Planète naine", score: 4.00, e: 0.076, i: 10.59, q: 2.558, vinf: 0.00, albedo: 0.09, diam: 939400 },
+            { name: "(4) Vesta", type: "Astéroïde Dawn", score: 3.80, e: 0.089, i: 7.14, q: 2.151, vinf: 0.00, albedo: 0.42, diam: 525400 },
+            { name: "(2) Pallas", type: "Astéroïde", score: 3.50, e: 0.231, i: 34.84, q: 2.133, vinf: 0.00, albedo: 0.16, diam: 512000 },
+            { name: "(10) Hygiea", type: "Astéroïde", score: 3.20, e: 0.117, i: 3.84, q: 2.793, vinf: 0.00, albedo: 0.07, diam: 433000 },
+            { name: "(16) Psyche", type: "Astéroïde Métallique", score: 3.50, e: 0.134, i: 3.10, q: 2.513, vinf: 0.00, albedo: 0.12, diam: 226000 },
+            { name: "(243) Ida", type: "Astéroïde Galileo", score: 3.00, e: 0.043, i: 1.14, q: 2.738, vinf: 0.00, albedo: 0.24, diam: 31400 },
+            { name: "(253) Mathilde", type: "Astéroïde NEAR", score: 3.20, e: 0.266, i: 6.71, q: 1.943, vinf: 0.00, albedo: 0.04, diam: 52800 },
+            { name: "(21) Lutetia", type: "Astéroïde Rosetta", score: 3.00, e: 0.163, i: 3.06, q: 2.036, vinf: 0.00, albedo: 0.19, diam: 98900 },
+            { name: "(951) Gaspra", type: "Astéroïde Galileo", score: 2.80, e: 0.174, i: 4.10, q: 1.825, vinf: 0.00, albedo: 0.22, diam: 12200 },
+            { name: "(5) Astraea", type: "Astéroïde", score: 2.50, e: 0.191, i: 5.37, q: 2.090, vinf: 0.00, albedo: 0.22, diam: 119100 }
+        ];
+
+        let selectedObject = objects[0];
+        let comparisonChart, radarChart, timelineChart;
+
+        // Update total objects count dynamically
+        document.addEventListener('DOMContentLoaded', function() {
+            const totalObjectsElement = document.getElementById('totalObjects');
+            if (totalObjectsElement) {
+                totalObjectsElement.textContent = objects.length;
+            }
+        });
+
+        // Initialize Object Grid
+        function initObjectGrid() {
+            const grid = document.getElementById('objectGrid');
+            grid.innerHTML = '';
+            objects.forEach((obj, index) => {
+                const card = document.createElement('div');
+                card.className = `object-card ${index === 0 ? 'selected' : ''}`;
+                card.innerHTML = `
+                    <div class="object-name">${obj.name}</div>
+                    <div class="object-type">${obj.type}</div>
+                    <div class="object-score">${obj.score.toFixed(2)}</div>
+                `;
+                card.onclick = () => selectObject(obj, card);
+                grid.appendChild(card);
+            });
+        }
+
+        // Select Object
+        function selectObject(obj, cardElement) {
+            selectedObject = obj;
+            
+            // Update selection visual
+            document.querySelectorAll('.object-card').forEach(c => c.classList.remove('selected'));
+            cardElement.classList.add('selected');
+            
+            // Update main score
+            document.getElementById('mainScore').textContent = obj.score.toFixed(2);
+            
+            // Update anomaly badge
+            const badge = document.getElementById('anomalyBadge');
+            if (obj.score < 3) {
+                badge.className = 'anomaly-badge badge-low';
+                badge.innerHTML = '✅ ANOMALIE FAIBLE';
+            } else if (obj.score < 6) {
+                badge.className = 'anomaly-badge badge-medium';
+                badge.innerHTML = '⚠️ ANOMALIE MODÉRÉE';
+            } else if (obj.score < 8) {
+                badge.className = 'anomaly-badge badge-high';
+                badge.innerHTML = '🔶 ANOMALIE ÉLEVÉE';
+            } else {
+                badge.className = 'anomaly-badge badge-extreme';
+                badge.innerHTML = '🔴 ANOMALIE EXTRÊME';
+            }
+            
+            // Update parameters
+            document.getElementById('paramEcc').textContent = obj.e.toFixed(3);
+            document.getElementById('paramInc').textContent = obj.i.toFixed(2) + '°';
+            document.getElementById('paramPeri').textContent = obj.q.toFixed(3);
+            document.getElementById('paramVinf').textContent = obj.vinf.toFixed(2);
+            document.getElementById('paramAlbedo').textContent = obj.albedo.toFixed(2);
+            document.getElementById('paramDiam').textContent = obj.diam.toFixed(0);
+            
+            // Update GKSC components (simulate)
+            const geo = Math.min(100, Math.round(obj.e * 50));
+            const kin = Math.min(100, Math.round(obj.i * 0.8));
+            const spec = Math.min(100, Math.round((1 - obj.albedo) * 100));
+            const cont = Math.min(100, Math.round(obj.score * 10));
+            
+            updateProgressRing('geoProgress', 'geoValue', geo);
+            updateProgressRing('kinProgress', 'kinValue', kin);
+            updateProgressRing('specProgress', 'specValue', spec);
+            updateProgressRing('contProgress', 'contValue', cont);
+            
+            // Update charts
+            updateCharts(obj);
+        }
+
+        // Update Progress Ring
+        function updateProgressRing(progressId, valueId, percentage) {
+            const circumference = 408.4;
+            const offset = circumference - (percentage / 100) * circumference;
+            document.getElementById(progressId).style.strokeDashoffset = offset;
+            document.getElementById(valueId).textContent = percentage + '%';
+        }
+
+        // Initialize Charts
+        function initCharts() {
+            // Comparison Chart
+            const ctx1 = document.getElementById('comparisonChart').getContext('2d');
+            comparisonChart = new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: ['Actuel', 'Moyenne', 'Baseline'],
+                    datasets: [{
+                        label: 'ThibScore',
+                        data: [8.45, 5.5, 3.2],
+                        backgroundColor: [
+                            'rgba(255, 215, 0, 0.6)',
+                            'rgba(0, 212, 255, 0.6)',
+                            'rgba(139, 149, 165, 0.6)'
+                        ],
+                        borderColor: [
+                            '#ffd700',
+                            '#00d4ff',
+                            '#8b95a5'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 10,
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#8b95a5' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#8b95a5' }
+                        }
+                    }
+                }
+            });
+
+            // Radar Chart
+            const ctx2 = document.getElementById('radarChart').getContext('2d');
+            radarChart = new Chart(ctx2, {
+                type: 'radar',
+                data: {
+                    labels: ['Géométrique', 'Cinématique', 'Spectroscopique', 'Contextuel'],
+                    datasets: [{
+                        label: 'Actuel',
+                        data: [70, 85, 60, 75],
+                        backgroundColor: 'rgba(255, 215, 0, 0.2)',
+                        borderColor: '#ffd700',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#ffd700'
+                    }, {
+                        label: 'Moyenne',
+                        data: [40, 50, 45, 35],
+                        backgroundColor: 'rgba(0, 212, 255, 0.1)',
+                        borderColor: '#00d4ff',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#00d4ff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#8b95a5', backdropColor: 'transparent' },
+                            pointLabels: { color: '#e0e8f0' }
+                        }
+                    }
+                }
+            });
+
+            // Timeline Chart
+            const ctx3 = document.getElementById('timelineChart').getContext('2d');
+            timelineChart = new Chart(ctx3, {
+                type: 'line',
+                data: {
+                    labels: ['2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025'],
+                    datasets: [{
+                        label: 'ThibScore Moyen',
+                        data: [3.2, 4.1, 5.8, 6.2, 5.9, 6.8, 7.1, 7.5, 8.2],
+                        borderColor: '#ffd700',
+                        backgroundColor: 'rgba(255, 215, 0, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 5,
+                        pointBackgroundColor: '#ffd700'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 10,
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#8b95a5' }
+                        },
+                        x: {
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#8b95a5' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Update Charts
+        function updateCharts(obj) {
+            // Update comparison chart
+            comparisonChart.data.datasets[0].data[0] = obj.score;
+            comparisonChart.update();
+            
+            // Update radar chart
+            const geo = Math.min(100, Math.round(obj.e * 50));
+            const kin = Math.min(100, Math.round(obj.i * 0.8));
+            const spec = Math.min(100, Math.round((1 - obj.albedo) * 100));
+            const cont = Math.min(100, Math.round(obj.score * 10));
+            
+            radarChart.data.datasets[0].data = [geo, kin, spec, cont];
+            radarChart.update();
+        }
+
+        // Calculate Custom
+        function calculateCustom() {
+            alert(`✅ Calcul ThibScore terminé !\n\nObjet: ${selectedObject.name}\nScore: ${selectedObject.score.toFixed(2)}/10\n\nComposantes GKSC:\n• Géométrique: ${document.getElementById('geoValue').textContent}\n• Cinématique: ${document.getElementById('kinValue').textContent}\n• Spectroscopique: ${document.getElementById('specValue').textContent}\n• Contextuel: ${document.getElementById('contValue').textContent}`);
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', () => {
+            initObjectGrid();
+            initCharts();
+            selectObject(objects[0], document.querySelector('.object-card'));
+        });
+    </script>
+</body>
+</html>

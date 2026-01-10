@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Variables GKSC Détaillées - ThibEquation Framework</title>
+    <link rel="icon" type="image/png" href="images/logo-thibequation-official.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Modern Pale Theme -->
+    <link rel="stylesheet" href="css/modern-pale-theme-v2.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --deep-space: #f8fafb; --navy-dark: #ffffff; --navy-mid: #f3f6f9;
+            --gold: #b8860b; --gold-light: #daa520; --white: #0d1117;
+            --gray-light: #0d1117; --gray-mid: #2d3748;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            background: linear-gradient(180deg, #f8fafb 0%, #ffffff 100%);
+            color: #0d1117; font-family: 'Inter', sans-serif;
+            min-height: 100vh; overflow-x: hidden;
+        }
+        body::before {
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20% 30%, white, transparent),
+                radial-gradient(1px 1px at 50% 50%, white, transparent);
+            background-size: 200% 200%; animation: stars 80s linear infinite;
+            opacity: 0.5; pointer-events: none; z-index: 0;
+        }
+        @keyframes stars { 0% { background-position: 0% 0%; } 100% { background-position: 100% 100%; } }
+        header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(10, 22, 40, 0.97); backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.4);
+        }
+        .header-container {
+            max-width: 1800px; margin: 0 auto; padding: 12px 30px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .logo-section { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo-emblem { width: 50px; height: 50px; transition: transform 0.6s ease; border-radius: 50%; overflow: hidden; }
+        .logo-emblem img { width: 100%; height: 100%; object-fit: cover; filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.5)); }
+        .logo-section:hover .logo-emblem { transform: rotate(180deg); }
+        .logo-text { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600; color: var(--white); letter-spacing: 1px; }
+        nav ul { display: flex; gap: 25px; list-style: none; }
+        nav a {
+            color: var(--gray-light); text-decoration: none; font-size: 12px; font-weight: 500;
+            letter-spacing: 0.5px; transition: all 0.3s ease; position: relative; padding: 8px 0; text-transform: uppercase;
+        }
+        nav a::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px;
+            background: var(--gold); transition: width 0.3s ease;
+        }
+        nav a:hover::after, nav a.active::after { width: 100%; }
+        nav a:hover, nav a.active { color: var(--gold); }
+        .container { position: relative; z-index: 1; max-width: 1400px; margin: 0 auto; padding: 120px 40px 80px; }
+        .page-header { text-align: center; margin-bottom: 50px; }
+        .page-title {
+            font-family: 'Space Grotesk', sans-serif; font-size: 56px; font-weight: 700;
+            background: linear-gradient(135deg, var(--white), var(--gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 20px;
+        }
+        .page-subtitle { font-size: 18px; color: var(--gray-mid); max-width: 900px; margin: 0 auto; line-height: 1.6; }
+        
+        .variable-section {
+            background: rgba(27, 38, 59, 0.7); border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px; padding: 35px; margin: 30px 0;
+        }
+        .variable-section h2 {
+            color: var(--gold); font-size: 32px; margin-bottom: 25px;
+        }
+        .variable-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+        }
+        .variable-item {
+            background: rgba(13, 27, 42, 0.9); border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 8px; padding: 20px;
+        }
+        .variable-name {
+            font-size: 18px; color: var(--gold-light); font-weight: 600; margin-bottom: 10px;
+        }
+        .variable-desc {
+            color: var(--gray-light); font-size: 14px; line-height: 1.6; margin-bottom: 10px;
+        }
+        .variable-formula {
+            font-family: 'JetBrains Mono', monospace; font-size: 13px;
+            color: var(--white); background: rgba(0, 0, 0, 0.3);
+            padding: 10px; border-radius: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .variable-grid { grid-template-columns: 1fr; }
+            .page-title { font-size: 36px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo-section">
+                <div class="logo-emblem"><img src="images/logo-thibequation-round.png" alt="ThibEquation Logo"></div>
+                <span class="logo-text">THIBEQUATION</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="methodologie.html">Méthodologie GKSC</a></li>
+                    <li><a href="calculateur.html">Calculateur Détaillé</a></li>
+                    <li><a href="donnees.html">Données Sources</a></li>
+                    <li><a href="outils.html">Outils & Visualisations</a></li>
+                    <li><a href="collaboration.html">Collaboration v5.0</a></li>
+                    <li><a href="sources.html">Framework Scientifique</a></li>
+                    <li><a href="bibliographie.html">Recherche Interstellaire</a></li>
+                    <li><a href="feedback.html">Feedback</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">📖 Variables GKSC Détaillées</h1>
+            <p class="page-subtitle">
+                Encyclopédie complète des 12 sous-variables du framework ThibEquation avec formules et explications
+            </p>
+        </div>
+
+        <div class="variable-section">
+            <h2>G - Géométrique (28%)</h2>
+            <div class="variable-grid">
+                <div class="variable-item">
+                    <div class="variable-name">Rapport d'Aspect (A:B)</div>
+                    <div class="variable-desc">
+                        Ratio longueur/largeur de l'objet. Valeurs élevées indiquent forme allongée (ex: 'Oumuamua 10:1).
+                    </div>
+                    <div class="variable-formula">A:B = L_max / L_min</div>
+                </div>
+                <div class="variable-item">
+                    <div class="variable-name">Volume Apparent</div>
+                    <div class="variable-desc">
+                        Estimation du volume 3D basée sur observations photométriques. Exprimé en m³.
+                    </div>
+                    <div class="variable-formula">V ≈ (4/3)πabc</div>
+                </div>
+                <div class="variable-item">
+                    <div class="variable-name">Surface de Section</div>
+                    <div class="variable-desc">
+                        Section efficace pour calculs d'albédo et réflectance. Unité : m².
+                    </div>
+                    <div class="variable-formula">S = π × r_eff²</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="variable-section">
+            <h2>K - Cinématique (32%) ⭐ DOMINANT</h2>
+            <div class="variable-grid">
+                <div class="variable-item">
+                    <div class="variable-name">Vitesse Hyperbolique (v∞)</div>
+                    <div class="variable-desc">
+                        Vitesse à l'infini hors influence solaire. Valeur > 0 confirme origine interstellaire.
+                    </div>
+                    <div class="variable-formula">v∞ = √(v² - v_esc²)</div>
+                </div>
+                <div class="variable-item">
+                    <div class="variable-name">Excentricité Orbitale</div>
+                    <div class="variable-desc">
+                        e > 1 : hyperbolique (interstellaire)<br>
+                        e = 1 : parabolique<br>
+                        e < 1 : elliptique (lié au Soleil)
+                    </div>
+                    <div class="variable-formula">e = √(1 + 2Eh²/μ²)</div>
+                </div>
+                <div class="variable-item">
+                    <div class="variable-name">Énergie Orbitale Spécifique</div>
+                    <div class="variable-desc">
+                        Énergie par unité de masse. Valeur positive = trajectoire non-liée.
+                    </div>
+                    <div class="variable-formula">E = v²/2 - μ/r</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="variable-section">
+            <h2>S - Spectroscopique (23%)</h2>
+            <div class="variable-grid">
+                <div class="variable-item">
+                    <div class="variable-name">Albédo</div>
+                    <div class="variable-desc">
+                        Fraction de lumière réfléchie. Valeurs faibles (0.04-0.1) suggèrent surface sombre.
+                    </div>
+                    <div class="variable-formula">p = F_refl / F_incident</div>
+                </div>
+                <div class="variable-item">
+                    <div class="variable-name">Indice de Couleur (B-V)</div>
+                    <div class="variable-desc">
+                        Différence magnitudes bleue/visible. Indique composition chimique de surface.
+                    </div>
+                    <div class="variable-formula">B-V = m_B - m_V</div>
+                </div>
+                <div class="variable-item">
+                    <div class="variable-name">Émission Spectrale</div>
+                    <div class="variable-desc">
+                        Longueur d'onde d'émission maximale. Révèle température et composition.
+                    </div>
+                    <div class="variable-formula">λ_max (nm)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="variable-section">
+            <h2>C - Contextuel (17%)</h2>
+            <div class="variable-grid">
+                <div class="variable-item">
+                    <div class="variable-name">Distance de Découverte</div>
+                    <div class="variable-desc">
+                        Distance héliocentrique lors de la première détection. Unité : UA (Unité Astronomique).
+                    </div>
+                    <div class="variable-formula">d_discovery (UA)</div>
+                </div>
+                <div class="variable-item">
+                    <div class="variable-name">Temps de Visibilité</div>
+                    <div class="variable-desc">
+                        Durée pendant laquelle l'objet reste observable depuis Terre. Exprimé en jours.
+                    </div>
+                    <div class="variable-formula">t_visible (jours)</div>
+                </div>
+                <div class="variable-item">
+                    <div class="variable-name">Densité Stellaire Locale</div>
+                    <div class="variable-desc">
+                        Nombre d'étoiles par parsec cube dans le voisinage solaire.
+                    </div>
+                    <div class="variable-formula">ρ* (étoiles/pc³)</div>
+                </div>
+            </div>
+        </div>
+
+        <div style="background: rgba(27, 38, 59, 0.7); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 12px; padding: 30px; margin: 30px 0;">
+            <h3 style="color: var(--gold); margin-bottom: 15px;">🎯 Poids des Composantes</h3>
+            <p style="color: var(--gray-light); font-size: 14px; line-height: 1.8;">
+                <strong>K (32%)</strong> : Poids dominant - Trajectoire hyperbolique critère principal<br>
+                <strong>G (28%)</strong> : Morphologie inhabituelle indicateur d'anomalie<br>
+                <strong>S (23%)</strong> : Signature spectrale unique identification<br>
+                <strong>C (17%)</strong> : Contexte détection complément analytique
+            </p>
+        </div>
+    </div>
+</body>
+</html>

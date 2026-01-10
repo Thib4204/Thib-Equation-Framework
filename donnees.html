@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Données Sources - ThibEquation Framework v5.0</title>
+    <link rel="icon" type="image/png" href="images/logo-thibequation-official.png">
+    
+    <!-- Modern Pale Theme -->
+    <link rel="stylesheet" href="css/modern-pale-theme-v2.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --deep-space: #f8fafb; --navy-dark: #ffffff; --navy-mid: #f3f6f9;
+            --gold: #b8860b; --gold-light: #daa520; --white: #0d1117;
+            --gray-light: #0d1117; --gray-mid: #2d3748;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            background: linear-gradient(180deg, #f8fafb 0%, #ffffff 100%);
+            color: #0d1117; font-family: 'Inter', sans-serif;
+            min-height: 100vh; overflow-x: hidden;
+        }
+        body::before {
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20% 30%, white, transparent),
+                radial-gradient(1px 1px at 50% 50%, white, transparent);
+            background-size: 200% 200%; animation: stars 80s linear infinite;
+            opacity: 0.5; pointer-events: none; z-index: 0;
+        }
+        @keyframes stars { 0% { background-position: 0% 0%; } 100% { background-position: 100% 100%; } }
+        header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(255, 255, 255, 0.98) !important; backdrop-filter: blur(15px);
+            border-bottom: 1px solid #e0e8ed;
+        }
+        .header-container {
+            max-width: 1800px; margin: 0 auto; padding: 12px 30px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .logo-section { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo-emblem { width: 50px; height: 50px; transition: transform 0.6s ease; border-radius: 50%; overflow: hidden; }
+        .logo-emblem img { width: 100%; height: 100%; object-fit: cover; filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.5)); }
+        .logo-section:hover .logo-emblem { transform: rotate(180deg); }
+        .logo-text { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600; color: var(--white); letter-spacing: 1px; }
+        nav ul { display: flex; gap: 25px; list-style: none; }
+        nav a {
+            color: var(--gray-light); text-decoration: none; font-size: 12px; font-weight: 500;
+            letter-spacing: 0.5px; transition: all 0.3s ease; position: relative; padding: 8px 0; text-transform: uppercase;
+        }
+        nav a::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px;
+            background: var(--gold); transition: width 0.3s ease;
+        }
+        nav a:hover::after, nav a.active::after { width: 100%; }
+        nav a:hover, nav a.active { color: var(--gold); }
+        .container { position: relative; z-index: 1; max-width: 1400px; margin: 0 auto; padding: 120px 40px 80px; }
+        .page-header { text-align: center; margin-bottom: 80px; }
+        .page-title {
+            font-family: 'Space Grotesk', sans-serif; font-size: 56px; font-weight: 700;
+            background: linear-gradient(135deg, var(--white), var(--gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 20px;
+        }
+        .page-subtitle { font-size: 18px; color: var(--gray-mid); max-width: 700px; margin: 0 auto; }
+        .section { margin-bottom: 80px; }
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif; font-size: 36px; color: var(--gold);
+            margin-bottom: 30px; padding-bottom: 15px; border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+        }
+        .content-card {
+            background: #ffffff !important; border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px; padding: 30px; backdrop-filter: blur(10px);
+            margin-bottom: 30px; transition: all 0.3s ease;
+        }
+        .content-card:hover {
+            border-color: var(--gold); box-shadow: 0 0 25px rgba(212, 175, 55, 0.2);
+            transform: translateY(-3px);
+        }
+        .content-card h3 { font-size: 24px; color: var(--gold-light); margin-bottom: 15px; }
+        .content-card p { color: var(--gray-light); line-height: 1.8; font-size: 16px; margin-bottom: 15px; }
+        .data-table {
+            width: 100%; border-collapse: collapse; margin: 20px 0;
+        }
+        .data-table th, .data-table td {
+            padding: 15px; text-align: left; border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        .data-table th {
+            background: rgba(212, 175, 55, 0.1); color: var(--gold);
+            font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 1px;
+        }
+        .data-table td { color: var(--gray-light); }
+        .stat-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 30px 0;
+        }
+        .stat-box {
+            background: rgba(13, 27, 42, 0.9); border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 10px; padding: 25px; text-align: center;
+        }
+        .stat-value {
+            font-size: 48px; color: var(--gold); font-weight: 700; margin-bottom: 10px;
+        }
+        .stat-label {
+            font-size: 12px; color: var(--gray-mid); text-transform: uppercase; letter-spacing: 1px;
+        }
+        @media (max-width: 768px) {
+            .header-container { flex-direction: column; gap: 15px; }
+            nav ul { flex-wrap: wrap; justify-content: center; gap: 12px; }
+            .page-title { font-size: 36px; }
+            .stat-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo-section">
+                <div class="logo-emblem"><img src="images/logo-thibequation-round.png" alt="ThibEquation Logo"></div>
+                <span class="logo-text">THIBEQUATION</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="methodologie.html">Méthodologie GKSC</a></li>
+                    <li><a href="calculateur.html">Calculateur Détaillé</a></li>
+                    <li><a href="donnees.html" class="active">Données Sources</a></li>
+                    <li><a href="outils.html">Outils & Visualisations</a></li>
+                    <li><a href="collaboration.html">Collaboration v5.0</a></li>
+                    <li><a href="sources.html">Framework Scientifique</a></li>
+                    <li><a href="bibliographie.html">Recherche Interstellaire</a></li>
+                    <li><a href="feedback.html">Feedback</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Données Sources</h1>
+            <p class="page-subtitle">Dataset complet de 46 objets interstellaires avec sources NASA/IAU vérifiables</p>
+        </div>
+
+        <div class="stat-grid">
+            <div class="stat-box">
+                <div class="stat-value">46</div>
+                <div class="stat-label">Objets Analysés</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">460</div>
+                <div class="stat-label">Valeurs GKSC</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">98.5%</div>
+                <div class="stat-label">Complétude Dataset</div>
+            </div>
+        </div>
+
+        <section class="section">
+            <h2 class="section-title">Sources Officielles</h2>
+            
+            <div class="content-card">
+                <h3>JPL HORIZONS (NASA)</h3>
+                <p>
+                    <strong>Source principale</strong> pour les éphémérides et paramètres orbitaux. 
+                    JPL HORIZONS est le système de référence international pour les objets du système solaire.
+                </p>
+                <p><strong>URL:</strong> <a href="https://ssd.jpl.nasa.gov/horizons/" style="color: var(--gold);">https://ssd.jpl.nasa.gov/horizons/</a></p>
+            </div>
+
+            <div class="content-card">
+                <h3>Minor Planet Center (MPC) - IAU</h3>
+                <p>
+                    <strong>Catalogue officiel</strong> de l'Union Astronomique Internationale pour les astéroïdes, comètes et objets interstellaires.
+                </p>
+                <p><strong>URL:</strong> <a href="https://minorplanetcenter.net/" style="color: var(--gold);">https://minorplanetcenter.net/</a></p>
+            </div>
+
+            <div class="content-card">
+                <h3>Publications Peer-Reviewed</h3>
+                <p>
+                    Données complémentaires issues de publications scientifiques validées : Nature, Science, ApJ, A&A, MNRAS.
+                </p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Dataset Objets Interstellaires</h2>
+            
+            <div class="content-card">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Objet</th>
+                            <th>Type</th>
+                            <th>ThibScore</th>
+                            <th>Source</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1I/'Oumuamua</td>
+                            <td>Interstellaire</td>
+                            <td><strong style="color: var(--gold);">8.7</strong></td>
+                            <td>JPL HORIZONS</td>
+                        </tr>
+                        <tr>
+                            <td>2I/Borisov</td>
+                            <td>Comète Interstellaire</td>
+                            <td><strong style="color: var(--gold);">7.2</strong></td>
+                            <td>JPL HORIZONS</td>
+                        </tr>
+                        <tr>
+                            <td>3I/ATLAS</td>
+                            <td>Interstellaire (Hyperbolique)</td>
+                            <td><strong style="color: var(--gold);">8.2</strong></td>
+                            <td>JPL/JWST/MPC</td>
+                        </tr>
+                        <tr>
+                            <td>9P/Tempel 1</td>
+                            <td>Comète Périodique</td>
+                            <td><strong style="color: var(--gold);">5.3</strong></td>
+                            <td>JPL HORIZONS</td>
+                        </tr>
+                        <tr>
+                            <td>67P/Churyumov</td>
+                            <td>Comète (Rosetta)</td>
+                            <td><strong style="color: var(--gold);">4.8</strong></td>
+                            <td>ESA/JPL</td>
+                        </tr>
+                        <tr>
+                            <td>C/2019 Q4</td>
+                            <td>Comète Longue Période</td>
+                            <td><strong style="color: var(--gold);">6.1</strong></td>
+                            <td>MPC/JPL</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="font-size: 13px; color: var(--gray-mid); margin-top: 15px;">
+                    <em>Tableau partiel — Dataset complet de 46 objets disponible dans la documentation technique.</em>
+                </p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Transparence & Reproductibilité</h2>
+            
+            <div class="content-card">
+                <h3>Traçabilité Complète</h3>
+                <p>
+                    Chaque valeur GKSC est tracée à sa source originale. Le code Python de calcul est open-source 
+                    et disponible sur GitHub pour vérification et reproduction.
+                </p>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="padding: 10px 0; border-bottom: 1px solid rgba(212, 175, 55, 0.1);">
+                        <strong style="color: var(--gold);">✓</strong> Code source MIT License
+                    </li>
+                    <li style="padding: 10px 0; border-bottom: 1px solid rgba(212, 175, 55, 0.1);">
+                        <strong style="color: var(--gold);">✓</strong> Dataset CSV téléchargeable
+                    </li>
+                    <li style="padding: 10px 0; border-bottom: 1px solid rgba(212, 175, 55, 0.1);">
+                        <strong style="color: var(--gold);">✓</strong> Méthodologie documentée
+                    </li>
+                    <li style="padding: 10px 0;">
+                        <strong style="color: var(--gold);">✓</strong> Sources officielles vérifiables
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

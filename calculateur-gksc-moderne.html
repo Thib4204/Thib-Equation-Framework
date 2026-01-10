@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThibScore Calculator v4.1.0 | ThibEquation</title>
+    <link rel="icon" href="images/logo-thibequation-official.png" type="image/png">
+    
+    <!-- Chart.js pour radar chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- GSAP pour animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a1a 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Particles background */
+        #particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(100, 150, 255, 0.6);
+            border-radius: 50%;
+            animation: float 20s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translate(100px, -100vh); opacity: 0; }
+        }
+        
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header moderne */
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #4a9eff, #a855f7, #ff6b9d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+        
+        .header .version {
+            font-size: 0.9em;
+            color: #808090;
+            font-weight: 500;
+            letter-spacing: 2px;
+        }
+        
+        /* Layout grid */
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        /* Glassmorphism cards */
+        .glass-card {
+            background: rgba(20, 20, 50, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(100, 150, 255, 0.2);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .glass-card:hover {
+            border-color: rgba(100, 150, 255, 0.4);
+            box-shadow: 0 12px 48px rgba(74, 158, 255, 0.2);
+        }
+        
+        .card-title {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: #4a9eff;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Object selector moderne */
+        .object-selector {
+            margin-bottom: 30px;
+        }
+        
+        .object-selector label {
+            display: block;
+            font-size: 0.9em;
+            color: #b0b0d0;
+            margin-bottom: 10px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .select-wrapper {
+            position: relative;
+        }
+        
+        .select-wrapper select {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 1em;
+            background: rgba(10, 10, 30, 0.8);
+            border: 2px solid rgba(74, 158, 255, 0.3);
+            border-radius: 12px;
+            color: #e0e0e0;
+            cursor: pointer;
+            appearance: none;
+            transition: all 0.3s ease;
+        }
+        
+        .select-wrapper select:focus {
+            outline: none;
+            border-color: #4a9eff;
+            box-shadow: 0 0 0 4px rgba(74, 158, 255, 0.1);
+        }
+        
+        .select-wrapper::after {
+            content: '▼';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #4a9eff;
+            pointer-events: none;
+        }
+        
+        /* Sliders modernes */
+        .component-slider {
+            margin-bottom: 30px;
+        }
+        
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .slider-label {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #e0e0e0;
+        }
+        
+        .slider-value {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #4a9eff;
+            min-width: 60px;
+            text-align: right;
+        }
+        
+        .slider-input {
+            width: 100%;
+            height: 8px;
+            border-radius: 10px;
+            background: linear-gradient(to right, rgba(74, 158, 255, 0.2), rgba(168, 85, 247, 0.2));
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+        
+        .slider-input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4a9eff, #a855f7);
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(74, 158, 255, 0.5);
+            transition: all 0.2s ease;
+        }
+        
+        .slider-input::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 6px 20px rgba(74, 158, 255, 0.7);
+        }
+        
+        .slider-input::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4a9eff, #a855f7);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 4px 12px rgba(74, 158, 255, 0.5);
+        }
+        
+        .slider-hint {
+            font-size: 0.85em;
+            color: #808090;
+            margin-top: 8px;
+            font-style: italic;
+        }
+        
+        /* ThibScore display - Hero style */
+        .thibscore-display {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(74, 158, 255, 0.1), rgba(168, 85, 247, 0.1));
+            border-radius: 20px;
+            margin: 30px 0;
+            border: 2px solid rgba(74, 158, 255, 0.3);
+        }
+        
+        .thibscore-label {
+            font-size: 0.9em;
+            color: #b0b0d0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        
+        .thibscore-value {
+            font-size: 5em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #4a9eff, #a855f7, #ff6b9d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+            margin-bottom: 15px;
+        }
+        
+        .thibscore-interpretation {
+            font-size: 1.2em;
+            color: #d0d0e0;
+            font-weight: 500;
+        }
+        
+        .thibscore-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+        
+        .badge-high { background: rgba(76, 175, 80, 0.2); color: #4caf50; border: 1px solid #4caf50; }
+        .badge-medium { background: rgba(255, 193, 7, 0.2); color: #ffc107; border: 1px solid #ffc107; }
+        .badge-low { background: rgba(158, 158, 158, 0.2); color: #9e9e9e; border: 1px solid #9e9e9e; }
+        
+        /* Radar chart container */
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin: 20px 0;
+        }
+        
+        /* Components breakdown */
+        .components-list {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .component-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(10, 10, 30, 0.5);
+            border-radius: 12px;
+            border-left: 4px solid;
+            transition: all 0.3s ease;
+        }
+        
+        .component-item:hover {
+            background: rgba(10, 10, 30, 0.8);
+            transform: translateX(5px);
+        }
+        
+        .component-item.comp-g { border-left-color: #4a9eff; }
+        .component-item.comp-k { border-left-color: #a855f7; }
+        .component-item.comp-s { border-left-color: #ff6b9d; }
+        .component-item.comp-c { border-left-color: #ffc107; }
+        
+        .component-icon {
+            font-size: 2em;
+            min-width: 40px;
+            text-align: center;
+        }
+        
+        .component-info {
+            flex: 1;
+        }
+        
+        .component-name {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .component-desc {
+            font-size: 0.85em;
+            color: #808090;
+        }
+        
+        .component-score {
+            font-size: 1.8em;
+            font-weight: 700;
+            min-width: 70px;
+            text-align: right;
+        }
+        
+        /* Action buttons */
+        .actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 16px 24px;
+            font-size: 1em;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #4a9eff, #a855f7);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(74, 158, 255, 0.4);
+        }
+        
+        .btn-secondary {
+            background: rgba(74, 158, 255, 0.1);
+            border: 2px solid rgba(74, 158, 255, 0.3);
+            color: #4a9eff;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(74, 158, 255, 0.2);
+            border-color: #4a9eff;
+        }
+        
+        /* Preset objects */
+        .presets {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .preset-btn {
+            padding: 15px;
+            background: rgba(74, 158, 255, 0.1);
+            border: 2px solid rgba(74, 158, 255, 0.2);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .preset-btn:hover {
+            background: rgba(74, 158, 255, 0.2);
+            border-color: #4a9eff;
+            transform: translateY(-3px);
+        }
+        
+        .preset-name {
+            font-weight: 600;
+            color: #e0e0e0;
+            margin-bottom: 5px;
+        }
+        
+        .preset-score {
+            font-size: 1.2em;
+            color: #4a9eff;
+            font-weight: 700;
+        }
+        
+        /* Responsive */
+        @media (max-width: 968px) {
+            .calculator-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .thibscore-value {
+                font-size: 4em;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Particles -->
+    <div id="particles"></div>
+    
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>ThibScore Calculator</h1>
+            <div class="version">VERSION 4.1.0 • GKSC METHODOLOGY</div>
+        </div>
+        
+        <!-- Main grid -->
+        <div class="calculator-grid">
+            <!-- Left panel - Controls -->
+            <div>
+                <div class="glass-card">
+                    <div class="card-title">
+                        <span>🎯</span>
+                        <span>Configuration</span>
+                    </div>
+                    
+                    <!-- Object selector -->
+                    <div class="object-selector">
+                        <label>Object Selection</label>
+                        <div class="select-wrapper">
+                            <select id="objectSelect" onchange="loadPreset(this.value)">
+                                <option value="custom">Custom Input</option>
+                                <option value="oumuamua">1I/'Oumuamua</option>
+                                <option value="borisov">2I/Borisov</option>
+                                <option value="halley">1P/Halley</option>
+                                <option value="ceres">1 Ceres</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- G slider -->
+                    <div class="component-slider">
+                        <div class="slider-header">
+                            <div class="slider-label">G - Géométrique</div>
+                            <div class="slider-value" id="g-value">5.0</div>
+                        </div>
+                        <input type="range" min="0" max="10" step="0.1" value="5" class="slider-input" id="g-slider" oninput="updateScore()">
+                        <div class="slider-hint">Forme orbitale, excentricité (e > 1.0 → hyperbolique)</div>
+                    </div>
+                    
+                    <!-- K slider -->
+                    <div class="component-slider">
+                        <div class="slider-header">
+                            <div class="slider-label">K - Kinématique</div>
+                            <div class="slider-value" id="k-value">5.0</div>
+                        </div>
+                        <input type="range" min="0" max="10" step="0.1" value="5" class="slider-input" id="k-slider" oninput="updateScore()">
+                        <div class="slider-hint">Vitesse, trajectoire (v > 42 km/s → interstellaire)</div>
+                    </div>
+                    
+                    <!-- S slider -->
+                    <div class="component-slider">
+                        <div class="slider-header">
+                            <div class="slider-label">S - Spectroscopique</div>
+                            <div class="slider-value" id="s-value">5.0</div>
+                        </div>
+                        <input type="range" min="0" max="10" step="0.1" value="5" class="slider-input" id="s-slider" oninput="updateScore()">
+                        <div class="slider-hint">Composition, albédo, signature thermique</div>
+                    </div>
+                    
+                    <!-- C slider -->
+                    <div class="component-slider">
+                        <div class="slider-header">
+                            <div class="slider-label">C - Contextuelle</div>
+                            <div class="slider-value" id="c-value">5.0</div>
+                        </div>
+                        <input type="range" min="0" max="10" step="0.1" value="5" class="slider-input" id="c-slider" oninput="updateScore()">
+                        <div class="slider-hint">Origine, probabilité, rareté</div>
+                    </div>
+                    
+                    <!-- Actions -->
+                    <div class="actions">
+                        <button class="btn btn-secondary" onclick="resetSliders()">
+                            <span>↻</span>
+                            <span>Reset</span>
+                        </button>
+                        <button class="btn btn-primary" onclick="exportData()">
+                            <span>⬇️</span>
+                            <span>Export JSON</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Presets -->
+                <div class="glass-card" style="margin-top: 20px;">
+                    <div class="card-title">
+                        <span>⚡</span>
+                        <span>Quick Load</span>
+                    </div>
+                    <div class="presets">
+                        <div class="preset-btn" onclick="loadPreset('oumuamua')">
+                            <div class="preset-name">'Oumuamua</div>
+                            <div class="preset-score">8.7</div>
+                        </div>
+                        <div class="preset-btn" onclick="loadPreset('borisov')">
+                            <div class="preset-name">Borisov</div>
+                            <div class="preset-score">4.5</div>
+                        </div>
+                        <div class="preset-btn" onclick="loadPreset('halley')">
+                            <div class="preset-name">Halley</div>
+                            <div class="preset-score">2.5</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right panel - Results -->
+            <div>
+                <!-- ThibScore Display -->
+                <div class="glass-card">
+                    <div class="thibscore-display">
+                        <div class="thibscore-label">ThibScore v4.1.0</div>
+                        <div class="thibscore-value" id="thibscore-main">5.0</div>
+                        <div class="thibscore-interpretation" id="interpretation">Neutral Object</div>
+                        <span class="thibscore-badge badge-medium" id="badge">MODERATE</span>
+                    </div>
+                    
+                    <!-- Formula -->
+                    <div style="text-align: center; margin: 20px 0; padding: 20px; background: rgba(10, 10, 30, 0.5); border-radius: 12px;">
+                        <div style="font-family: monospace; font-size: 1.1em; color: #4a9eff;">
+                            ThibScore = 0.28×G + 0.32×K + 0.23×S + 0.17×C
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Radar Chart -->
+                <div class="glass-card" style="margin-top: 20px;">
+                    <div class="card-title">
+                        <span>📊</span>
+                        <span>Component Analysis</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Components breakdown -->
+                <div class="glass-card" style="margin-top: 20px;">
+                    <div class="card-title">
+                        <span>🔍</span>
+                        <span>Breakdown</span>
+                    </div>
+                    <div class="components-list">
+                        <div class="component-item comp-g">
+                            <div class="component-icon">📐</div>
+                            <div class="component-info">
+                                <div class="component-name">Géométrique</div>
+                                <div class="component-desc">30% weight • Orbital shape</div>
+                            </div>
+                            <div class="component-score" id="g-score-display">5.0</div>
+                        </div>
+                        
+                        <div class="component-item comp-k">
+                            <div class="component-icon">🚀</div>
+                            <div class="component-info">
+                                <div class="component-name">Kinématique</div>
+                                <div class="component-desc">30% weight • Velocity & trajectory</div>
+                            </div>
+                            <div class="component-score" id="k-score-display">5.0</div>
+                        </div>
+                        
+                        <div class="component-item comp-s">
+                            <div class="component-icon">🌈</div>
+                            <div class="component-info">
+                                <div class="component-name">Spectroscopique</div>
+                                <div class="component-desc">25% weight • Composition</div>
+                            </div>
+                            <div class="component-score" id="s-score-display">5.0</div>
+                        </div>
+                        
+                        <div class="component-item comp-c">
+                            <div class="component-icon">🌍</div>
+                            <div class="component-info">
+                                <div class="component-name">Contextuelle</div>
+                                <div class="component-desc">15% weight • Origin & rarity</div>
+                            </div>
+                            <div class="component-score" id="c-score-display">5.0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Presets data
+        const presets = {
+            oumuamua: { g: 10.0, k: 9.5, s: 6.0, c: 8.5 },
+            borisov: { g: 6.0, k: 5.5, s: 3.0, c: 3.5 },
+            halley: { g: 3.0, k: 2.0, s: 2.5, c: 2.5 },
+            ceres: { g: 1.5, k: 1.0, s: 1.5, c: 1.5 }
+        };
+        
+        // Initialize radar chart
+        let radarChart;
+        
+        function initChart() {
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            radarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Géométrique', 'Kinématique', 'Spectroscopique', 'Contextuelle'],
+                    datasets: [{
+                        label: 'Components',
+                        data: [5, 5, 5, 5],
+                        fill: true,
+                        backgroundColor: 'rgba(74, 158, 255, 0.2)',
+                        borderColor: 'rgb(74, 158, 255)',
+                        pointBackgroundColor: 'rgb(74, 158, 255)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(74, 158, 255)',
+                        pointRadius: 6,
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            min: 0,
+                            max: 10,
+                            ticks: {
+                                stepSize: 2,
+                                color: '#808090',
+                                backdropColor: 'transparent'
+                            },
+                            grid: {
+                                color: 'rgba(100, 150, 255, 0.1)'
+                            },
+                            pointLabels: {
+                                color: '#b0b0d0',
+                                font: {
+                                    size: 14,
+                                    weight: '500'
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updateScore() {
+            const g = parseFloat(document.getElementById('g-slider').value);
+            const k = parseFloat(document.getElementById('k-slider').value);
+            const s = parseFloat(document.getElementById('s-slider').value);
+            const c = parseFloat(document.getElementById('c-slider').value);
+            
+            // Update displayed values
+            document.getElementById('g-value').textContent = g.toFixed(1);
+            document.getElementById('k-value').textContent = k.toFixed(1);
+            document.getElementById('s-value').textContent = s.toFixed(1);
+            document.getElementById('c-value').textContent = c.toFixed(1);
+            
+            document.getElementById('g-score-display').textContent = g.toFixed(1);
+            document.getElementById('k-score-display').textContent = k.toFixed(1);
+            document.getElementById('s-score-display').textContent = s.toFixed(1);
+            document.getElementById('c-score-display').textContent = c.toFixed(1);
+            
+            // Calculate ThibScore v4.1.0
+            const thibscore = (0.30 * g) + (0.30 * k) + (0.25 * s) + (0.15 * c);
+            
+            // Update main display
+            document.getElementById('thibscore-main').textContent = thibscore.toFixed(2);
+            
+            // Update interpretation
+            let interpretation, badge, badgeClass;
+            if (thibscore >= 7.0) {
+                interpretation = 'Highly Anomalous';
+                badge = 'HIGH PRIORITY';
+                badgeClass = 'badge-high';
+            } else if (thibscore >= 5.0) {
+                interpretation = 'Moderately Anomalous';
+                badge = 'MODERATE';
+                badgeClass = 'badge-medium';
+            } else {
+                interpretation = 'Low Anomaly';
+                badge = 'LOW PRIORITY';
+                badgeClass = 'badge-low';
+            }
+            
+            document.getElementById('interpretation').textContent = interpretation;
+            const badgeEl = document.getElementById('badge');
+            badgeEl.textContent = badge;
+            badgeEl.className = 'thibscore-badge ' + badgeClass;
+            
+            // Update radar chart
+            radarChart.data.datasets[0].data = [g, k, s, c];
+            radarChart.update('none');
+        }
+        
+        function loadPreset(presetName) {
+            if (presetName === 'custom') return;
+            
+            const preset = presets[presetName];
+            if (!preset) return;
+            
+            document.getElementById('g-slider').value = preset.g;
+            document.getElementById('k-slider').value = preset.k;
+            document.getElementById('s-slider').value = preset.s;
+            document.getElementById('c-slider').value = preset.c;
+            
+            updateScore();
+        }
+        
+        function resetSliders() {
+            document.getElementById('g-slider').value = 5;
+            document.getElementById('k-slider').value = 5;
+            document.getElementById('s-slider').value = 5;
+            document.getElementById('c-slider').value = 5;
+            document.getElementById('objectSelect').value = 'custom';
+            updateScore();
+        }
+        
+        function exportData() {
+            const g = parseFloat(document.getElementById('g-slider').value);
+            const k = parseFloat(document.getElementById('k-slider').value);
+            const s = parseFloat(document.getElementById('s-slider').value);
+            const c = parseFloat(document.getElementById('c-slider').value);
+            const thibscore = (0.30 * g) + (0.30 * k) + (0.25 * s) + (0.15 * c);
+            
+            const data = {
+                object: document.getElementById('objectSelect').value,
+                timestamp: new Date().toISOString(),
+                components: { g, k, s, c },
+                weights: { g: 0.30, k: 0.30, s: 0.25, c: 0.15 },
+                thibscore: parseFloat(thibscore.toFixed(2)),
+                method: 'ThibEquation GKSC v4.1.0'
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `thibscore-${data.object}-${Date.now()}.json`;
+            a.click();
+        }
+        
+        // Generate particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+        
+        // Parse URL parameters for direct object loading
+        function loadFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const objectName = urlParams.get('object');
+            
+            if (objectName && presets[objectName]) {
+                // Load preset from URL parameter
+                document.getElementById('objectSelect').value = objectName;
+                loadPreset(objectName);
+                
+                // Visual feedback
+                console.log(`✅ Objet chargé depuis URL: ${objectName}`);
+            }
+        }
+        
+        // Initialize
+        window.onload = function() {
+            initChart();
+            loadFromURL(); // Load URL parameters first
+            updateScore();
+            createParticles();
+        };
+    </script>
+</body>
+</html>

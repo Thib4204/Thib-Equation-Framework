@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThibEquation Framework v5.0 - Analyse d'Objets Interstellaires</title>
+    
+    <!-- Meta Description -->
+    <meta name="description" content="ThibEquation Framework v5.0 - Système scientifique de recherche citoyenne québécoise pour l'analyse et la priorisation d'objets interstellaires. 100 objets validés, R² = 0.88.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/logo-thibequation-official.png">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
+    
+    <style>
+        /* ============================================
+           THIBEQUATION v5.0 - MODERN UX OPTIMIZED
+           ============================================ */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Color System */
+            --bg-primary: #f8fafb;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f3f6f9;
+            --bg-card: #ffffff;
+            
+            --text-primary: #0d1117;
+            --text-secondary: #1a1d23;
+            --text-muted: #57606a;
+            
+            --accent-primary: #2563eb;
+            --accent-secondary: #1e40af;
+            --accent-gold: #f59e0b;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            
+            --border-light: #e0e8ed;
+            --border-medium: #d0dae2;
+            
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.12);
+            
+            /* Typography */
+            --font-body: 'Inter', sans-serif;
+            --font-display: 'Space Grotesk', sans-serif;
+            --font-serif: 'Cinzel', serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Skip to Content (Accessibility) */
+        .skip-to-content {
+            position: absolute;
+            top: -100px;
+            left: 0;
+            background: var(--accent-primary);
+            color: white;
+            padding: 1rem 2rem;
+            z-index: 10000;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .skip-to-content:focus {
+            top: 0;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Section Spacing */
+        section {
+            padding: 5rem 0;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(180deg, #f8fafb 0%, #ffffff 100%);
+            padding-top: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(37, 99, 235, 0.05), transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(245, 158, 11, 0.05), transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero-logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 2rem;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .hero-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 8px 24px rgba(37, 99, 235, 0.2));
+        }
+
+        .hero-title {
+            font-family: var(--font-serif);
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            letter-spacing: -1px;
+        }
+
+        .hero-subtitle {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        .hero-description {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            line-height: 1.8;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-badges {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-card);
+            border: 2px solid var(--border-light);
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9375rem;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+        }
+
+        .hero-badge:hover {
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .badge-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .hero-cta {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            font-size: 1.0625rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-family: var(--font-body);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+            color: white;
+            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 2px solid var(--border-medium);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Video Section */
+        .video-section {
+            background: linear-gradient(135deg, #f8fafb 0%, #ffffff 100%);
+            padding: 5rem 0;
+            position: relative;
+        }
+
+        .video-section .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .video-section .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            font-family: var(--font-display);
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .video-section .section-description {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .video-container {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            background: #000;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 16px;
+        }
+
+        .video-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .video-badge svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: var(--bg-secondary);
+            padding: 4rem 0;
+            border-top: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-primary);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--border-light);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-4px);
+        }
+
+        .stat-value {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* Features Section */
+        .features-section {
+            background: var(--bg-primary);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .section-description {
+            font-size: 1.125rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            padding: 2.5rem;
+            border-radius: 16px;
+            border: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+            border-color: var(--accent-primary);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(30, 64, 175, 0.1) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-icon svg {
+            width: 32px;
+            height: 32px;
+            color: var(--accent-primary);
+        }
+
+        .feature-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .feature-description {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Tools Section */
+        .tools-section {
+            background: var(--bg-secondary);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .tool-card {
+            background: var(--bg-card);
+            padding: 2.5rem;
+            border-radius: 16px;
+            border: 2px solid var(--border-light);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tool-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+            border-color: var(--accent-primary);
+        }
+
+        .tool-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tool-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .tool-icon svg {
+            width: 28px;
+            height: 28px;
+            color: white;
+        }
+
+        .tool-title {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .tool-description {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .tool-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .tool-features li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: var(--text-secondary);
+        }
+
+        .tool-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent-green);
+            font-weight: 700;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1.5rem;
+            }
+
+            section {
+                padding: 3rem 0;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.25rem;
+            }
+
+            .hero-description {
+                font-size: 1rem;
+            }
+
+            .stats-grid,
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-value {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip to Content -->
+    <a href="index.html#main-content" class="skip-to-content">Aller au contenu principal</a>
+
+    <!-- Header Navigation Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-logo">
+                        <img src="images/logo-thibequation-official.png" alt="ThibEquation Framework Logo">
+                    </div>
+                    <h1 class="hero-title">ThibEquation Framework</h1>
+                    <p class="hero-subtitle">Analyse Scientifique d'Objets Interstellaires</p>
+                    <p class="hero-description">
+                        Système de recherche citoyenne québécoise pour la quantification, l'analyse comparative 
+                        et la priorisation d'investigations d'objets célestes. GKSC v5.0 - 100 objets validés.
+                    </p>
+
+                    <div class="hero-badges">
+                        <div class="hero-badge">
+                            <svg class="badge-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                            </svg>
+                            100 Objets Validés
+                        </div>
+                        <div class="hero-badge">
+                            <svg class="badge-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 20V10"></path>
+                                <path d="M12 20V4"></path>
+                                <path d="M6 20v-6"></path>
+                            </svg>
+                            R² = 0.88
+                        </div>
+                        <div class="hero-badge">
+                            <svg class="badge-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                            ThibScore Max 10.0
+                        </div>
+                    </div>
+
+                    <div class="hero-cta">
+                        <a href="calculateur-premium.html" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="3"></circle>
+                                <path d="M12 1v6m0 6v6m8.66-11.66l-5.2 3M8.54 14.34l-5.2 3M1.34 7.34l5.2 3m9.92 0l5.2-3m-5.2 9.92l5.2 3M8.54 9.66l-5.2-3"></path>
+                            </svg>
+                            Calculer un ThibScore
+                        </a>
+                        <a href="documentation-interactive.html" class="btn btn-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                            Documentation
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DISCLAIMER IMPORTANT : ThibEquation v5.0 vs TH-1517 -->
+        <section style="padding: 40px 0; background: rgba(157, 78, 221, 0.05);">
+            <div class="container">
+                <div style="max-width: 900px; margin: 0 auto; padding: 30px; background: rgba(20, 25, 45, 0.9); border-radius: 15px; border-left: 5px solid var(--primary-purple);">
+                    <h3 style="color: var(--primary-purple); margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 28px; height: 28px;">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                        CLARIFICATION SCIENTIFIQUE ESSENTIELLE
+                    </h3>
+                    <div style="color: #e0e0e0; line-height: 1.8; font-size: 15px;">
+                        <p style="margin-bottom: 15px;">
+                            <strong style="color: var(--primary-cyan);">ThibEquation v5.0</strong> (formule GKSC : <code style="background: rgba(0, 212, 255, 0.1); padding: 3px 8px; border-radius: 5px; color: var(--primary-cyan);">ThibScore = 0.28×G + 0.32×K + 0.23×S + 0.17×C</code>) est le <strong>framework fondamental</strong> — un système de mesure quantitatif validé sur <strong>100 objets</strong> (R²=0.88) <strong>sans aucune variable sociale, sans coefficients d'ajustement contextuel</strong>.
+                        </p>
+                        <p style="margin-bottom: 15px;">
+                            <strong style="color: var(--primary-gold);">TH-1517</strong> est une <strong>hypothèse <em>a posteriori</em></strong> — une conséquence logique des mesures effectuées, <strong>non intégrée dans la formule ThibEquation</strong>. Elle n'augmente pas le ThibScore : elle est <strong>contrainte par les données</strong> à être explorée.
+                        </p>
+                        <p style="margin-bottom: 15px;">
+                            <strong style="color: var(--primary-gold);">🎯 3I/ATLAS : Classé #4 mondial</strong>, devant des objets historiquement exceptionnels (y compris ʻOumuamua), sur la base de <strong>données publiques mesurables</strong>.
+                        </p>
+                        <p style="margin-bottom: 0;">
+                            <strong style="color: var(--primary-purple);">⚗️ Falsifiabilité TH-1517 :</strong> Tests prédictifs estimés <strong>35-50k USD</strong> (JWST/MIRI, absence de fer, mesure directe de température, polarimétrie multi-bandes). <strong>Si TH-1517 est fausse, elle échouera gracieusement. Si elle est partiellement vraie, elle pourrait ouvrir une nouvelle classe d'objets. Dans tous les cas, la science avance.</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- UFO Analytics Section (REMPLACE LA VIDÉO YOUTUBE) -->
+        <section class="ufo-analytics-section" style="background: linear-gradient(135deg, #0a0e1a 0%, #1a1f2e 100%); padding: 6rem 0; position: relative; overflow: hidden;">
+            <!-- Animated Grid Background -->
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: linear-gradient(rgba(0, 217, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 217, 255, 0.05) 1px, transparent 1px); background-size: 50px 50px; pointer-events: none; animation: gridMove 20s linear infinite;"></div>
+            
+            <div class="container" style="position: relative; z-index: 1;">
+                <div style="text-align: center; margin-bottom: 3rem;">
+                    <div style="display: inline-flex; align-items: center; gap: 12px; background: rgba(0, 217, 255, 0.1); border: 1px solid rgba(0, 217, 255, 0.3); border-radius: 50px; padding: 8px 24px; margin-bottom: 1.5rem;">
+                        <svg style="width: 20px; height: 20px; color: #00d9ff;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M12 1v6m0 6v6"></path>
+                            <ellipse cx="12" cy="12" rx="10" ry="4"></ellipse>
+                        </svg>
+                        <span style="color: #00d9ff; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Application Scientifique • R²=0.88</span>
+                    </div>
+                    <h2 style="font-family: 'Orbitron', sans-serif; font-size: clamp(28px, 3.5vw, 44px); font-weight: 900; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                        <span style="color: #ff7733; text-shadow: 0 0 20px rgba(255, 119, 51, 0.6);">🛸 Ufologie</span>
+                        <span style="font-size: 36px; color: #a78bfa; animation: pulse 2s ease-in-out infinite;">🌉</span>
+                        <span style="color: #00d9ff; text-shadow: 0 0 20px rgba(0, 217, 255, 0.6);">🔬 Astrophysique</span>
+                    </h2>
+                    <p style="font-size: 22px; font-weight: 700; color: #a78bfa; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 2px;">
+                        UFO Analytics • Score d'Anomalie Global • GKSC v5.0
+                    </p>
+                    <p style="font-size: 18px; color: #e8eaed; max-width: 900px; margin: 0 auto 2rem; line-height: 1.7;">
+                        Une analyse quantitative <strong style="color: #ffb84d;">révolutionnaire</strong> pour réconcilier deux communautés antagonistes via des métriques scientifiques <strong style="color: #00d9ff;">vérifiables et reproductibles</strong>
+                    </p>
+                    
+                    <!-- Badges scientifiques -->
+                    <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 2.5rem;">
+                        <div style="background: rgba(0, 217, 255, 0.1); border: 2px solid #00d9ff; border-radius: 12px; padding: 10px 20px;">
+                            <span style="font-size: 12px; color: #9aa0a6; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 4px;">Validation</span>
+                            <span style="font-size: 20px; font-weight: 700; color: #00d9ff;">R² = 0.88</span>
+                        </div>
+                        <div style="background: rgba(255, 184, 77, 0.1); border: 2px solid #ffb84d; border-radius: 12px; padding: 10px 20px;">
+                            <span style="font-size: 12px; color: #9aa0a6; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 4px;">Objets</span>
+                            <span style="font-size: 20px; font-weight: 700; color: #ffb84d;">100 Validés</span>
+                        </div>
+                        <div style="background: rgba(167, 139, 250, 0.1); border: 2px solid #a78bfa; border-radius: 12px; padding: 10px 20px;">
+                            <span style="font-size: 12px; color: #9aa0a6; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 4px;">Composantes</span>
+                            <span style="font-size: 20px; font-weight: 700; color: #a78bfa;">4 GKSC</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; margin-bottom: 3rem;">
+                    <!-- Le Pont Quantitatif -->
+                    <div style="padding: 2rem; background: rgba(26, 31, 46, 0.8); border: 1px solid rgba(0, 217, 255, 0.2); border-radius: 16px; backdrop-filter: blur(10px);">
+                        <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; color: #a78bfa; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 12px;">
+                            <span style="font-size: 32px;">🌉</span>
+                            Le Pont Quantitatif
+                        </h3>
+                        <p style="color: #e8eaed; font-size: 16px; line-height: 1.8; margin-bottom: 1rem;">
+                            <strong style="color: #ff7733;">L'ufologie</strong> apporte une richesse phénoménale : anomalies visuelles, 
+                            témoignages, observations inexpliquées. <strong style="color: #00d9ff;">L'astrophysique</strong> offre 
+                            la rigueur : données JPL/MPC/CNEOS, validation empirique R²=0.88, reproductibilité. 
+                        </p>
+                        <p style="color: #e8eaed; font-size: 16px; line-height: 1.8; margin-bottom: 1rem;">
+                            Le <strong style="color: #ffb84d;">Score d'Anomalie Global (SAG)</strong> transforme les observations 
+                            qualitatives en <strong>métriques quantitatives vérifiables</strong>, créant un langage commun 
+                            entre deux communautés historiquement antagonistes.
+                        </p>
+                        <div style="background: rgba(167, 139, 250, 0.1); border-left: 4px solid #a78bfa; padding: 1rem; border-radius: 8px; margin-top: 1.5rem;">
+                            <p style="color: #e8eaed; font-size: 15px; line-height: 1.6; margin: 0;">
+                                <strong style="color: #ffb84d;">🎯 Mission :</strong> Réconcilier ufologie et astrophysique via une 
+                                <strong>analyse quantitative collaborative</strong>, permettant une priorisation objective des investigations 
+                                et une <strong>validation scientifique bidirectionnelle</strong>.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Key Benefits -->
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <div style="display: flex; align-items: flex-start; gap: 1rem; padding: 1.5rem; background: rgba(26, 31, 46, 0.6); border: 1px solid rgba(255, 119, 51, 0.2); border-radius: 12px;">
+                            <div style="flex-shrink: 0; width: 48px; height: 48px; background: linear-gradient(135deg, #ff7733 0%, #ff9955 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                                👁️
+                            </div>
+                            <div>
+                                <h4 style="color: #ff7733; font-weight: 700; font-size: 18px; margin-bottom: 0.5rem;">Observation Phénoménale</h4>
+                                <p style="color: #9aa0a6; font-size: 15px; margin: 0; line-height: 1.6;">Anomalies visuelles, témoignages, richesse empirique de l'ufologie — transformés en données mesurables</p>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; align-items: flex-start; gap: 1rem; padding: 1.5rem; background: rgba(26, 31, 46, 0.6); border: 1px solid rgba(167, 139, 250, 0.2); border-radius: 12px;">
+                            <div style="flex-shrink: 0; width: 48px; height: 48px; background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                                🔗
+                            </div>
+                            <div>
+                                <h4 style="color: #a78bfa; font-weight: 700; font-size: 18px; margin-bottom: 0.5rem;">Pont Quantitatif</h4>
+                                <p style="color: #9aa0a6; font-size: 15px; margin: 0; line-height: 1.6;">SAG : transformer qualités en métriques scientifiques vérifiables — ThibScore 0–10 généré en quelques minutes</p>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; align-items: flex-start; gap: 1rem; padding: 1.5rem; background: rgba(26, 31, 46, 0.6); border: 1px solid rgba(0, 217, 255, 0.2); border-radius: 12px;">
+                            <div style="flex-shrink: 0; width: 48px; height: 48px; background: linear-gradient(135deg, #00d9ff 0%, #00b8d9 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                                📊
+                            </div>
+                            <div>
+                                <h4 style="color: #00d9ff; font-weight: 700; font-size: 18px; margin-bottom: 0.5rem;">Rigueur Scientifique</h4>
+                                <p style="color: #9aa0a6; font-size: 15px; margin: 0; line-height: 1.6;">Données JPL/MPC/CNEOS, validation R² = 0.88 sur 100 objets, méthodologie reproductible — zéro variable sociale</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Responsive -->
+                <style>
+                    @media (max-width: 968px) {
+                        .ufo-analytics-section .container > div:nth-child(2) {
+                            grid-template-columns: 1fr !important;
+                        }
+                    }
+                    @keyframes gridMove {
+                        0% { transform: translate(0, 0); }
+                        100% { transform: translate(50px, 50px); }
+                    }
+                    @keyframes pulse {
+                        0%, 100% { opacity: 1; transform: scale(1); }
+                        50% { opacity: 0.8; transform: scale(1.1); }
+                    }
+                </style>
+
+                <!-- CTA Buttons (2 options) -->
+                <div style="text-align: center; display: flex; flex-direction: column; gap: 20px; align-items: center;">
+                    <!-- Bouton principal : Calculateur -->
+                    <a href="calculateur-ufo-analytics.html" style="display: inline-flex; align-items: center; gap: 16px; background: linear-gradient(135deg, #00d9ff 0%, #a78bfa 100%); color: #0a0e1a; font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 900; padding: 24px 48px; border-radius: 16px; text-decoration: none; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 32px rgba(0, 217, 255, 0.4); position: relative; overflow: hidden;">
+                        <svg style="width: 28px; height: 28px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M12 1v6m0 6v6"></path>
+                            <ellipse cx="12" cy="12" rx="10" ry="4"></ellipse>
+                        </svg>
+                        <span>LANCER UFO ANALYTICS</span>
+                    </a>
+                    
+                    <!-- Bouton secondaire : En savoir plus -->
+                    <a href="ufo-analytics.html" style="display: inline-flex; align-items: center; gap: 12px; background: rgba(26, 31, 46, 0.8); color: #00d9ff; font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600; padding: 16px 36px; border-radius: 12px; text-decoration: none; transition: all 0.3s ease; border: 2px solid rgba(0, 217, 255, 0.3);">
+                        <svg style="width: 20px; height: 20px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        <span>En Savoir Plus sur UFO Analytics</span>
+                    </a>
+                    
+                    <p style="color: #9aa0a6; font-size: 14px; margin-top: 0.5rem;">
+                        🌉 Outil gratuit • Pont Ufologie-Astrophysique • 100 objets validés • R²=0.88
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats-section">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">100</div>
+                        <div class="stat-label">Objets Validés</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">0.88</div>
+                        <div class="stat-label">Coefficient R²</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">10.0</div>
+                        <div class="stat-label">ThibScore Maximum</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">Objets Interstellaires</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Pourquoi ThibEquation ?</h2>
+                    <p class="section-description">
+                        Un framework scientifique transparent, reproductible et rigoureusement validé 
+                        pour l'analyse comparative d'objets célestes.
+                    </p>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                        </div>
+                        <h3 class="feature-title">100% Scientifique</h3>
+                        <p class="feature-description">
+                            Données vérifiables (JPL SBDB, MPC, CNEOS) avec références académiques traçables. 
+                            R² = 0.88, MAE = 0.44, RMSE = 0.61 sur 100 objets.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                            </svg>
+                        </div>
+                        <h3 class="feature-title">Analyse Multidimensionnelle</h3>
+                        <p class="feature-description">
+                            Framework GKSC v5.0 : Géométrique (28%), Cinématique (32%), Spectroscopique (23%), 
+                            Contextuel (17%) pour une évaluation complète.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="3"></circle>
+                                <path d="M12 1v6m0 6v6m8.66-11.66l-5.2 3M8.54 14.34l-5.2 3M1.34 7.34l5.2 3m9.92 0l5.2-3m-5.2 9.92l5.2 3M8.54 9.66l-5.2-3"></path>
+                            </svg>
+                        </div>
+                        <h3 class="feature-title">Priorisation Objective</h3>
+                        <p class="feature-description">
+                            Score d'Anomalie Global (0-10) pour identifier et prioriser les objets 
+                            nécessitant une investigation approfondie.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                            </svg>
+                        </div>
+                        <h3 class="feature-title">Open Source</h3>
+                        <p class="feature-description">
+                            Code source complet disponible sur GitHub. Licence MIT pour favoriser 
+                            la collaboration scientifique internationale.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="feature-title">Transparence Totale</h3>
+                        <p class="feature-description">
+                            Méthodologie complète documentée, pas d'invention, marquage explicite 
+                            des hypothèses. Reproductibilité maximale.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                        </div>
+                        <h3 class="feature-title">Recherche Citoyenne</h3>
+                        <p class="feature-description">
+                            Projet québécois indépendant visant à démocratiser l'analyse d'objets 
+                            interstellaires pour la communauté scientifique.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tools Section -->
+        <section class="tools-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Outils Scientifiques</h2>
+                    <p class="section-description">
+                        Calculateurs interactifs pour l'analyse quantitative d'objets célestes
+                    </p>
+                </div>
+
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <div class="tool-header">
+                            <div class="tool-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
+                            <h3 class="tool-title">Calculateur Premium</h3>
+                        </div>
+                        <p class="tool-description">
+                            Calculateur avancé avec base de données de 100 objets validés scientifiquement. 
+                            Interface immersive avec visualisations interactives.
+                        </p>
+                        <ul class="tool-features">
+                            <li>100 objets pré-chargés avec ThibScores calculés</li>
+                            <li>Visualisation des composantes GKSC en temps réel</li>
+                            <li>Filtres par type et niveau d'anomalie</li>
+                            <li>Graphiques Chart.js interactifs</li>
+                        </ul>
+                        <a href="calculateur-premium.html" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                            Lancer le Calculateur Premium
+                        </a>
+                    </div>
+
+                    <div class="tool-card">
+                        <div class="tool-header">
+                            <div class="tool-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                    <path d="M12 1v6m0 6v6m8.66-11.66l-5.2 3M8.54 14.34l-5.2 3M1.34 7.34l5.2 3m9.92 0l5.2-3m-5.2 9.92l5.2 3M8.54 9.66l-5.2-3"></path>
+                                </svg>
+                            </div>
+                            <h3 class="tool-title">Simulateur GKSC</h3>
+                        </div>
+                        <p class="tool-description">
+                            Simulateur interactif pour tester et comprendre l'impact de chaque composante 
+                            du framework GKSC v5.0 sur le Score d'Anomalie Global.
+                        </p>
+                        <ul class="tool-features">
+                            <li>Ajustement en temps réel des 4 composantes GKSC</li>
+                            <li>Visualisation instantanée du ThibScore</li>
+                            <li>Explication détaillée de chaque paramètre</li>
+                            <li>Mode pédagogique pour comprendre la méthodologie</li>
+                        </ul>
+                        <a href="simulateur-gksc.html" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                            Lancer le Simulateur GKSC
+                        </a>
+                    </div>
+
+                    <div class="tool-card" style="border: 2px solid #ffd700;">
+                        <div class="tool-header">
+                            <div class="tool-icon" style="background: linear-gradient(135deg, #ffd700, #ffed4e);">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                    <rect x="9" y="9" width="6" height="6"></rect>
+                                    <line x1="9" y1="1" x2="9" y2="4"></line>
+                                    <line x1="15" y1="1" x2="15" y2="4"></line>
+                                    <line x1="9" y1="20" x2="9" y2="23"></line>
+                                    <line x1="15" y1="20" x2="15" y2="23"></line>
+                                    <line x1="20" y1="9" x2="23" y2="9"></line>
+                                    <line x1="20" y1="14" x2="23" y2="14"></line>
+                                    <line x1="1" y1="9" x2="4" y2="9"></line>
+                                    <line x1="1" y1="14" x2="4" y2="14"></line>
+                                </svg>
+                            </div>
+                            <h3 class="tool-title" style="color: #ffd700;">🧮 Registre Calculateurs</h3>
+                        </div>
+                        <p class="tool-description">
+                            Hub central d'accès rapide à tous les calculateurs ThibEquation avec 
+                            explications détaillées des paramètres et guide d'utilisation.
+                        </p>
+                        <ul class="tool-features">
+                            <li>9 calculateurs documentés (UFO Analytics, Premium, CAPE, NTVC...)</li>
+                            <li>Explications des 12 paramètres GKSC</li>
+                            <li>Guide d'utilisation complet</li>
+                            <li>Liens vers documentation technique</li>
+                        </ul>
+                        <a href="🧮-REGISTRE-CALCULATEURS-RAPIDE.html" class="btn btn-primary" style="width: 100%; justify-content: center; background: linear-gradient(135deg, #ffd700, #ffed4e); color: #0a0e27;">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                            Accéder au Registre
+                        </a>
+                    </div>
+
+                    <div class="tool-card" style="border: 3px solid #ffa500; position: relative; overflow: visible; background: linear-gradient(135deg, rgba(255, 165, 0, 0.05), rgba(157, 78, 221, 0.05));">
+                        <div style="position: absolute; top: -12px; left: 20px; background: linear-gradient(135deg, #ffa500, #9d4edd); color: white; padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 12px rgba(255, 165, 0, 0.4); animation: pulse 2s ease-in-out infinite;">
+                            ✨ RAPPORT MAJEUR
+                        </div>
+                        <div class="tool-header">
+                            <div class="tool-icon" style="background: linear-gradient(135deg, #ffa500, #9d4edd);">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                            </div>
+                            <h3 class="tool-title" style="color: #ffa500;">🚀 TH-1517 + GKSC : Rapport v3.2</h3>
+                        </div>
+                        <p class="tool-description">
+                            Framework d'Analyse Quantitative de 3I/ATLAS : Comment un chercheur citoyen développe 
+                            un framework méthodologique rigoureux <strong style="color: #ffa500;">surpassant les approches 
+                            institutionnelles sur 7/10 critères scientifiques</strong>.
+                        </p>
+                        <div style="background: rgba(255, 165, 0, 0.15); border-left: 3px solid #ffa500; padding: 12px; margin: 16px 0; border-radius: 4px;">
+                            <p style="margin: 0; font-size: 13px; color: #ffa500; font-weight: 600;">
+                                <i class="fas fa-trophy"></i> 
+                                <strong>Performance validée</strong> : 7 critères scientifiques surpassés | 29 pages | 2 DOIs (Zenodo + HAL)
+                            </p>
+                        </div>
+                        <ul class="tool-features">
+                            <li>Analyse complète de 3I/ATLAS (e = 6.137, ThibScore 8.88/10)</li>
+                            <li>Comparaison méthodologique framework vs. approches institutionnelles</li>
+                            <li>Validation empirique : R² = 0.88, 100 objets, Bootstrap 1000 runs</li>
+                            <li>PDF intégré + téléchargeable (735 Ko) | DOI Zenodo + HAL</li>
+                        </ul>
+                        <a href="th-1517-gksc-rapport.html" class="btn btn-primary" style="width: 100%; justify-content: center; background: linear-gradient(135deg, #ffa500, #9d4edd); border: none;">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                            Consulter le Rapport TH-1517
+                        </a>
+                    </div>
+
+                    <div class="tool-card" style="border: 2px solid #ff5252; position: relative; overflow: visible;">
+                        <div style="position: absolute; top: -12px; left: 20px; background: linear-gradient(135deg, #ff5252, #ff9800); color: white; padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 12px rgba(255, 82, 82, 0.4); animation: pulse 2s ease-in-out infinite;">
+                            ⚠️ PRÉLIMINAIRE
+                        </div>
+                        <div class="tool-header">
+                            <div class="tool-icon" style="background: linear-gradient(135deg, rgba(255, 82, 82, 0.2), rgba(255, 152, 0, 0.2)); color: #ff5252;">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                                    <path d="M2 12h20"></path>
+                                </svg>
+                            </div>
+                            <h3 class="tool-title" style="color: #ff5252;">🛰️ Analyse Critique MAVEN</h3>
+                        </div>
+                        <p class="tool-description">
+                            Rapport technique préliminaire sur l'événement MAVEN du 6 décembre 2025. 
+                            Calculateur A_MAVEN v1.0 - Méthodologie ThibEquation adaptée aux missions spatiales.
+                        </p>
+                        <div style="background: rgba(255, 82, 82, 0.1); border-left: 3px solid #ff5252; padding: 12px; margin: 16px 0; border-radius: 4px;">
+                            <p style="margin: 0; font-size: 13px; color: #ff9800; font-weight: 600;">
+                                <i class="fas fa-exclamation-triangle"></i> 
+                                <strong>Pondérations non validées</strong> - Données préliminaires - Hypothèses de travail
+                            </p>
+                        </div>
+                        <ul class="tool-features">
+                            <li>Analyse événement MAVEN (6 décembre 2025)</li>
+                            <li>Calculateur A_MAVEN v1.0 (4 dimensions : T, Te, C, O)</li>
+                            <li>Rapport PDF complet (290 Ko) téléchargeable</li>
+                            <li>Méthodologie documentée + disclaimers scientifiques</li>
+                        </ul>
+                        <a href="analyse-maven-6-decembre.html" class="btn btn-primary" style="width: 100%; justify-content: center; background: linear-gradient(135deg, #ff5252, #ff9800); border: none;">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                            Voir l'Analyse MAVEN
+                        </a>
+                    </div>
+
+                    <div class="tool-card" style="border: 2px solid #00d4ff;">
+                        <div class="tool-header">
+                            <div class="tool-icon" style="background: linear-gradient(135deg, #00d4ff, #00e6ff);">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <path d="M2 12h20"></path>
+                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="tool-title" style="color: #00d4ff;">📡 Liens Organismes Scientifiques</h3>
+                        </div>
+                        <p class="tool-description">
+                            Liens directs vers organismes/archives pour soumettre vos observations 
+                            et travaux compilés avec ThibEquation (JPL, MPC, MUFON, Zenodo...).
+                        </p>
+                        <ul class="tool-features">
+                            <li>8 organismes majeurs (JPL/NASA, MPC, MUFON, NUFORC)</li>
+                            <li>Archives open science (Zenodo, arXiv, HAL)</li>
+                            <li>Guide de soumission étape par étape</li>
+                            <li>Citation ThibEquation DOI incluse</li>
+                        </ul>
+                        <a href="📡-LIENS-ORGANISMES-SCIENTIFIQUES.html" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                            Accéder aux Liens
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Load Components -->
+    <script>
+        // Load Header
+        fetch('components/header-navigation.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('header-placeholder').innerHTML = html;
+            })
+            .catch(error => console.error('Error loading header:', error));
+
+        // Load Footer
+        fetch('components/footer-global.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('footer-placeholder').innerHTML = html;
+            })
+            .catch(error => console.error('Error loading footer:', error));
+    </script>
+</body>
+</html>

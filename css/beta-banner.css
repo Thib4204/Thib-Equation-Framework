@@ -1,0 +1,587 @@
+/**
+ * 🚀 ThibEquation Framework - Styles Bandeau BÊTA Spectaculaire
+ * Version: 2.0.0-BETA
+ * Auteur: Thib4204
+ * 
+ * Styles pour le système de bandeau de transparence scientifique
+ * avec animations cosmiques et effets visuels avant-gardistes
+ */
+
+/* ============================================
+   VARIABLES CSS ET THÈMES
+   ============================================ */
+
+:root {
+    /* Couleurs Thème Cosmic (Défaut) */
+    --beta-banner-bg-cosmic: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --beta-banner-bg-cosmic-dark: linear-gradient(135deg, #4a5fbf 0%, #5a3a7f 100%);
+    --beta-banner-text-cosmic: #ffffff;
+    --beta-banner-accent-cosmic: #ffd700;
+    
+    /* Couleurs Thème Scientific */
+    --beta-banner-bg-scientific: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    --beta-banner-text-scientific: #e0e7ff;
+    --beta-banner-accent-scientific: #60a5fa;
+    
+    /* Couleurs Thème Minimal */
+    --beta-banner-bg-minimal: #2d3748;
+    --beta-banner-text-minimal: #e2e8f0;
+    --beta-banner-accent-minimal: #f7fafc;
+    
+    /* Animations et Timings */
+    --beta-banner-transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --beta-banner-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    
+    /* Espacements */
+    --beta-banner-padding: 1.5rem;
+    --beta-banner-gap: 1.5rem;
+    
+    /* Z-index */
+    --beta-banner-z-index: 9999;
+}
+
+/* ============================================
+   STYLES DE BASE DU BANDEAU
+   ============================================ */
+
+.beta-banner {
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: var(--beta-banner-z-index);
+    opacity: 0;
+    transform: translateY(-100%);
+    transition: all var(--beta-banner-transition);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Position Top */
+.beta-banner--top {
+    top: 0;
+}
+
+/* Position Bottom */
+.beta-banner--bottom {
+    bottom: 0;
+    transform: translateY(100%);
+}
+
+/* État Visible */
+.beta-banner--visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ============================================
+   THÈMES VISUELS
+   ============================================ */
+
+/* Thème Cosmic (Défaut - Spectaculaire) */
+.beta-banner--cosmic {
+    background: var(--beta-banner-bg-cosmic);
+    color: var(--beta-banner-text-cosmic);
+    position: relative;
+    overflow: hidden;
+}
+
+.beta-banner--cosmic::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: cosmicStars 20s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes cosmicStars {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(50px, 50px); }
+}
+
+.beta-banner--cosmic::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(255, 255, 255, 0.1) 50%, 
+        transparent 100%);
+    animation: cosmicShimmer 3s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes cosmicShimmer {
+    0%, 100% { left: -100%; }
+    50% { left: 100%; }
+}
+
+/* Thème Scientific (Sobre et Professionnel) */
+.beta-banner--scientific {
+    background: var(--beta-banner-bg-scientific);
+    color: var(--beta-banner-text-scientific);
+    border-bottom: 3px solid var(--beta-banner-accent-scientific);
+}
+
+/* Thème Minimal (Épuré) */
+.beta-banner--minimal {
+    background: var(--beta-banner-bg-minimal);
+    color: var(--beta-banner-text-minimal);
+    border-bottom: 2px solid var(--beta-banner-accent-minimal);
+}
+
+/* ============================================
+   CONTENEUR ET DISPOSITION
+   ============================================ */
+
+.beta-banner__container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--beta-banner-padding);
+    position: relative;
+}
+
+.beta-banner__content {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    gap: var(--beta-banner-gap);
+    align-items: center;
+    transition: all var(--beta-banner-transition);
+}
+
+/* ============================================
+   BADGE BÊTA
+   ============================================ */
+
+.beta-banner__badge {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.25rem;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 50px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+    0%, 100% { 
+        transform: scale(1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    50% { 
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+    }
+}
+
+.beta-banner__badge-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    color: #ffd700;
+    animation: iconRotate 3s ease-in-out infinite;
+}
+
+@keyframes iconRotate {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-5deg); }
+    75% { transform: rotate(5deg); }
+}
+
+.beta-banner__badge-text {
+    font-weight: 800;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: linear-gradient(45deg, #ffd700, #ffed4e);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ============================================
+   MESSAGE PRINCIPAL
+   ============================================ */
+
+.beta-banner__message {
+    flex: 1;
+    min-width: 0; /* Pour permettre le shrink */
+}
+
+.beta-banner__title {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: inherit;
+}
+
+.beta-banner__text {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    opacity: 0.95;
+}
+
+.beta-banner__text strong {
+    font-weight: 700;
+    color: var(--beta-banner-accent-cosmic);
+}
+
+/* ============================================
+   LIENS D'ACTION
+   ============================================ */
+
+.beta-banner__actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.beta-banner__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.25rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+}
+
+.beta-banner__link::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.beta-banner__link:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.beta-banner__link svg {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+}
+
+.beta-banner__link span {
+    position: relative;
+    z-index: 1;
+}
+
+/* Lien Primaire */
+.beta-banner__link--primary {
+    background: rgba(255, 255, 255, 0.95);
+    color: #4a5fbf;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.beta-banner__link--primary:hover {
+    background: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* Lien Secondaire */
+.beta-banner__link--secondary {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+.beta-banner__link--secondary:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   BOUTONS DE CONTRÔLE
+   ============================================ */
+
+.beta-banner__collapse-btn,
+.beta-banner__expand-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.beta-banner__collapse-btn:hover,
+.beta-banner__expand-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: scale(1.1);
+}
+
+.beta-banner__collapse-btn:active,
+.beta-banner__expand-btn:active {
+    transform: scale(0.95);
+}
+
+.beta-banner__collapse-btn svg,
+.beta-banner__expand-btn svg {
+    transition: transform 0.3s ease;
+}
+
+.beta-banner__collapse-btn:hover svg {
+    transform: translateY(-2px);
+}
+
+.beta-banner__expand-btn:hover svg {
+    transform: translateY(2px);
+}
+
+/* ============================================
+   ÉTAT RÉDUIT (COLLAPSED)
+   ============================================ */
+
+.beta-banner--collapsed .beta-banner__content {
+    display: none;
+}
+
+.beta-banner--collapsed .beta-banner__collapsed-info {
+    display: flex;
+}
+
+.beta-banner__collapsed-info {
+    display: none;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+}
+
+.beta-banner__version {
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    opacity: 0.9;
+}
+
+.beta-banner__status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ffd700;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+    animation: dotPulse 2s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+    0%, 100% { 
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 0.6;
+        transform: scale(1.2);
+    }
+}
+
+/* ============================================
+   ANIMATION D'ATTENTION
+   ============================================ */
+
+.beta-banner--attention {
+    animation: bannerAttention 1s ease-in-out;
+}
+
+@keyframes bannerAttention {
+    0%, 100% { 
+        transform: translateY(0);
+    }
+    10%, 30%, 50% { 
+        transform: translateY(-5px);
+    }
+    20%, 40% { 
+        transform: translateY(0);
+    }
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 1200px) {
+    .beta-banner__content {
+        grid-template-columns: auto 1fr auto;
+        gap: 1rem;
+    }
+    
+    .beta-banner__actions {
+        grid-column: 2 / 3;
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --beta-banner-padding: 1rem;
+        --beta-banner-gap: 1rem;
+    }
+    
+    .beta-banner__content {
+        grid-template-columns: 1fr auto;
+        gap: 1rem;
+    }
+    
+    .beta-banner__badge {
+        grid-column: 1 / -1;
+        justify-self: start;
+    }
+    
+    .beta-banner__message {
+        grid-column: 1 / -1;
+    }
+    
+    .beta-banner__actions {
+        grid-column: 1 / -1;
+        width: 100%;
+    }
+    
+    .beta-banner__link {
+        flex: 1;
+        justify-content: center;
+        font-size: 0.85rem;
+        padding: 0.6rem 1rem;
+    }
+    
+    .beta-banner__title {
+        font-size: 1rem;
+    }
+    
+    .beta-banner__text {
+        font-size: 0.875rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .beta-banner__actions {
+        flex-direction: column;
+    }
+    
+    .beta-banner__link {
+        width: 100%;
+    }
+    
+    .beta-banner__badge {
+        padding: 0.5rem 1rem;
+    }
+    
+    .beta-banner__badge-text {
+        font-size: 0.9rem;
+    }
+}
+
+/* ============================================
+   ACCESSIBILITÉ
+   ============================================ */
+
+/* Lecteur d'écran uniquement */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Focus visible pour navigation clavier */
+.beta-banner__link:focus,
+.beta-banner__collapse-btn:focus,
+.beta-banner__expand-btn:focus {
+    outline: 3px solid #ffd700;
+    outline-offset: 2px;
+}
+
+/* Réduction du mouvement pour accessibilité */
+@media (prefers-reduced-motion: reduce) {
+    .beta-banner,
+    .beta-banner__badge,
+    .beta-banner__link,
+    .beta-banner__collapse-btn,
+    .beta-banner__expand-btn {
+        animation: none;
+        transition: none;
+    }
+    
+    .beta-banner--cosmic::before,
+    .beta-banner--cosmic::after {
+        animation: none;
+    }
+}
+
+/* Mode contraste élevé */
+@media (prefers-contrast: high) {
+    .beta-banner {
+        border: 3px solid currentColor;
+    }
+    
+    .beta-banner__badge {
+        border-width: 3px;
+    }
+    
+    .beta-banner__link {
+        border: 2px solid currentColor;
+    }
+}
+
+/* ============================================
+   MODE SOMBRE (Si nécessaire)
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+    .beta-banner--minimal {
+        background: #1a202c;
+        color: #f7fafc;
+    }
+}
+
+/* ============================================
+   PRINT (Masquer à l'impression)
+   ============================================ */
+
+@media print {
+    .beta-banner {
+        display: none !important;
+    }
+}

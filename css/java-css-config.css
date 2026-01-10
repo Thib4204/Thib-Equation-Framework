@@ -1,0 +1,336 @@
+/* ================================================================
+   JAVA CSS CONFIGURATION - Framework Loeb-Thib V1.0 GKSC
+   Optimisation JavaScript + CSS pour ThibEquation Framework
+   ================================================================ */
+
+:root {
+    /* Java CSS Variables for GKSC Components */
+    --gksc-geometric-primary: #3b82f6;
+    --gksc-geometric-secondary: #1e40af;
+    --gksc-kinematic-primary: #10b981;
+    --gksc-kinematic-secondary: #047857;
+    --gksc-spectroscopic-primary: #f59e0b;
+    --gksc-spectroscopic-secondary: #d97706;
+    --gksc-contextual-primary: #8b5cf6;
+    --gksc-contextual-secondary: #7c3aed;
+    
+    /* Java CSS Performance Variables */
+    --java-transition-speed: 0.3s;
+    --java-animation-timing: cubic-bezier(0.4, 0, 0.2, 1);
+    --java-transform-origin: center center;
+    --java-filter-blur: blur(0.5px);
+    --java-backdrop-filter: saturate(180%) blur(20px);
+}
+
+/* ================================================================
+   JAVA CSS COMPONENT SELECTORS - GKSC Framework
+   ================================================================ */
+
+/* Geometric Component Styling */
+.gksc-component.geometric {
+    --component-primary: var(--gksc-geometric-primary);
+    --component-secondary: var(--gksc-geometric-secondary);
+    --component-gradient: linear-gradient(135deg, var(--component-primary), var(--component-secondary));
+}
+
+/* Kinematic Component Styling */
+.gksc-component.kinematic {
+    --component-primary: var(--gksc-kinematic-primary);
+    --component-secondary: var(--gksc-kinematic-secondary);
+    --component-gradient: linear-gradient(135deg, var(--component-primary), var(--component-secondary));
+}
+
+/* Spectroscopic Component Styling */
+.gksc-component.spectroscopic {
+    --component-primary: var(--gksc-spectroscopic-primary);
+    --component-secondary: var(--gksc-spectroscopic-secondary);
+    --component-gradient: linear-gradient(135deg, var(--component-primary), var(--component-secondary));
+}
+
+/* Contextual Component Styling */
+.gksc-component.contextual {
+    --component-primary: var(--gksc-contextual-primary);
+    --component-secondary: var(--gksc-contextual-secondary);
+    --component-gradient: linear-gradient(135deg, var(--component-primary), var(--component-secondary));
+}
+
+/* ================================================================
+   JAVA CSS PERFORMANCE OPTIMIZATION
+   ================================================================ */
+
+/* GPU Acceleration for JavaScript Animations */
+.java-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+    will-change: transform, opacity;
+}
+
+/* JavaScript Event Optimization */
+.java-interactive {
+    cursor: pointer;
+    transition: all var(--java-transition-speed) var(--java-animation-timing);
+    transform-origin: var(--java-transform-origin);
+}
+
+.java-interactive:hover {
+    transform: scale(1.05) translateZ(0);
+    filter: brightness(1.1);
+}
+
+.java-interactive:active {
+    transform: scale(0.98) translateZ(0);
+    transition-duration: 0.1s;
+}
+
+/* ================================================================
+   JAVA CSS GKSC PARAMETER INPUTS
+   ================================================================ */
+
+/* GKSC Parameter Input Styling */
+.gksc-parameter-input {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 12px 16px;
+    transition: all var(--java-transition-speed) var(--java-animation-timing);
+}
+
+.gksc-parameter-input:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--component-primary);
+    box-shadow: 0 0 20px rgba(var(--component-primary-rgb), 0.3);
+}
+
+.gksc-parameter-input input {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    width: 100%;
+    outline: none;
+}
+
+.gksc-parameter-input input:focus {
+    color: var(--component-primary);
+}
+
+/* Parameter Labels with Java CSS */
+.gksc-parameter-label {
+    display: block;
+    color: var(--component-primary);
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ================================================================
+   JAVA CSS CHART INTEGRATION
+   ================================================================ */
+
+/* Chart.js Integration with Java CSS */
+.java-chart-container {
+    position: relative;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 16px;
+    padding: 24px;
+    backdrop-filter: var(--java-backdrop-filter);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.java-chart-wrapper {
+    position: relative;
+    height: 400px;
+    width: 100%;
+}
+
+/* Java CSS Chart Animation */
+@keyframes java-chart-appear {
+    0% {
+        opacity: 0;
+        transform: scale(0.8) translateZ(0);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateZ(0);
+    }
+}
+
+.java-chart-animated {
+    animation: java-chart-appear 0.8s var(--java-animation-timing);
+}
+
+/* ================================================================
+   JAVA CSS RESPONSIVE GRID SYSTEM
+   ================================================================ */
+
+/* GKSC Component Grid */
+.gksc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    padding: 24px;
+}
+
+.gksc-grid-item {
+    background: var(--component-gradient);
+    border-radius: 16px;
+    padding: 24px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.gksc-grid-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.1);
+    opacity: 0;
+    transition: opacity var(--java-transition-speed);
+}
+
+.gksc-grid-item:hover::before {
+    opacity: 1;
+}
+
+/* ================================================================
+   JAVA CSS MOBILE OPTIMIZATION
+   ================================================================ */
+
+@media (max-width: 768px) {
+    .gksc-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 16px;
+    }
+    
+    .gksc-parameter-input {
+        padding: 10px 14px;
+    }
+    
+    .java-chart-wrapper {
+        height: 300px;
+    }
+}
+
+/* ================================================================
+   JAVA CSS ANIMATION PRESETS
+   ================================================================ */
+
+/* Fade In Animation for JavaScript */
+@keyframes java-fade-in {
+    0% { opacity: 0; transform: translateY(20px) translateZ(0); }
+    100% { opacity: 1; transform: translateY(0) translateZ(0); }
+}
+
+/* Scale Animation for JavaScript */
+@keyframes java-scale-in {
+    0% { opacity: 0; transform: scale(0.9) translateZ(0); }
+    100% { opacity: 1; transform: scale(1) translateZ(0); }
+}
+
+/* Slide Animation for JavaScript */
+@keyframes java-slide-in {
+    0% { opacity: 0; transform: translateX(-30px) translateZ(0); }
+    100% { opacity: 1; transform: translateX(0) translateZ(0); }
+}
+
+/* Java CSS Animation Classes */
+.java-fade-in {
+    animation: java-fade-in 0.6s var(--java-animation-timing);
+}
+
+.java-scale-in {
+    animation: java-scale-in 0.5s var(--java-animation-timing);
+}
+
+.java-slide-in {
+    animation: java-slide-in 0.7s var(--java-animation-timing);
+}
+
+/* ================================================================
+   JAVA CSS UTILITY CLASSES
+   ================================================================ */
+
+/* Performance Utilities */
+.java-smooth {
+    transition: all var(--java-transition-speed) var(--java-animation-timing);
+}
+
+.java-no-select {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.java-transform-gpu {
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+}
+
+/* Loading States */
+.java-loading {
+    position: relative;
+    overflow: hidden;
+}
+
+.java-loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.2), 
+        transparent);
+    animation: java-loading-shimmer 2s infinite;
+}
+
+@keyframes java-loading-shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* ================================================================
+   JAVA CSS DARK MODE SUPPORT
+   ================================================================ */
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --java-bg-primary: #0f172a;
+        --java-bg-secondary: #1e293b;
+        --java-text-primary: #f8fafc;
+        --java-text-secondary: #cbd5e1;
+    }
+}
+
+/* ================================================================
+   JAVA CSS PRINT SUPPORT
+   ================================================================ */
+
+@media print {
+    .java-no-print {
+        display: none !important;
+    }
+    
+    .java-print-only {
+        display: block !important;
+    }
+    
+    .gksc-component {
+        page-break-inside: avoid;
+    }
+}

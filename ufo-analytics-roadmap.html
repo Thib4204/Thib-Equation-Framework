@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roadmap & Changelog - UFO Analytics | ThibEquation</title>
+    <meta name="description" content="Feuille de route et historique des versions d'UFO Analytics Agent - ThibEquation Framework">
+    <link rel="icon" type="image/png" href="images/logo-thibequation-official.png">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-deep: #0a0e1a;
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a1f2e;
+            --bg-card: #161b26;
+            
+            --primary-cyan: #00d9ff;
+            --primary-gold: #ffb84d;
+            --primary-purple: #a78bfa;
+            
+            --accent-cyan: #4dd0e1;
+            --accent-gold: #ffd54f;
+            --accent-purple: #ba68c8;
+            
+            --text-primary: #e8eaed;
+            --text-secondary: #9aa0a6;
+            --text-muted: #5f6368;
+            
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-focus: rgba(0, 217, 255, 0.3);
+            
+            --success: #4caf50;
+            --warning: #ff9800;
+            --future: #9c27b0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg-deep) 0%, var(--bg-primary) 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+        
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 42px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-gold), var(--primary-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 18px;
+            margin-bottom: 60px;
+        }
+        
+        .section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .section h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-gold);
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .version {
+            background: rgba(0, 217, 255, 0.05);
+            border-left: 4px solid var(--primary-cyan);
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .version-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        .version-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary-cyan);
+        }
+        
+        .version-date {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .badge-stable {
+            background: var(--success);
+            color: white;
+        }
+        
+        .badge-beta {
+            background: var(--warning);
+            color: white;
+        }
+        
+        .badge-planned {
+            background: var(--future);
+            color: white;
+        }
+        
+        .changes ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .changes li {
+            padding: 8px 0;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .changes li i {
+            color: var(--primary-gold);
+            margin-top: 4px;
+        }
+        
+        .roadmap-item {
+            background: rgba(167, 139, 250, 0.05);
+            border-left: 4px solid var(--primary-purple);
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .roadmap-quarter {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-purple);
+            margin-bottom: 12px;
+        }
+        
+        .roadmap-features {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .roadmap-features li {
+            padding: 6px 0;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .roadmap-features li i {
+            color: var(--accent-purple);
+            margin-top: 4px;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-cyan);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-bottom: 40px;
+        }
+        
+        .back-link:hover {
+            color: var(--accent-cyan);
+            transform: translateX(-4px);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 16px;
+            }
+            
+            h1 {
+                font-size: 32px;
+            }
+            
+            .version-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="ufo-analytics.html" class="back-link">
+            <i class="fas fa-arrow-left"></i> Retour à UFO Analytics
+        </a>
+        
+        <h1>🛸 UFO Analytics Roadmap</h1>
+        <p class="subtitle">
+            Feuille de route et historique des versions | ThibEquation Framework v5.0.0-EMPIRICAL
+        </p>
+        
+        <!-- Changelog -->
+        <div class="section">
+            <h2>
+                <i class="fas fa-history"></i> Changelog (Historique des Versions)
+            </h2>
+            
+            <!-- Version 1.0.0 -->
+            <div class="version">
+                <div class="version-header">
+                    <div>
+                        <span class="version-number">v1.0.0</span>
+                        <span class="badge badge-stable">STABLE</span>
+                    </div>
+                    <span class="version-date">24 décembre 2025</span>
+                </div>
+                <div class="changes">
+                    <ul>
+                        <li>
+                            <i class="fas fa-rocket"></i>
+                            <span><strong>Lancement initial</strong> de l'application UFO Analytics Agent</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-calculator"></i>
+                            <span>Calcul ThibScore (SAG 0-100) basé sur GKSC v5.0</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-database"></i>
+                            <span>Base de 100 objets validés (1I/'Oumuamua, 2I/Borisov, 3I/ATLAS, IM1-IM8, TNOs, NEAs)</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-chart-radar"></i>
+                            <span>Graphiques radar GKSC interactifs (4 dimensions : G, K, S, C)</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            <span>Système de fiabilité psychométrique (pondération témoin 0-100%)</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-file-export"></i>
+                            <span>Export multi-formats (CSV, JSON, Markdown)</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-mobile-alt"></i>
+                            <span>Interface Flutter Web responsive (desktop, tablette, mobile)</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>Documentation complète des 12 paramètres GKSC</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-flask"></i>
+                            <span>Validation scientifique : R² = 0.88, MAE = 0.44, RMSE = 0.61</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Roadmap -->
+        <div class="section">
+            <h2>
+                <i class="fas fa-map-marked-alt"></i> Roadmap (Feuille de Route)
+            </h2>
+            
+            <!-- Q1 2026 -->
+            <div class="roadmap-item">
+                <div class="roadmap-quarter">
+                    <i class="fas fa-calendar-alt"></i> Q1 2026 (Jan-Mar)
+                </div>
+                <ul class="roadmap-features">
+                    <li>
+                        <i class="fas fa-mobile-screen-button"></i>
+                        <span><strong>Applications natives</strong> : APK Android & IPA iOS (téléchargement direct, notifications push)</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-plug"></i>
+                        <span><strong>API REST publique</strong> : Intégration programmatique du calcul ThibScore (rate-limit 1000 req/jour gratuit)</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-users"></i>
+                        <span><strong>Comptes utilisateurs</strong> : Sauvegarde des calculs, historique, favoris, partage sécurisé</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-globe"></i>
+                        <span><strong>Support multilingue</strong> : Anglais, Espagnol, Italien (en plus du Français)</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Q2 2026 -->
+            <div class="roadmap-item">
+                <div class="roadmap-quarter">
+                    <i class="fas fa-calendar-alt"></i> Q2 2026 (Avr-Juin)
+                </div>
+                <ul class="roadmap-features">
+                    <li>
+                        <i class="fas fa-database"></i>
+                        <span><strong>Nouvelles sources de données</strong> : Intégration Gaia DR3 (astrométrie précise), JWST (spectroscopie infrarouge), VLT/ESO (photométrie)</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-ufo"></i>
+                        <span><strong>Catalogues UAP officiels</strong> : Import automatique des cas NUFORC (40,000+ rapports), MUFON (90,000+ cas), GEIPAN (France)</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-expand"></i>
+                        <span><strong>Expansion de la base</strong> : 100 → 250 objets validés (nouveaux TNOs, comètes, candidats interstellaires)</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-robot"></i>
+                        <span><strong>Machine Learning</strong> : Détection automatique d'anomalies via Random Forest + XGBoost (amélioration R² → 0.92+)</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Q3 2026 -->
+            <div class="roadmap-item">
+                <div class="roadmap-quarter">
+                    <i class="fas fa-calendar-alt"></i> Q3 2026 (Juil-Sept)
+                </div>
+                <ul class="roadmap-features">
+                    <li>
+                        <i class="fas fa-cube"></i>
+                        <span><strong>Visualisations 3D</strong> : Trajectoires interstellaires en WebGL (Three.js), orbites comparatives, système solaire interactif</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-chart-line"></i>
+                        <span><strong>Analyses avancées</strong> : Clustering K-Means des objets similaires, PCA (réduction dimensionnalité), corrélations multi-paramètres</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-bell"></i>
+                        <span><strong>Alertes temps réel</strong> : Notifications pour nouveaux objets interstellaires détectés (alertes JPL CNEOS, MPC)</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-graduation-cap"></i>
+                        <span><strong>Mode éducatif</strong> : Tutoriels interactifs, quiz scientifiques, vidéos explicatives (partenariat universités)</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Q4 2026 -->
+            <div class="roadmap-item">
+                <div class="roadmap-quarter">
+                    <i class="fas fa-calendar-alt"></i> Q4 2026 (Oct-Déc)
+                </div>
+                <ul class="roadmap-features">
+                    <li>
+                        <i class="fas fa-satellite"></i>
+                        <span><strong>Intégration LSST</strong> : Pipeline d'analyse des alertes transitoires du Vera C. Rubin Observatory (10M objets/nuit)</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-network-wired"></i>
+                        <span><strong>Plateforme collaborative</strong> : Forum scientifique, revue par pairs communautaire, contribution citoyenne aux données</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-microscope"></i>
+                        <span><strong>Publications scientifiques</strong> : Articles dans MNRAS, ApJ, Nature Astronomy (validation académique du framework GKSC)</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-cloud"></i>
+                        <span><strong>Infrastructure cloud</strong> : Migration vers architecture serverless (AWS Lambda, Cloudflare Workers) pour scalabilité mondiale</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Long Terme -->
+            <div class="roadmap-item">
+                <div class="roadmap-quarter">
+                    <i class="fas fa-infinity"></i> Vision Long Terme (2027+)
+                </div>
+                <ul class="roadmap-features">
+                    <li>
+                        <i class="fas fa-brain"></i>
+                        <span><strong>IA générative</strong> : Assistant conversationnel GPT-4 intégré pour explications pédagogiques et suggestions d'investigation</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-rocket"></i>
+                        <span><strong>Missions spatiales</strong> : Partenariat avec agences (NASA, ESA, CSA) pour application embarquée sur sondes interstellaires</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-globe-americas"></i>
+                        <span><strong>Standardisation internationale</strong> : Proposition du framework GKSC comme norme ISO/IAU pour classification objets interstellaires</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-award"></i>
+                        <span><strong>Prix scientifique</strong> : Candidature aux prix internationaux (Breakthrough Prize, Shaw Prize) pour innovation en astrobiologie</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Contributions -->
+        <div class="section">
+            <h2>
+                <i class="fas fa-code-branch"></i> Comment Contribuer
+            </h2>
+            <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                UFO Analytics est un projet de <strong style="color: var(--primary-gold);">recherche citoyenne ouverte</strong>. 
+                Nous accueillons les contributions de la communauté scientifique internationale.
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                <div style="background: rgba(0, 217, 255, 0.05); border-left: 3px solid var(--primary-cyan); padding: 20px; border-radius: 8px;">
+                    <h3 style="color: var(--primary-cyan); font-size: 18px; margin-bottom: 12px;">
+                        <i class="fas fa-github"></i> Code Source
+                    </h3>
+                    <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 12px;">
+                        Contribuer au développement sur GitHub (MIT License).
+                    </p>
+                    <a href="https://github.com/Thib4204/Thib-Equation-Framework" style="color: var(--primary-cyan); text-decoration: underline; font-size: 14px;">
+                        github.com/Thib4204/Thib-Equation-Framework
+                    </a>
+                </div>
+                <div style="background: rgba(255, 184, 77, 0.05); border-left: 3px solid var(--primary-gold); padding: 20px; border-radius: 8px;">
+                    <h3 style="color: var(--primary-gold); font-size: 18px; margin-bottom: 12px;">
+                        <i class="fas fa-database"></i> Données Scientifiques
+                    </h3>
+                    <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 12px;">
+                        Soumettre de nouveaux objets ou corriger des données existantes.
+                    </p>
+                    <a href="https://zenodo.org/communities/thibequation/" style="color: var(--primary-gold); text-decoration: underline; font-size: 14px;">
+                        zenodo.org/communities/thibequation
+                    </a>
+                </div>
+                <div style="background: rgba(167, 139, 250, 0.05); border-left: 3px solid var(--primary-purple); padding: 20px; border-radius: 8px;">
+                    <h3 style="color: var(--primary-purple); font-size: 18px; margin-bottom: 12px;">
+                        <i class="fas fa-comments"></i> Feedback & Suggestions
+                    </h3>
+                    <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 12px;">
+                        Proposer des améliorations ou signaler des bugs.
+                    </p>
+                    <a href="https://thibequation.com/cdn-cgi/l/email-protection#1d4975747f7279787c68747373726b7c697472736e5d6d6f72697273707c7471337e7270" style="color: var(--primary-purple); text-decoration: underline; font-size: 14px;">
+                        <span class="__cf_email__" data-cfemail="d783bfbeb5b8b3b2b6a2beb9b9b8a1b6a3beb8b9a497a7a5b8a3b8b9bab6bebbf9b4b8ba">[email&#160;protected]</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 60px; padding-top: 40px; border-top: 1px solid var(--border-subtle);">
+            <p style="color: var(--text-muted); font-size: 14px;">
+                <strong>ThibEquation Framework v5.0.0-EMPIRICAL</strong> | 
+                DOI: <a href="https://doi.org/10.5281/zenodo.17717380" style="color: var(--primary-cyan); text-decoration: underline;">10.5281/zenodo.17717380</a> | 
+                Dernière mise à jour : 24 décembre 2025
+            </p>
+        </div>
+    </div>
+<script data-cfasync="false" src="cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body>
+</html>

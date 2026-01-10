@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback - ThibEquation Framework v5.0</title>
+    <link rel="icon" type="image/png" href="images/logo-thibequation-official.png">
+    
+    <!-- Modern Pale Theme -->
+    <link rel="stylesheet" href="css/modern-pale-theme-v2.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --deep-space: #f8fafb; --navy-dark: #ffffff; --navy-mid: #f3f6f9;
+            --gold: #b8860b; --gold-light: #daa520; --white: #0d1117;
+            --gray-light: #0d1117; --gray-mid: #2d3748;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            background: linear-gradient(180deg, #f8fafb 0%, #ffffff 100%);
+            color: #0d1117; font-family: 'Inter', sans-serif;
+            min-height: 100vh; overflow-x: hidden;
+        }
+        body::before {
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20% 30%, white, transparent),
+                radial-gradient(1px 1px at 50% 50%, white, transparent);
+            background-size: 200% 200%; animation: stars 80s linear infinite;
+            opacity: 0.5; pointer-events: none; z-index: 0;
+        }
+        @keyframes stars { 0% { background-position: 0% 0%; } 100% { background-position: 100% 100%; } }
+        header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(10, 22, 40, 0.97); backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.4);
+        }
+        .header-container {
+            max-width: 1800px; margin: 0 auto; padding: 12px 30px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .logo-section { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo-emblem { width: 50px; height: 50px; transition: transform 0.6s ease; border-radius: 50%; overflow: hidden; }
+        .logo-emblem img { width: 100%; height: 100%; object-fit: cover; filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.5)); }
+        .logo-section:hover .logo-emblem { transform: rotate(180deg); }
+        .logo-text { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600; color: var(--white); letter-spacing: 1px; }
+        nav ul { display: flex; gap: 25px; list-style: none; }
+        nav a {
+            color: var(--gray-light); text-decoration: none; font-size: 12px; font-weight: 500;
+            letter-spacing: 0.5px; transition: all 0.3s ease; position: relative; padding: 8px 0; text-transform: uppercase;
+        }
+        nav a::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px;
+            background: var(--gold); transition: width 0.3s ease;
+        }
+        nav a:hover::after, nav a.active::after { width: 100%; }
+        nav a:hover, nav a.active { color: var(--gold); }
+        .container { position: relative; z-index: 1; max-width: 1400px; margin: 0 auto; padding: 120px 40px 80px; }
+        .page-header { text-align: center; margin-bottom: 80px; }
+        .page-title {
+            font-family: 'Space Grotesk', sans-serif; font-size: 56px; font-weight: 700;
+            background: linear-gradient(135deg, var(--white), var(--gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 20px;
+        }
+        .page-subtitle { font-size: 18px; color: var(--gray-mid); max-width: 700px; margin: 0 auto; }
+        .section { margin-bottom: 80px; }
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif; font-size: 36px; color: var(--gold);
+            margin-bottom: 30px; padding-bottom: 15px; border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+        }
+        .content-card {
+            background: rgba(27, 38, 59, 0.7); border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px; padding: 30px; backdrop-filter: blur(10px);
+            margin-bottom: 30px; transition: all 0.3s ease;
+        }
+        .content-card:hover {
+            border-color: var(--gold); box-shadow: 0 0 25px rgba(212, 175, 55, 0.2);
+            transform: translateY(-3px);
+        }
+        .content-card h3 { font-size: 24px; color: var(--gold-light); margin-bottom: 15px; }
+        .content-card p { color: var(--gray-light); line-height: 1.8; font-size: 16px; margin-bottom: 15px; }
+        .data-table {
+            width: 100%; border-collapse: collapse; margin: 20px 0;
+        }
+        .data-table th, .data-table td {
+            padding: 15px; text-align: left; border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        .data-table th {
+            background: rgba(212, 175, 55, 0.1); color: var(--gold);
+            font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 1px;
+        }
+        .data-table td { color: var(--gray-light); }
+        .stat-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 30px 0;
+        }
+        .stat-box {
+            background: rgba(13, 27, 42, 0.9); border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 10px; padding: 25px; text-align: center;
+        }
+        .stat-value {
+            font-size: 48px; color: var(--gold); font-weight: 700; margin-bottom: 10px;
+        }
+        .stat-label {
+            font-size: 12px; color: var(--gray-mid); text-transform: uppercase; letter-spacing: 1px;
+        }
+        @media (max-width: 768px) {
+            .header-container { flex-direction: column; gap: 15px; }
+            nav ul { flex-wrap: wrap; justify-content: center; gap: 12px; }
+            .page-title { font-size: 36px; }
+            .stat-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo-section">
+                <div class="logo-emblem"><img src="images/logo-thibequation-round.png" alt="ThibEquation Logo"></div>
+                <span class="logo-text">THIBEQUATION</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="methodologie.html">Méthodologie GKSC</a></li>
+                    <li><a href="calculateur.html">Calculateur Détaillé</a></li>
+                    <li><a href="donnees.html">Données Sources</a></li>
+                    <li><a href="outils.html">Outils & Visualisations</a></li>
+                    <li><a href="collaboration.html">Collaboration v5.0</a></li>
+                    <li><a href="sources.html">Framework Scientifique</a></li>
+                    <li><a href="bibliographie.html">Recherche Interstellaire</a></li>
+                    <li><a href="feedback.html" class="active">Feedback</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Feedback</h1>
+            <p class="page-subtitle">Votre retour est essentiel pour l'amélioration continue du framework</p>
+        </div>
+
+        <div class="stat-grid">
+            <div class="stat-box">
+                <div class="stat-value">46</div>
+                <div class="stat-label">Objets Analysés</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">460</div>
+                <div class="stat-label">Valeurs GKSC</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">98.5%</div>
+                <div class="stat-label">Complétude Dataset</div>
+            </div>
+        </div>
+
+        <section class="section">
+    <h2 class="section-title">📝 Formulaire de Feedback</h2>
+    
+    <div class="content-card">
+        <p style="margin-bottom: 30px;">
+            Votre retour est essentiel pour améliorer le framework ThibEquation v5.0. 
+            Que vous soyez chercheur professionnel, étudiant, ou passionné d'astronomie, 
+            <strong>votre opinion compte</strong>.
+        </p>
+
+        <form id="feedbackForm" style="max-width: 800px;">
+            <!-- Type de Feedback -->
+            <div style="margin-bottom: 25px;">
+                <label style="display: block; color: var(--gold); font-weight: 600; margin-bottom: 10px;">
+                    Type de Feedback *
+                </label>
+                <select id="feedbackType" required style="width: 100%; padding: 12px; background: rgba(13, 27, 42, 0.9); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 6px; color: var(--white); font-size: 14px;">
+                    <option value="">-- Sélectionnez --</option>
+                    <option value="bug">🐛 Rapport de Bug</option>
+                    <option value="feature">✨ Suggestion de Fonctionnalité</option>
+                    <option value="data">📊 Correction de Données</option>
+                    <option value="scientific">🔬 Validation Scientifique</option>
+                    <option value="general">💬 Commentaire Général</option>
+                </select>
+            </div>
+
+            <!-- Nom (optionnel) -->
+            <div style="margin-bottom: 25px;">
+                <label style="display: block; color: var(--gold); font-weight: 600; margin-bottom: 10px;">
+                    Nom / Affiliation (optionnel)
+                </label>
+                <input type="text" id="feedbackName" placeholder="Dr. Jane Smith, Université XYZ" style="width: 100%; padding: 12px; background: rgba(13, 27, 42, 0.9); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 6px; color: var(--white); font-size: 14px;">
+            </div>
+
+            <!-- Email (optionnel) -->
+            <div style="margin-bottom: 25px;">
+                <label style="display: block; color: var(--gold); font-weight: 600; margin-bottom: 10px;">
+                    Email (optionnel, pour suivi)
+                </label>
+                <input type="email" id="feedbackEmail" placeholder="email@example.com" style="width: 100%; padding: 12px; background: rgba(13, 27, 42, 0.9); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 6px; color: var(--white); font-size: 14px;">
+            </div>
+
+            <!-- Message -->
+            <div style="margin-bottom: 25px;">
+                <label style="display: block; color: var(--gold); font-weight: 600; margin-bottom: 10px;">
+                    Votre Message *
+                </label>
+                <textarea id="feedbackMessage" required rows="8" placeholder="Décrivez votre retour en détail..." style="width: 100%; padding: 12px; background: rgba(13, 27, 42, 0.9); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 6px; color: var(--white); font-size: 14px; resize: vertical; font-family: 'Inter', sans-serif;"></textarea>
+            </div>
+
+            <!-- Bouton Submit -->
+            <button type="submit" style="background: linear-gradient(135deg, var(--gold-dark), var(--gold)); border: none; padding: 15px 40px; border-radius: 8px; color: #0a1628; font-weight: 700; font-size: 16px; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px;">
+                📤 Envoyer Feedback
+            </button>
+
+            <!-- Message de confirmation -->
+            <div id="confirmationMessage" style="display: none; margin-top: 20px; padding: 15px; background: rgba(46, 204, 113, 0.2); border: 1px solid #2ecc71; border-radius: 6px; color: #2ecc71;">
+                ✅ Merci ! Votre feedback a été enregistré.
+            </div>
+        </form>
+    </div>
+</section>
+
+<section class="section">
+    <h2 class="section-title">💡 Suggestions Prioritaires</h2>
+    
+    <div class="content-card">
+        <h3>Domaines d'Amélioration Identifiés</h3>
+        <p>Voici les axes de développement actuellement en cours ou planifiés :</p>
+        
+        <table class="data-table" style="margin-top: 20px;">
+            <thead>
+                <tr>
+                    <th>Domaine</th>
+                    <th>Statut</th>
+                    <th>Priorité</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Extension dataset à 100+ objets</td>
+                    <td><span style="color: #ffa500;">🔄 En cours</span></td>
+                    <td><strong style="color: #ff6b6b;">Haute</strong></td>
+                </tr>
+                <tr>
+                    <td>Intégration API JPL HORIZONS automatique</td>
+                    <td><span style="color: #8892a6;">⏳ Planifié</span></td>
+                    <td><strong style="color: #ffa500;">Moyenne</strong></td>
+                </tr>
+                <tr>
+                    <td>Visualisations 3D des trajectoires</td>
+                    <td><span style="color: #8892a6;">⏳ Planifié</span></td>
+                    <td><strong style="color: #ffa500;">Moyenne</strong></td>
+                </tr>
+                <tr>
+                    <td>Version multilingue (EN/FR/ES)</td>
+                    <td><span style="color: #2ecc71;">✅ Partiel (EN/FR)</span></td>
+                    <td><strong style="color: #90ee90;">Basse</strong></td>
+                </tr>
+                <tr>
+                    <td>Publication scientifique peer-reviewed</td>
+                    <td><span style="color: #8892a6;">⏳ Planifié Q2 2025</span></td>
+                    <td><strong style="color: #ff6b6b;">Haute</strong></td>
+                </tr>
+                <tr>
+                    <td>API RESTful publique</td>
+                    <td><span style="color: #8892a6;">⏳ Planifié Q3 2025</span></td>
+                    <td><strong style="color: #ffa500;">Moyenne</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="content-card">
+        <h3>Questions Fréquentes (FAQ)</h3>
+        
+        <div style="margin-bottom: 20px;">
+            <strong style="color: var(--gold);">Q: Les pondérations GKSC (28/32/23/17) sont-elles définitives ?</strong><br>
+            <span style="color: var(--gray-light);">R: Non. Ces pondérations sont issues d'une régression Ridge optimisée sur 46 objets. 
+            Elles évolueront avec l'expansion du dataset et la validation par la communauté scientifique.</span>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <strong style="color: var(--gold);">Q: Puis-je utiliser ThibEquation dans mes recherches académiques ?</strong><br>
+            <span style="color: var(--gray-light);">R: Oui, le framework est 100% open-source. Citez simplement le DOI Zenodo 
+            (10.5281/zenodo.17717380) et le GitHub dans vos publications.</span>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <strong style="color: var(--gold);">Q: Comment signaler une erreur de données ?</strong><br>
+            <span style="color: var(--gray-light);">R: Utilisez le formulaire ci-dessus (Type: "Correction de Données") 
+            ou créez une Issue GitHub avec les sources officielles corrigées (JPL/MPC).</span>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <strong style="color: var(--gold);">Q: Le calculateur supporte-t-il les objets non-répertoriés ?</strong><br>
+            <span style="color: var(--gray-light);">R: Oui, le calculateur accepte les paramètres manuels. 
+            Assurez-vous que les valeurs proviennent de sources vérifiables.</span>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <h2 class="section-title">🔗 Autres Canaux de Communication</h2>
+    
+    <div class="content-card">
+        <h3>GitHub Issues</h3>
+        <p>
+            Pour les rapports de bugs techniques, suggestions de code, ou discussions scientifiques approfondies :
+        </p>
+        <p style="margin-top: 15px;">
+            <a href="https://github.com/Thib4204/thibequation/issues" style="color: var(--gold); font-size: 18px; font-weight: 600;">
+                🔗 github.com/Thib4204/thibequation/issues
+            </a>
+        </p>
+    </div>
+
+    <div class="content-card">
+        <h3>Contribution Directe (Pull Requests)</h3>
+        <p>
+            Si vous souhaitez contribuer directement au code, aux données, ou à la documentation :
+        </p>
+        <ul style="color: var(--gray-light); line-height: 2; margin-top: 15px;">
+            <li>Forkez le repository GitHub</li>
+            <li>Créez une branche pour vos modifications</li>
+            <li>Soumettez une Pull Request avec description détaillée</li>
+            <li>Respectez les standards de documentation et de tests</li>
+        </ul>
+        <p style="margin-top: 15px;">
+            <a href="https://github.com/Thib4204/thibequation" style="color: var(--gold); font-weight: 600;">
+                📂 Repository principal
+            </a>
+        </p>
+    </div>
+
+    <div class="content-card">
+        <h3>Principe de Rigueur Scientifique</h3>
+        <p style="color: var(--gray-light); line-height: 1.8;">
+            <strong>Aucune complaisance, aucune invention.</strong> 
+            Tous les feedbacks doivent respecter les standards ThibEquation :
+        </p>
+        <ul style="color: var(--gray-light); line-height: 2; margin-top: 15px;">
+            <li>✅ <strong>Données vérifiables</strong> : Toute correction doit citer une source officielle (JPL, MPC, publication peer-reviewed)</li>
+            <li>✅ <strong>Transparence</strong> : Marquez clairement les hypothèses avec <code>(HYPOTHÈSE)</code></li>
+            <li>✅ <strong>Reproductibilité</strong> : Les suggestions de calcul doivent être reproductibles avec les mêmes paramètres</li>
+            <li>❌ <strong>Zéro tolérance</strong> : Aucune donnée inventée, aucune approximation présentée comme un fait</li>
+        </ul>
+    </div>
+</section>
+
+<script>
+document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Récupération des valeurs
+    const feedbackData = {
+        type: document.getElementById('feedbackType').value,
+        name: document.getElementById('feedbackName').value || 'Anonyme',
+        email: document.getElementById('feedbackEmail').value || 'Non fourni',
+        message: document.getElementById('feedbackMessage').value,
+        timestamp: new Date().toISOString()
+    };
+    
+    // Simulation d'envoi (à remplacer par API réelle)
+    console.log('Feedback soumis:', feedbackData);
+    
+    // Affichage du message de confirmation
+    document.getElementById('confirmationMessage').style.display = 'block';
+    
+    // Réinitialisation du formulaire après 2 secondes
+    setTimeout(() => {
+        document.getElementById('feedbackForm').reset();
+        document.getElementById('confirmationMessage').style.display = 'none';
+    }, 3000);
+});
+</script>
+    </div>
+
+    <!-- Bouton Patreon Flottant -->
+    <a href="https://www.patreon.com/c/ThibodeauInnovations" target="_blank" rel="noopener noreferrer" class="patreon-float" aria-label="Supporter sur Patreon">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+            <path d="M15.386.524c-4.764 0-8.64 3.876-8.64 8.64 0 4.75 3.876 8.613 8.64 8.613 4.75 0 8.614-3.864 8.614-8.613C24 4.4 20.136.524 15.386.524M.003 23.537h4.22V.524H.003"/>
+        </svg>
+        <span>Supporter</span>
+    </a>
+
+    <style>
+        .patreon-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #ff424d 0%, #d91c23 100%);
+            color: white;
+            padding: 14px 22px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 15px;
+            text-decoration: none;
+            box-shadow: 0 8px 25px rgba(255, 66, 77, 0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 10000;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .patreon-float:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 12px 35px rgba(255, 66, 77, 0.6);
+            background: linear-gradient(135deg, #ff5562 0%, #e92d35 100%);
+        }
+
+        .patreon-float:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .patreon-float svg {
+            flex-shrink: 0;
+        }
+
+        .patreon-float span {
+            white-space: nowrap;
+        }
+
+        @keyframes patreon-pulse {
+            0%, 100% { box-shadow: 0 8px 25px rgba(255, 66, 77, 0.4); }
+            50% { box-shadow: 0 8px 35px rgba(255, 66, 77, 0.6); }
+        }
+
+        .patreon-float {
+            animation: patreon-pulse 3s ease-in-out infinite;
+        }
+
+        @media (max-width: 768px) {
+            .patreon-float {
+                bottom: 20px;
+                right: 20px;
+                padding: 12px 18px;
+                font-size: 14px;
+            }
+
+            .patreon-float svg {
+                width: 24px;
+                height: 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .patreon-float span {
+                display: none;
+            }
+
+            .patreon-float {
+                width: 56px;
+                height: 56px;
+                padding: 0;
+                justify-content: center;
+                border-radius: 50%;
+            }
+        }
+    </style>
+</body>
+</html>

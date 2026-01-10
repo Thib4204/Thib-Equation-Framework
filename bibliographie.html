@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bibliographie - ThibEquation Framework v5.0</title>
+    <link rel="icon" type="image/png" href="images/logo-thibequation-official.png">
+    
+    <!-- Modern Pale Theme -->
+    <link rel="stylesheet" href="css/modern-pale-theme-v2.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --deep-space: #f8fafb; --navy-dark: #ffffff; --navy-mid: #f3f6f9;
+            --gold: #b8860b; --gold-light: #daa520; --white: #0d1117;
+            --gray-light: #0d1117; --gray-mid: #2d3748;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            background: linear-gradient(180deg, #f8fafb 0%, #ffffff 100%);
+            color: #0d1117; font-family: 'Inter', sans-serif;
+            min-height: 100vh; overflow-x: hidden;
+        }
+        body::before {
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20% 30%, white, transparent),
+                radial-gradient(1px 1px at 50% 50%, white, transparent);
+            background-size: 200% 200%; animation: stars 80s linear infinite;
+            opacity: 0.5; pointer-events: none; z-index: 0;
+        }
+        @keyframes stars { 0% { background-position: 0% 0%; } 100% { background-position: 100% 100%; } }
+        header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(10, 22, 40, 0.97); backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.4);
+        }
+        .header-container {
+            max-width: 1800px; margin: 0 auto; padding: 12px 30px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .logo-section { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo-emblem { width: 50px; height: 50px; transition: transform 0.6s ease; border-radius: 50%; overflow: hidden; }
+        .logo-emblem img { width: 100%; height: 100%; object-fit: cover; filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.5)); }
+        .logo-section:hover .logo-emblem { transform: rotate(180deg); }
+        .logo-text { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600; color: var(--white); letter-spacing: 1px; }
+        nav ul { display: flex; gap: 25px; list-style: none; }
+        nav a {
+            color: var(--gray-light); text-decoration: none; font-size: 12px; font-weight: 500;
+            letter-spacing: 0.5px; transition: all 0.3s ease; position: relative; padding: 8px 0; text-transform: uppercase;
+        }
+        nav a::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px;
+            background: var(--gold); transition: width 0.3s ease;
+        }
+        nav a:hover::after, nav a.active::after { width: 100%; }
+        nav a:hover, nav a.active { color: var(--gold); }
+        .container { position: relative; z-index: 1; max-width: 1400px; margin: 0 auto; padding: 120px 40px 80px; }
+        .page-header { text-align: center; margin-bottom: 80px; }
+        .page-title {
+            font-family: 'Space Grotesk', sans-serif; font-size: 56px; font-weight: 700;
+            background: linear-gradient(135deg, var(--white), var(--gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 20px;
+        }
+        .page-subtitle { font-size: 18px; color: var(--gray-mid); max-width: 700px; margin: 0 auto; }
+        .section { margin-bottom: 80px; }
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif; font-size: 36px; color: var(--gold);
+            margin-bottom: 30px; padding-bottom: 15px; border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+        }
+        .content-card {
+            background: rgba(27, 38, 59, 0.7); border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px; padding: 30px; backdrop-filter: blur(10px);
+            margin-bottom: 30px; transition: all 0.3s ease;
+        }
+        .content-card:hover {
+            border-color: var(--gold); box-shadow: 0 0 25px rgba(212, 175, 55, 0.2);
+            transform: translateY(-3px);
+        }
+        .content-card h3 { font-size: 24px; color: var(--gold-light); margin-bottom: 15px; }
+        .content-card p { color: var(--gray-light); line-height: 1.8; font-size: 16px; margin-bottom: 15px; }
+        .data-table {
+            width: 100%; border-collapse: collapse; margin: 20px 0;
+        }
+        .data-table th, .data-table td {
+            padding: 15px; text-align: left; border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        .data-table th {
+            background: rgba(212, 175, 55, 0.1); color: var(--gold);
+            font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 1px;
+        }
+        .data-table td { color: var(--gray-light); }
+        .stat-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 30px 0;
+        }
+        .stat-box {
+            background: rgba(13, 27, 42, 0.9); border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 10px; padding: 25px; text-align: center;
+        }
+        .stat-value {
+            font-size: 48px; color: var(--gold); font-weight: 700; margin-bottom: 10px;
+        }
+        .stat-label {
+            font-size: 12px; color: var(--gray-mid); text-transform: uppercase; letter-spacing: 1px;
+        }
+        @media (max-width: 768px) {
+            .header-container { flex-direction: column; gap: 15px; }
+            nav ul { flex-wrap: wrap; justify-content: center; gap: 12px; }
+            .page-title { font-size: 36px; }
+            .stat-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo-section">
+                <div class="logo-emblem"><img src="images/logo-thibequation-round.png" alt="ThibEquation Logo"></div>
+                <span class="logo-text">THIBEQUATION</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="methodologie.html">Méthodologie GKSC</a></li>
+                    <li><a href="calculateur.html">Calculateur Détaillé</a></li>
+                    <li><a href="donnees.html">Données Sources</a></li>
+                    <li><a href="outils.html">Outils & Visualisations</a></li>
+                    <li><a href="collaboration.html">Collaboration v5.0</a></li>
+                    <li><a href="sources.html">Framework Scientifique</a></li>
+                    <li><a href="bibliographie.html" class="active">Recherche Interstellaire</a></li>
+                    <li><a href="feedback.html">Feedback</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Bibliographie</h1>
+            <p class="page-subtitle">Références scientifiques et publications peer-reviewed</p>
+        </div>
+
+        <div class="stat-grid">
+            <div class="stat-box">
+                <div class="stat-value">46</div>
+                <div class="stat-label">Objets Analysés</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">460</div>
+                <div class="stat-label">Valeurs GKSC</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">98.5%</div>
+                <div class="stat-label">Complétude Dataset</div>
+            </div>
+        </div>
+
+        <section class="section">
+    <h2 class="section-title">📚 Publications Scientifiques Majeures</h2>
+    
+    <div class="content-card">
+        <h3>1I/'Oumuamua (2017)</h3>
+        <ul style="color: var(--gray-light); line-height: 2.2;">
+            <li>
+                <strong>Meech, K. J., et al. (2017).</strong> "A brief visit from a red and extremely elongated interstellar asteroid." 
+                <em>Nature</em>, 552(7685), 378-381.
+                <br><a href="https://doi.org/10.1038/nature25020" style="color: var(--gold);">DOI: 10.1038/nature25020</a>
+                <br><span style="font-size: 13px; color: var(--gray-mid);">
+                    → Découverte officielle, ratio d'allongement 10:1, vitesse de sortie 26.3 km/s
+                </span>
+            </li>
+            <li style="margin-top: 20px;">
+                <strong>Bialy, S., & Loeb, A. (2018).</strong> "Could Solar Radiation Pressure Explain 'Oumuamua's Peculiar Acceleration?" 
+                <em>The Astrophysical Journal Letters</em>, 868(1), L1.
+                <br><a href="https://doi.org/10.3847/2041-8213/aaeda8" style="color: var(--gold);">DOI: 10.3847/2041-8213/aaeda8</a>
+                <br><span style="font-size: 13px; color: var(--gray-mid);">
+                    → Accélération non-gravitationnelle : +2.5×10⁻⁶ m/s², hypothèse "voile solaire"
+                </span>
+            </li>
+            <li style="margin-top: 20px;">
+                <strong>Bannister, M. T., et al. (2019).</strong> "The natural history of 'Oumuamua." 
+                <em>Nature Astronomy</em>, 3(7), 594-602.
+                <br><a href="https://doi.org/10.1038/s41550-019-0816-x" style="color: var(--gold);">DOI: 10.1038/s41550-019-0816-x</a>
+                <br><span style="font-size: 13px; color: var(--gray-mid);">
+                    → Analyse complète : origine, composition, trajectoire
+                </span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="content-card">
+        <h3>2I/Borisov (2019)</h3>
+        <ul style="color: var(--gray-light); line-height: 2.2;">
+            <li>
+                <strong>Jewitt, D., & Luu, J. (2019).</strong> "Interstellar Interloper 2I/Borisov." 
+                <em>The Astrophysical Journal Letters</em>, 886(2), L29.
+                <br><a href="https://doi.org/10.3847/2041-8213/ab530b" style="color: var(--gold);">DOI: 10.3847/2041-8213/ab530b</a>
+                <br><span style="font-size: 13px; color: var(--gray-mid);">
+                    → Première comète interstellaire confirmée, e=3.36, V∞=32.3 km/s
+                </span>
+            </li>
+            <li style="margin-top: 20px;">
+                <strong>Fitzsimmons, A., et al. (2019).</strong> "Detection of CN gas in Interstellar Object 2I/Borisov." 
+                <em>The Astrophysical Journal Letters</em>, 885(1), L9.
+                <br><a href="https://doi.org/10.3847/2041-8213/ab49fc" style="color: var(--gold);">DOI: 10.3847/2041-8213/ab49fc</a>
+                <br><span style="font-size: 13px; color: var(--gray-mid);">
+                    → Détection spectroscopique CN, confirmation activité cométaire
+                </span>
+            </li>
+            <li style="margin-top: 20px;">
+                <strong>Guzik, P., et al. (2020).</strong> "Initial characterization of interstellar comet 2I/Borisov." 
+                <em>Nature Astronomy</em>, 4, 53-57.
+                <br><a href="https://doi.org/10.1038/s41550-019-0931-8" style="color: var(--gold);">DOI: 10.1038/s41550-019-0931-8</a>
+                <br><span style="font-size: 13px; color: var(--gray-mid);">
+                    → Composition similaire aux comètes du système solaire (CO, H₂O, CN)
+                </span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="content-card">
+        <h3>3I/ATLAS (2024-2025)</h3>
+        <p style="color: var(--gray-light); margin-bottom: 15px;">
+            <strong>⚠️ AVERTISSEMENT :</strong> Les données JWST 2025 pour 3I/ATLAS sont des <strong>(HYPOTHÈSES)</strong> 
+            basées sur des prédictions d'observations planifiées. Aucune publication peer-reviewed n'est encore disponible (état au 26 novembre 2025).
+        </p>
+        <ul style="color: var(--gray-light); line-height: 2.2;">
+            <li>
+                <strong>JPL HORIZONS Database (2024).</strong> "Orbital Elements for 3I/ATLAS." 
+                <em>NASA Jet Propulsion Laboratory</em>.
+                <br><a href="https://ssd.jpl.nasa.gov/horizons/" style="color: var(--gold);">https://ssd.jpl.nasa.gov/horizons/</a>
+                <br><span style="font-size: 13px; color: var(--gray-mid);">
+                    → Excentricité e=6.137 (record absolu confirmé), V∞ périhélie = 68 km/s
+                </span>
+            </li>
+            <li style="margin-top: 20px;">
+                <strong>(HYPOTHÈSE)</strong> "JWST Spectroscopy of 3I/ATLAS: Exceptional CO/H₂O Ratio." 
+                <em>Prévu Q1 2025</em>.
+                <br><span style="font-size: 13px; color: #ff6b6b;">
+                    → Ratio CO/H₂O > 200 : NON CONFIRMÉ - Observation JWST planifiée mais résultats non publiés
+                </span>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<section class="section">
+    <h2 class="section-title">📖 Revues Scientifiques & Bases de Données</h2>
+    
+    <div class="content-card">
+        <h3>Revues Peer-Reviewed Majeures</h3>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Revue</th>
+                    <th>Impact Factor</th>
+                    <th>Domaine Principal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Nature</strong></td>
+                    <td style="color: var(--gold);">64.8</td>
+                    <td>Multidisciplinaire (Découvertes majeures)</td>
+                </tr>
+                <tr>
+                    <td><strong>Science</strong></td>
+                    <td style="color: var(--gold);">56.9</td>
+                    <td>Multidisciplinaire</td>
+                </tr>
+                <tr>
+                    <td><strong>Nature Astronomy</strong></td>
+                    <td style="color: var(--gold);">12.9</td>
+                    <td>Astronomie & Astrophysique</td>
+                </tr>
+                <tr>
+                    <td><strong>The Astrophysical Journal (ApJ)</strong></td>
+                    <td style="color: var(--gold);">5.5</td>
+                    <td>Astrophysique théorique & observationnelle</td>
+                </tr>
+                <tr>
+                    <td><strong>The Astrophysical Journal Letters (ApJL)</strong></td>
+                    <td style="color: var(--gold);">7.9</td>
+                    <td>Résultats rapides, haute priorité</td>
+                </tr>
+                <tr>
+                    <td><strong>Astronomy & Astrophysics (A&A)</strong></td>
+                    <td style="color: var(--gold);">6.5</td>
+                    <td>Astronomie européenne</td>
+                </tr>
+                <tr>
+                    <td><strong>Monthly Notices Royal Astronomical Society (MNRAS)</strong></td>
+                    <td style="color: var(--gold);">4.8</td>
+                    <td>Astronomie britannique</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="content-card">
+        <h3>Bases de Données Officielles</h3>
+        <ul style="color: var(--gray-light); line-height: 2;">
+            <li>
+                <strong>NASA JPL HORIZONS:</strong> 
+                <a href="https://ssd.jpl.nasa.gov/horizons/" style="color: var(--gold);">https://ssd.jpl.nasa.gov/horizons/</a>
+                <br><span style="font-size: 13px; color: var(--gray-mid);">
+                    Éphémérides de référence pour tous les objets du système solaire et interstellaires
+                </span>
+            </li>
+            <li style="margin-top: 15px;">
+                <strong>Minor Planet Center (MPC) - IAU:</strong> 
+                <a href="https://minorplanetcenter.net/" style="color: var(--gold);">https://minorplanetcenter.net/</a>
+                <br><span style="font-size: 13px; color: var(--gray-mid);">
+                    Catalogue officiel des astéroïdes, comètes et objets interstellaires
+                </span>
+            </li>
+            <li style="margin-top: 15px;">
+                <strong>SIMBAD Astronomical Database:</strong> 
+                <a href="http://simbad.u-strasbg.fr/simbad/" style="color: var(--gold);">http://simbad.u-strasbg.fr/simbad/</a>
+                <br><span style="font-size: 13px; color: var(--gray-mid);">
+                    Données spectroscopiques et photométriques (CDS Strasbourg)
+                </span>
+            </li>
+            <li style="margin-top: 15px;">
+                <strong>NASA ADS (Astrophysics Data System):</strong> 
+                <a href="https://ui.adsabs.harvard.edu/" style="color: var(--gold);">https://ui.adsabs.harvard.edu/</a>
+                <br><span style="font-size: 13px; color: var(--gray-mid);">
+                    Archive complète des publications en astrophysique
+                </span>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<section class="section">
+    <h2 class="section-title">🔬 Projets de Recherche Actifs</h2>
+    
+    <div class="content-card">
+        <h3>Galileo Project (Harvard University)</h3>
+        <p>
+            <strong>Directeur:</strong> Prof. Avi Loeb<br>
+            <strong>Objectif:</strong> Recherche systématique d'artefacts technologiques interstellaires<br>
+            <strong>URL:</strong> <a href="https://projects.iq.harvard.edu/galileo" style="color: var(--gold);">https://projects.iq.harvard.edu/galileo</a>
+        </p>
+        <p style="margin-top: 15px; color: var(--gray-light);">
+            Focus spécial sur 'Oumuamua : Analyse de l'hypothèse "voile solaire" et conception 
+            de systèmes de détection pour futurs visiteurs interstellaires.
+        </p>
+    </div>
+
+    <div class="content-card">
+        <h3>Vera C. Rubin Observatory - LSST</h3>
+        <p>
+            <strong>Lancement:</strong> 2025 (First Light prévu)<br>
+            <strong>Capacité:</strong> 10 millions d'alertes/nuit<br>
+            <strong>URL:</strong> <a href="https://www.lsst.org/" style="color: var(--gold);">https://www.lsst.org/</a>
+        </p>
+        <p style="margin-top: 15px; color: var(--gray-light);">
+            <strong>Pertinence ThibEquation:</strong> Le framework v5.0 est conçu pour prioriser 
+            automatiquement les alertes LSST et identifier les candidats interstellaires en temps réel.
+        </p>
+    </div>
+
+    <div class="content-card">
+        <h3>JWST (James Webb Space Telescope)</h3>
+        <p>
+            <strong>Lancé:</strong> Décembre 2021<br>
+            <strong>Objectif interstellaire:</strong> Spectroscopie haute résolution des objets interstellaires<br>
+            <strong>URL:</strong> <a href="https://www.jwst.nasa.gov/" style="color: var(--gold);">https://www.jwst.nasa.gov/</a>
+        </p>
+        <p style="margin-top: 15px; color: var(--gray-light);">
+            Observations prévues de 3I/ATLAS pour analyse de composition chimique détaillée (Q1 2025).
+        </p>
+    </div>
+</section>
+
+<section class="section">
+    <h2 class="section-title">📜 Citations Recommandées</h2>
+    
+    <div class="content-card">
+        <h3>Pour Citer ThibEquation v5.0</h3>
+        <div style="background: rgba(13, 27, 42, 0.9); padding: 20px; border-radius: 8px; margin-top: 15px; font-family: monospace; font-size: 13px; color: var(--gray-light); line-height: 1.8;">
+<strong>Format APA:</strong><br>
+Thibodeau, P. (2025). <em>ThibEquation Framework v5.0: Quantitative Analysis System for Interstellar Objects</em>. 
+Zenodo. https://doi.org/10.5281/zenodo.17717380<br><br>
+
+<strong>Format BibTeX:</strong><br>
+@misc{thibodeau2025thibequation,<br>
+&nbsp;&nbsp;author = {Thibodeau, Pascal},<br>
+&nbsp;&nbsp;title = {ThibEquation Framework v5.0: Quantitative Analysis System for Interstellar Objects},<br>
+&nbsp;&nbsp;year = {2025},<br>
+&nbsp;&nbsp;publisher = {Zenodo},<br>
+&nbsp;&nbsp;doi = {10.5281/zenodo.17717380},<br>
+&nbsp;&nbsp;url = {https://doi.org/10.5281/zenodo.17717380}<br>
+}
+        </div>
+    </div>
+
+    <div class="content-card">
+        <h3>Licence & Réutilisation</h3>
+        <p style="color: var(--gray-light); line-height: 1.8;">
+            <strong>Licence:</strong> MIT License (Open-Source)<br>
+            <strong>Permissions:</strong> Utilisation commerciale et académique autorisée<br>
+            <strong>Conditions:</strong> Citation obligatoire du DOI Zenodo et du repository GitHub
+        </p>
+        <p style="margin-top: 15px; color: var(--gray-light);">
+            Le framework ThibEquation v5.0 est développé dans un esprit de <strong>science citoyenne ouverte</strong>. 
+            Toute réutilisation dans des projets académiques, éducatifs ou commerciaux est encouragée, 
+            à condition de citer les sources originales.
+        </p>
+    </div>
+</section>
+    </div>
+
+    <!-- Bouton Patreon Flottant -->
+    <a href="https://www.patreon.com/c/ThibodeauInnovations" target="_blank" rel="noopener noreferrer" class="patreon-float" aria-label="Supporter sur Patreon">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+            <path d="M15.386.524c-4.764 0-8.64 3.876-8.64 8.64 0 4.75 3.876 8.613 8.64 8.613 4.75 0 8.614-3.864 8.614-8.613C24 4.4 20.136.524 15.386.524M.003 23.537h4.22V.524H.003"/>
+        </svg>
+        <span>Supporter</span>
+    </a>
+
+    <style>
+        .patreon-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #ff424d 0%, #d91c23 100%);
+            color: white;
+            padding: 14px 22px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 15px;
+            text-decoration: none;
+            box-shadow: 0 8px 25px rgba(255, 66, 77, 0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 10000;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .patreon-float:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 12px 35px rgba(255, 66, 77, 0.6);
+            background: linear-gradient(135deg, #ff5562 0%, #e92d35 100%);
+        }
+
+        .patreon-float:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .patreon-float svg {
+            flex-shrink: 0;
+        }
+
+        .patreon-float span {
+            white-space: nowrap;
+        }
+
+        @keyframes patreon-pulse {
+            0%, 100% { box-shadow: 0 8px 25px rgba(255, 66, 77, 0.4); }
+            50% { box-shadow: 0 8px 35px rgba(255, 66, 77, 0.6); }
+        }
+
+        .patreon-float {
+            animation: patreon-pulse 3s ease-in-out infinite;
+        }
+
+        @media (max-width: 768px) {
+            .patreon-float {
+                bottom: 20px;
+                right: 20px;
+                padding: 12px 18px;
+                font-size: 14px;
+            }
+
+            .patreon-float svg {
+                width: 24px;
+                height: 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .patreon-float span {
+                display: none;
+            }
+
+            .patreon-float {
+                width: 56px;
+                height: 56px;
+                padding: 0;
+                justify-content: center;
+                border-radius: 50%;
+            }
+        }
+    </style>
+</body>
+</html>

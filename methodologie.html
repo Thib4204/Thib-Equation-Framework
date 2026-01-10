@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Méthodologie GKSC - ThibEquation Framework v5.0</title>
+    <meta name="description" content="Méthodologie scientifique complète du framework ThibEquation : composantes GKSC, Ridge Regression, validation empirique.">
+    
+    <link rel="icon" type="image/png" href="images/logo-thibequation-official.png">
+    
+    <!-- Modern Pale Theme -->
+    <link rel="stylesheet" href="css/modern-pale-theme-v2.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --deep-space: #f8fafb;
+            --navy-dark: #ffffff;
+            --navy-mid: #f3f6f9;
+            --gold: #b8860b;
+            --gold-light: #daa520;
+            --white: #0d1117;
+            --gray-light: #0d1117;
+            --gray-mid: #2d3748;
+        }
+        
+        html { scroll-behavior: smooth; }
+        
+        body {
+            background: linear-gradient(180deg, #f8fafb 0%, #ffffff 100%);
+            color: #0d1117;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20% 30%, white, transparent),
+                radial-gradient(1px 1px at 50% 50%, white, transparent),
+                radial-gradient(2px 2px at 80% 70%, white, transparent);
+            background-size: 200% 200%;
+            animation: stars 80s linear infinite;
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        @keyframes stars {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+        
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.98) !important;
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid #e0e8ed;
+        }
+        
+        .header-container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 12px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        
+        .logo-emblem {
+            width: 50px;
+            height: 50px;
+            transition: transform 0.6s ease;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+        
+        .logo-emblem img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.5));
+        }
+        
+        .logo-section:hover .logo-emblem { transform: rotate(180deg); }
+        
+        .logo-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--white);
+            letter-spacing: 1px;
+        }
+        
+        nav ul {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+        }
+        
+        nav a {
+            color: var(--gray-light);
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 0;
+            text-transform: uppercase;
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+        
+        nav a:hover::after,
+        nav a.active::after { width: 100%; }
+        
+        nav a:hover,
+        nav a.active { color: var(--gold); }
+        
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 120px 40px 80px;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+        
+        .page-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 56px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--white), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+        
+        .page-subtitle {
+            font-size: 18px;
+            color: var(--gray-mid);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .section {
+            margin-bottom: 80px;
+        }
+        
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 36px;
+            color: var(--gold);
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+        }
+        
+        .content-card {
+            background: #ffffff !important;
+            border: 1px solid #e0e8ed;
+            border-radius: 12px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+        
+        .content-card:hover {
+            border-color: var(--gold);
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        .content-card h3 {
+            font-size: 24px;
+            color: var(--gold-light);
+            margin-bottom: 15px;
+        }
+        
+        .content-card p {
+            color: var(--gray-light);
+            line-height: 1.8;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        
+        .formula-box {
+            background: #fffbf0 !important;
+            border: 2px solid var(--gold);
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .formula {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 32px;
+            color: var(--white);
+            margin-bottom: 20px;
+        }
+        
+        .formula .coef {
+            color: var(--gold);
+            font-weight: 700;
+        }
+        
+        .formula-note {
+            font-size: 12px;
+            color: var(--gray-mid);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            margin: 40px 0;
+        }
+        
+        .component-card {
+            background: #ffffff !important;
+            border: 1px solid #e0e8ed;
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+        
+        .component-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+        
+        .component-letter {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 72px;
+            color: var(--gold);
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .component-name {
+            font-size: 14px;
+            color: var(--gray-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        
+        .component-weight {
+            font-size: 36px;
+            color: var(--white);
+            font-weight: 700;
+        }
+        
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        ul li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 15px;
+            color: var(--gray-light);
+            line-height: 1.6;
+        }
+        
+        ul li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--gold);
+            font-size: 18px;
+        }
+        
+        @media (max-width: 1024px) {
+            .grid-4 { grid-template-columns: repeat(2, 1fr); }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 12px;
+            }
+            
+            .page-title { font-size: 36px; }
+            .grid-4 { grid-template-columns: 1fr; }
+        }
+
+        /* Language Selector */
+        .language-selector { display: flex; gap: 8px; align-items: center; margin-left: 20px; }
+        .lang-btn {
+            background: #ffffff !important; border: 1px solid #d0dae2 !important;
+            color: #0d1117 !important; padding: 8px 14px; border-radius: 8px; cursor: pointer;
+            font-size: 12px; font-weight: 600; transition: all 0.3s ease;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .lang-btn:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+        .lang-btn.active {
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+            border-color: var(--gold); color: var(--navy-dark);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo-section">
+                <div class="logo-emblem">
+                    <img src="images/logo-thibequation-round.png" alt="ThibEquation Logo">
+                </div>
+                <span class="logo-text">THIBEQUATION</span>
+            </a>
+            
+            <nav>
+                <ul>
+                    <li><a href="index.html" data-i18n="nav-home">Accueil</a></li>
+                    <li><a href="methodologie.html" class="active" data-i18n="nav-methodology">Méthodologie GKSC</a></li>
+                    <li><a href="calculateur.html" data-i18n="nav-calculator">Calculateur Détaillé</a></li>
+                    <li><a href="donnees.html" data-i18n="nav-data">Données Sources</a></li>
+                    <li><a href="outils.html" data-i18n="nav-tools">Outils & Visualisations</a></li>
+                    <li><a href="collaboration.html" data-i18n="nav-collab">Collaboration v5.0</a></li>
+                    <li><a href="sources.html" data-i18n="nav-framework">Framework Scientifique</a></li>
+                    <li><a href="bibliographie.html" data-i18n="nav-research">Recherche Interstellaire</a></li>
+                    <li><a href="feedback.html" data-i18n="nav-feedback">Feedback</a></li>
+                </ul>
+            </nav>
+            <div class="language-selector">
+                <button class="lang-btn active" onclick="setLanguage('fr')" id="btn-fr">🇫🇷 FR</button>
+                <button class="lang-btn" onclick="setLanguage('en')" id="btn-en">🇬🇧 EN</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Méthodologie GKSC</h1>
+            <p class="page-subtitle">Framework scientifique complet pour l'analyse quantitative des objets interstellaires</p>
+        </div>
+
+        <section class="section">
+            <h2 class="section-title">Vue d'ensemble du Framework</h2>
+            
+            <div class="content-card">
+                <h3>Objectif Scientifique</h3>
+                <p>
+                    ThibEquation v5.0 est un framework de recherche citoyenne québécois développé pour quantifier et prioriser 
+                    l'analyse des objets interstellaires. Le système GKSC (Géométrique, Kinématique, Spectroscopique, Contextuel) 
+                    combine quatre composantes analytiques pour générer un score d'anomalie global.
+                </p>
+                <p>
+                    <strong>Validation empirique complétée :</strong> R²=0.85, MAE=0.48, Dataset=46 objets JPL HORIZONS (NASA)
+                </p>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula">
+                    ThibScore = <span class="coef">0.28</span>×G + <span class="coef">0.32</span>×K + <span class="coef">0.23</span>×S + <span class="coef">0.17</span>×C
+                </div>
+                <div class="formula-note">Ridge Regression • L2 Regularization • Alpha = 0.1 • Cross-Validation 5-Fold</div>
+            </div>
+
+            <div class="grid-4">
+                <div class="component-card">
+                    <div class="component-letter">G</div>
+                    <div class="component-name">Géométrique</div>
+                    <div class="component-weight">28%</div>
+                </div>
+                <div class="component-card">
+                    <div class="component-letter">K</div>
+                    <div class="component-name">Cinématique</div>
+                    <div class="component-weight">32%</div>
+                </div>
+                <div class="component-card">
+                    <div class="component-letter">S</div>
+                    <div class="component-name">Spectroscopique</div>
+                    <div class="component-weight">23%</div>
+                </div>
+                <div class="component-card">
+                    <div class="component-letter">C</div>
+                    <div class="component-name">Contextuel</div>
+                    <div class="component-weight">17%</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Composantes GKSC Détaillées</h2>
+            
+            <div class="content-card">
+                <h3>G - Composante Géométrique (28%)</h3>
+                <p>Analyse des caractéristiques physiques et morphologiques de l'objet :</p>
+                <ul>
+                    <li><strong>Rapport d'aspect (A:B)</strong> : Ratio longueur/largeur (ex: 10:1 pour 'Oumuamua)</li>
+                    <li><strong>Volume estimé (V)</strong> : Calcul basé sur les dimensions observées</li>
+                    <li><strong>Surface projetée (A)</strong> : Aire effective vue depuis la Terre</li>
+                    <li><strong>Albédo géométrique</strong> : Réflectivité de la surface</li>
+                </ul>
+            </div>
+
+            <div class="content-card">
+                <h3>K - Composante Cinématique (32%) [POIDS DOMINANT]</h3>
+                <p>Analyse des trajectoires et vitesses hypersboliques :</p>
+                <ul>
+                    <li><strong>Vitesse hyperbolique (v∞)</strong> : Vitesse à l'infini hors influence solaire</li>
+                    <li><strong>Excentricité orbitale (e)</strong> : e>1 pour trajectoires hyperboliques</li>
+                    <li><strong>Inclinaison (i)</strong> : Angle par rapport au plan écliptique</li>
+                    <li><strong>Anomalie d'accélération</strong> : Déviation vs trajectoire gravitationnelle pure</li>
+                </ul>
+            </div>
+
+            <div class="content-card">
+                <h3>S - Composante Spectroscopique (23%)</h3>
+                <p>Analyse de la composition et signatures spectrales :</p>
+                <ul>
+                    <li><strong>Couleur photométrique</strong> : Indices B-V, V-R, etc.</li>
+                    <li><strong>Raies spectrales</strong> : Signatures chimiques (H₂O, CO, CN, etc.)</li>
+                    <li><strong>Émissions/absorptions</strong> : Activité cométaire ou surface inerte</li>
+                    <li><strong>Variabilité temporelle</strong> : Changements d'intensité lumineuse</li>
+                </ul>
+            </div>
+
+            <div class="content-card">
+                <h3>C - Composante Contextuelle (17%)</h3>
+                <p>Analyse du contexte de découverte et environnement :</p>
+                <ul>
+                    <li><strong>Distance périhélique (q)</strong> : Approche minimale au Soleil</li>
+                    <li><strong>Date de découverte</strong> : Fenêtre temporelle d'observation</li>
+                    <li><strong>Magnitude absolue (H)</strong> : Luminosité intrinsèque</li>
+                    <li><strong>Provenance stellaire</strong> : Vecteur d'approche galactique</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Optimisation par Ridge Regression</h2>
+            
+            <div class="content-card">
+                <h3>Méthodologie Machine Learning</h3>
+                <p>
+                    Les poids GKSC optimaux (28%, 32%, 23%, 17%) ont été déterminés via <strong>Ridge Regression</strong> 
+                    avec régularisation L2 (alpha=0.1) sur un dataset de 46 objets interstellaires validés.
+                </p>
+                <p><strong>Performance validation :</strong></p>
+                <ul>
+                    <li>R² Score : 0.85 (85% de variance expliquée)</li>
+                    <li>MAE (Mean Absolute Error) : 0.48</li>
+                    <li>RMSE (Root Mean Square Error) : 0.62</li>
+                    <li>Cross-Validation Score (5-fold) : 0.81 ± 0.085</li>
+                </ul>
+            </div>
+
+            <div class="content-card">
+                <h3>Sources de Données</h3>
+                <p>Toutes les données proviennent exclusivement de sources officielles vérifiables :</p>
+                <ul>
+                    <li><strong>JPL HORIZONS</strong> (NASA) : Éphémérides et paramètres orbitaux</li>
+                    <li><strong>MPC</strong> (Minor Planet Center - IAU) : Catalogue officiel</li>
+                    <li><strong>Publications peer-reviewed</strong> : Nature, Science, ApJ, etc.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Limitations & Transparence</h2>
+            
+            <div class="content-card">
+                <h3>Limitations Connues</h3>
+                <ul>
+                    <li><strong>Dataset limité :</strong> 46 objets (objectif : 100+ pour v6.0)</li>
+                    <li><strong>Incertitudes mesures :</strong> Poids GKSC ±10%</li>
+                    <li><strong>Valeurs interpolées :</strong> 6/460 valeurs (1.3%) pour complétude dataset</li>
+                    <li><strong>Non validé peer-review :</strong> Recherche citoyenne indépendante</li>
+                </ul>
+            </div>
+
+            <div class="content-card">
+                <h3>Utilisation Responsable</h3>
+                <p>
+                    <strong>Les ThibScores sont des indicateurs quantitatifs expérimentaux</strong> — ils ne doivent pas être 
+                    utilisés comme seule base pour des décisions professionnelles ou scientifiques formelles. Le framework 
+                    est conçu pour la priorisation d'investigation et l'analyse comparative exploratoire.
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Multi-language System -->
+    <script src="js/i18n.js"></script>
+</body>
+</html>

@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UFO Analytics Agent 🛸 | ThibEquation Framework v5.0</title>
+    <meta name="description" content="Application scientifique révolutionnaire pour l'analyse quantitative UAP/OVNI - Framework GKSC v5.0 validé R²=0.88 - Priorisation d'investigations en quelques minutes - Approche citoyenne rigoureuse">
+    <link rel="icon" type="image/png" href="images/logo-thibequation-official.png">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            /* Scientific Immersive Palette */
+            --bg-deep: #0a0e1a;
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a1f2e;
+            --bg-card: #161b26;
+            
+            --primary-cyan: #00d9ff;
+            --primary-gold: #ffb84d;
+            --primary-purple: #a78bfa;
+            
+            --accent-cyan: #4dd0e1;
+            --accent-gold: #ffd54f;
+            --accent-purple: #ba68c8;
+            
+            --text-primary: #e8eaed;
+            --text-secondary: #9aa0a6;
+            --text-muted: #5f6368;
+            
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-focus: rgba(0, 217, 255, 0.3);
+            
+            --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.4);
+            --shadow-hover: 0 8px 32px rgba(0, 217, 255, 0.2);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, var(--bg-deep) 0%, var(--bg-primary) 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Header */
+        .header-container {
+            background: rgba(15, 20, 25, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-subtle);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+        
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            margin-bottom: 80px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.1) 0%, rgba(167, 139, 250, 0.1) 100%);
+            border: 1px solid var(--border-focus);
+            border-radius: 50px;
+            padding: 8px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary-cyan);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 24px;
+        }
+        
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-cyan) 0%, var(--primary-gold) 50%, var(--primary-purple) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 24px;
+            line-height: 1.2;
+        }
+        
+        .hero-subtitle {
+            font-size: 20px;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 48px;
+            line-height: 1.6;
+        }
+        
+        /* Launch Button */
+        .launch-button-wrapper {
+            margin-bottom: 60px;
+        }
+        
+        .launch-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 16px;
+            background: linear-gradient(135deg, var(--primary-cyan) 0%, var(--primary-purple) 100%);
+            color: var(--bg-deep);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            padding: 24px 48px;
+            border-radius: 16px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 32px rgba(0, 217, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .launch-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s;
+        }
+        
+        .launch-button:hover::before {
+            left: 100%;
+        }
+        
+        .launch-button:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 16px 48px rgba(0, 217, 255, 0.5);
+        }
+        
+        .launch-button:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+        
+        .launch-icon {
+            font-size: 28px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+        
+        /* Features Grid */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            margin-bottom: 80px;
+        }
+        
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-cyan), var(--primary-gold), var(--primary-purple));
+            transform: scaleX(0);
+            transition: transform 0.4s;
+        }
+        
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--border-focus);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.1) 0%, rgba(167, 139, 250, 0.1) 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: var(--primary-cyan);
+            margin-bottom: 24px;
+        }
+        
+        .feature-card h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+        
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        /* Technical Specs */
+        .specs {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 48px;
+            margin-bottom: 80px;
+        }
+        
+        .specs h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary-gold);
+            margin-bottom: 32px;
+            text-align: center;
+        }
+        
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+        }
+        
+        .spec-item {
+            padding: 20px;
+            background: rgba(0, 217, 255, 0.05);
+            border-radius: 12px;
+            border-left: 3px solid var(--primary-cyan);
+        }
+        
+        .spec-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        
+        .spec-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-cyan);
+        }
+        
+        /* About Section */
+        .about {
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.05) 0%, rgba(167, 139, 250, 0.05) 100%);
+            border: 1px solid var(--border-focus);
+            border-radius: 16px;
+            padding: 48px;
+            margin-bottom: 80px;
+        }
+        
+        .about h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+        }
+        
+        .about p {
+            color: var(--text-secondary);
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        
+        .about strong {
+            color: var(--primary-gold);
+            font-weight: 600;
+        }
+        
+        /* Footer */
+        .footer-container {
+            background: rgba(15, 20, 25, 0.95);
+            border-top: 1px solid var(--border-subtle);
+            padding: 40px 0;
+            text-align: center;
+        }
+        
+        .footer-text {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 16px;
+            }
+            
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .launch-button {
+                font-size: 18px;
+                padding: 20px 36px;
+            }
+            
+            .specs, .about {
+                padding: 32px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header-container" id="header-placeholder"></div>
+    
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-badge">
+                <i class="fas fa-satellite"></i> AGENT SCIENTIFIQUE GKSC v5.0 • R²=0.88 • 100 OBJETS VALIDÉS
+            </div>
+            <h1>UFO Analytics Agent 🛸</h1>
+            <p class="hero-subtitle">
+                <strong style="color: var(--primary-gold); font-size: 26px; display: block; margin-bottom: 16px;">
+                    🎯 But : Aider un enquêteur ou chercheur à savoir <span style="color: var(--primary-cyan);">en quelques minutes</span> si un cas UAP ou un objet spatial mérite une enquête approfondie, sur une échelle 0–10.
+                </strong>
+            </p>
+            <p class="hero-subtitle" style="margin-top: 20px; font-size: 19px; max-width: 900px; margin-left: auto; margin-right: auto; line-height: 1.8;">
+                Application scientifique <strong style="color: var(--primary-cyan);">révolutionnaire</strong> pour l'analyse quantitative des phénomènes aérospatiaux anomaux (UAP/OVNI), basée sur le <strong style="color: var(--primary-purple);">ThibEquation Framework GKSC v5.0</strong> — une méthodologie <strong style="color: var(--primary-gold);">empiriquement validée</strong> (R²=0.88) sur 100 objets célestes.
+            </p>
+            
+            <!-- Badges Scientifiques -->
+            <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 32px;">
+                <div style="background: rgba(0, 217, 255, 0.1); border: 2px solid var(--primary-cyan); border-radius: 12px; padding: 12px 24px;">
+                    <span style="font-size: 14px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 4px;">Validation</span>
+                    <span style="font-size: 24px; font-weight: 700; color: var(--primary-cyan);">R² = 0.88</span>
+                </div>
+                <div style="background: rgba(255, 184, 77, 0.1); border: 2px solid var(--primary-gold); border-radius: 12px; padding: 12px 24px;">
+                    <span style="font-size: 14px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 4px;">Base de données</span>
+                    <span style="font-size: 24px; font-weight: 700; color: var(--primary-gold);">100 Objets</span>
+                </div>
+                <div style="background: rgba(167, 139, 250, 0.1); border: 2px solid var(--primary-purple); border-radius: 12px; padding: 12px 24px;">
+                    <span style="font-size: 14px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 4px;">Composantes</span>
+                    <span style="font-size: 24px; font-weight: 700; color: var(--primary-purple);">4 GKSC</span>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Launch Button -->
+        <div class="launch-button-wrapper" style="text-align: center; margin-bottom: 60px;">
+            <a href="calculateur-ufo-analytics.html" class="launch-button" style="text-decoration: none; display: inline-flex; font-size: 20px; padding: 20px 48px; background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple)); box-shadow: 0 8px 32px rgba(0, 217, 255, 0.4); transition: all 0.3s ease;">
+                <span class="launch-icon" style="font-size: 28px;">🚀</span>
+                <span style="font-weight: 700;">Lancer l'agent UFO Analytics</span>
+            </a>
+            <p style="margin-top: 16px; font-size: 14px; color: var(--text-muted); font-style: italic;">
+                <i class="fas fa-clock"></i> Chargement initial : 5–10 secondes (application Flutter Web)
+            </p>
+        </div>
+        
+        <!-- Pourquoi révolutionnaire ? -->
+        <section style="background: linear-gradient(135deg, rgba(0, 217, 255, 0.05) 0%, rgba(167, 139, 250, 0.05) 100%); border: 2px solid var(--border-focus); border-radius: 24px; padding: 60px 40px; margin-bottom: 60px; max-width: 1000px; margin-left: auto; margin-right: auto;">
+            <h2 style="font-family: 'Orbitron', sans-serif; font-size: 32px; font-weight: 900; text-align: center; margin-bottom: 40px; background: linear-gradient(135deg, var(--primary-cyan), var(--primary-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                ⚡ Pourquoi UFO Analytics est Révolutionnaire ?
+            </h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
+                <div style="background: rgba(10, 14, 26, 0.8); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 28px;">
+                    <div style="font-size: 48px; margin-bottom: 16px; text-align: center;">🔬</div>
+                    <h3 style="font-size: 20px; font-weight: 700; color: var(--primary-cyan); margin-bottom: 12px; text-align: center;">Rigueur Scientifique</h3>
+                    <p style="color: var(--text-secondary); font-size: 15px; line-height: 1.7;">
+                        Méthode <strong>empiriquement validée</strong> sur 100 objets célestes réels (ʻOumuamua, 2I/Borisov, 3I/ATLAS). <strong>R² = 0.88</strong> (88% variance expliquée). Zéro variable sociale, zéro ajustement contextuel.
+                    </p>
+                </div>
+                
+                <div style="background: rgba(10, 14, 26, 0.8); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 28px;">
+                    <div style="font-size: 48px; margin-bottom: 16px; text-align: center;">⚡</div>
+                    <h3 style="font-size: 20px; font-weight: 700; color: var(--primary-gold); margin-bottom: 12px; text-align: center;">Analyse Immédiate</h3>
+                    <p style="color: var(--text-secondary); font-size: 15px; line-height: 1.7;">
+                        <strong>ThibScore en quelques minutes</strong>. Entrez les paramètres observables (vitesse, altitude, accélération, forme) → Score 0–10 généré instantanément. <strong>Priorisation objective</strong> des cas.
+                    </p>
+                </div>
+                
+                <div style="background: rgba(10, 14, 26, 0.8); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 28px;">
+                    <div style="font-size: 48px; margin-bottom: 16px; text-align: center;">🌍</div>
+                    <h3 style="font-size: 20px; font-weight: 700; color: var(--primary-purple); margin-bottom: 12px; text-align: center;">Approche Citoyenne</h3>
+                    <p style="color: var(--text-secondary); font-size: 15px; line-height: 1.7;">
+                        Développé en <strong>90 jours</strong> avec <strong>zéro financement institutionnel</strong>. Framework <strong>open-source</strong> (GitHub), données <strong>publiques reproductibles</strong> (JPL SBDB, MPC, CNEOS).
+                    </p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Pour qui ? -->
+        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 40px; margin-bottom: 60px; max-width: 900px; margin-left: auto; margin-right: auto;">
+            <h2 style="font-family: 'Orbitron', sans-serif; font-size: 28px; font-weight: 700; color: var(--primary-purple); text-align: center; margin-bottom: 16px;">
+                <i class="fas fa-users"></i> Pour Qui ?
+            </h2>
+            <p style="text-align: center; font-size: 16px; color: var(--text-secondary); margin-bottom: 32px; max-width: 700px; margin-left: auto; margin-right: auto;">
+                UFO Analytics Agent est conçu pour tous ceux qui veulent <strong style="color: var(--primary-cyan);">quantifier objectivement</strong> le degré d'anomalie d'un cas UAP ou d'un objet spatial, en quelques minutes.
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px;">
+                <div style="background: rgba(0, 217, 255, 0.05); border-left: 4px solid var(--primary-cyan); border-radius: 12px; padding: 24px;">
+                    <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; color: var(--primary-cyan); margin-bottom: 12px;">
+                        <i class="fas fa-search"></i> Enquêteurs UAP
+                    </h3>
+                    <p style="color: var(--text-secondary); font-size: 15px; line-height: 1.6; margin-bottom: 12px;">
+                        Classer et prioriser les cas d'observations selon leur degré d'anomalie scientifique.
+                    </p>
+                    <p style="font-size: 13px; color: var(--text-muted); font-style: italic; margin: 0;">
+                        <strong>Exemple concret :</strong> Entrer les paramètres d'un cas NUFORC (vitesse, altitude, trajectoire) → ThibScore 7.2/10 → Investigation prioritaire recommandée.
+                    </p>
+                </div>
+                <div style="background: rgba(255, 184, 77, 0.05); border-left: 4px solid var(--primary-gold); border-radius: 12px; padding: 24px;">
+                    <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; color: var(--primary-gold); margin-bottom: 12px;">
+                        <i class="fas fa-telescope"></i> Astronomes / Amateurs Avancés
+                    </h3>
+                    <p style="color: var(--text-secondary); font-size: 15px; line-height: 1.6; margin-bottom: 12px;">
+                        Comparer un objet suspect ou nouvellement découvert aux objets interstellaires connus.
+                    </p>
+                    <p style="font-size: 13px; color: var(--text-muted); font-style: italic; margin: 0;">
+                        <strong>Exemple concret :</strong> Charger les paramètres orbitaux d'un TNO suspect (e=1.8, i=95°) → ThibScore 6.5/10 → Se situe entre 2I/Borisov et objets classiques.
+                    </p>
+                </div>
+                <div style="background: rgba(167, 139, 250, 0.05); border-left: 4px solid var(--primary-purple); border-radius: 12px; padding: 24px;">
+                    <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; color: var(--primary-purple); margin-bottom: 12px;">
+                        <i class="fas fa-newspaper"></i> Journalistes Scientifiques
+                    </h3>
+                    <p style="color: var(--text-secondary); font-size: 15px; line-height: 1.6; margin-bottom: 12px;">
+                        Chiffrer objectivement le niveau d'"anomalie" d'un cas pour un reportage ou article.
+                    </p>
+                    <p style="font-size: 13px; color: var(--text-muted); font-style: italic; margin: 0;">
+                        <strong>Exemple concret :</strong> Article sur un cas UAP militaire → ThibScore 8.5/10 → "Anomalie de niveau 8.5/10, comparable à 3I/ATLAS (objet interstellaire candidat)".
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mode d'emploi 3 étapes -->
+        <div style="background: linear-gradient(135deg, rgba(0, 217, 255, 0.08) 0%, rgba(167, 139, 250, 0.08) 100%); border: 1px solid var(--border-focus); border-radius: 16px; padding: 40px; margin-bottom: 60px; max-width: 900px; margin-left: auto; margin-right: auto;">
+            <h2 style="font-family: 'Orbitron', sans-serif; font-size: 28px; font-weight: 700; color: var(--primary-cyan); text-align: center; margin-bottom: 32px;">
+                <i class="fas fa-route"></i> Mode d'Emploi en 3 Étapes
+            </h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px;">
+                <div style="background: rgba(0, 217, 255, 0.05); border-left: 4px solid var(--primary-cyan); border-radius: 12px; padding: 24px;">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                        <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: var(--primary-cyan); color: var(--bg-deep); font-weight: 700; border-radius: 50%; font-family: 'Orbitron', sans-serif;">1</span>
+                        <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; color: var(--text-primary); margin: 0;">Entrer / Charger un Cas</h3>
+                    </div>
+                    <p style="color: var(--text-secondary); font-size: 15px; line-height: 1.6; margin: 0;">
+                        Saisir les paramètres numériques d'observation (distance, vitesse, excentricité, inclinaison, albédo, etc.) ou charger un objet depuis la base de 100 objets validés.
+                    </p>
+                </div>
+                <div style="background: rgba(255, 184, 77, 0.05); border-left: 4px solid var(--primary-gold); border-radius: 12px; padding: 24px;">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                        <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: var(--primary-gold); color: var(--bg-deep); font-weight: 700; border-radius: 50%; font-family: 'Orbitron', sans-serif;">2</span>
+                        <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; color: var(--text-primary); margin: 0;">Calculer ThibScore</h3>
+                    </div>
+                    <p style="color: var(--text-secondary); font-size: 15px; line-height: 1.6; margin: 0;">
+                        L'algorithme GKSC v5.0 analyse automatiquement les 4 dimensions (Gravitation, Cinématique, Spectre, Contexte) et génère un Score d'Anomalie Global de 0 à 10.0.
+                    </p>
+                </div>
+                <div style="background: rgba(167, 139, 250, 0.05); border-left: 4px solid var(--primary-purple); border-radius: 12px; padding: 24px;">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                        <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: var(--primary-purple); color: var(--bg-deep); font-weight: 700; border-radius: 50%; font-family: 'Orbitron', sans-serif;">3</span>
+                        <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; color: var(--text-primary); margin: 0;">Comparer aux Références</h3>
+                    </div>
+                    <p style="color: var(--text-secondary); font-size: 15px; line-height: 1.6; margin: 0;">
+                        Visualiser le positionnement de votre cas par rapport aux 100 objets de référence (1I/'Oumuamua, 2I/Borisov, 3I/ATLAS, etc.) et prioriser l'investigation.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Features -->
+        <section class="features">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <h3>Calcul ThibScore</h3>
+                <p style="margin-bottom: 12px;">
+                    Quantification scientifique des objets interstellaires avec le Score d'Anomalie Global (SAG) 
+                    validé sur 100+ objets (R² = 0.88)
+                </p>
+                <p style="font-size: 14px; color: var(--primary-cyan); font-weight: 600; margin: 0;">
+                    <i class="fas fa-info-circle"></i> Entrée : Paramètres numériques (excentricité, vitesse, périhélie, inclinaison, albédo, diamètre) ou formulaire d'observation structuré pour cas UAP.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Analyse GKSC v5.0</h3>
+                <p style="margin-bottom: 12px;">
+                    Framework mathématique de détection d'anomalies appliqué aux paramètres orbitaux, 
+                    composition chimique et comportement dynamique
+                </p>
+                <p style="font-size: 14px; color: var(--primary-gold); font-weight: 600; margin: 0;">
+                    <i class="fas fa-chart-pie"></i> Analyse en 4 dimensions : <strong>G</strong> (Gravitation), <strong>K</strong> (Cinématique), <strong>S</strong> (Spectre), <strong>C</strong> (Contexte d'observation), avec pondération automatique validée empiriquement.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-database"></i>
+                </div>
+                <h3>Base de Données</h3>
+                <p style="margin-bottom: 12px;">
+                    Accès à 100 objets validés : objets interstellaires, TNOs, comètes, NEAs, 
+                    avec données JPL SBDB, MPC, CNEOS
+                </p>
+                <p style="font-size: 14px; color: var(--accent-cyan); font-weight: 600; margin: 0;">
+                    <i class="fas fa-star"></i> <strong>Exemples d'objets inclus :</strong> 1I/'Oumuamua (ThibScore 9.80/10), 2I/Borisov (7.50/10), 3I/ATLAS (8.88/10), IM1-IM8 (météores interstellaires Loeb), cas UAP catalogués officiellement (NUFORC, MUFON).
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3>Interface Mobile</h3>
+                <p style="margin-bottom: 12px;">
+                    Application Flutter optimisée pour smartphones et tablettes, 
+                    avec visualisations interactives et graphiques scientifiques
+                </p>
+                <p style="font-size: 14px; color: var(--primary-purple); font-weight: 600; margin: 0;">
+                    <i class="fas fa-mobile-screen"></i> <strong>Disponible maintenant :</strong> Version Web (fonctionne sur smartphone via navigateur). <strong>En préparation :</strong> APK Android & IPA iOS (téléchargement natif).
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-microscope"></i>
+                </div>
+                <h3>Recherche Citoyenne</h3>
+                <p style="margin-bottom: 12px;">
+                    Plateforme ouverte et transparente permettant la vérification et reproduction 
+                    des calculs par la communauté scientifique
+                </p>
+                <p style="font-size: 14px; color: var(--accent-gold); font-weight: 600; margin: 0;">
+                    <i class="fas fa-check-circle"></i> <strong>Workflow de vérification :</strong> Tous les calculs sont 100% reproductibles via la documentation GKSC v5.0 + dépôts de données scientifiques (DOI Zenodo : 10.5281/zenodo.17717380, HAL, arXiv).
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <h3>Visualisations</h3>
+                <p>
+                    Graphiques interactifs, comparaisons d'objets, statistiques descriptives, 
+                    et export des résultats pour publications
+                </p>
+            </div>
+        </section>
+        
+        <!-- Technical Specs -->
+        <section class="specs">
+            <h2>Spécifications Techniques</h2>
+            <p style="text-align: center; color: var(--text-secondary); font-size: 16px; margin-bottom: 32px;">
+                <i class="fas fa-chart-line"></i> <strong>Métriques d'erreur :</strong> MAE = 0.44 (95% CI : [0.39, 0.49]), RMSE = 0.61, distribution des résidus disponible dans la <a href="📖-PARAMETRES-OBSERVATION-COMPLETS-THIBEQUATION.md" style="color: var(--primary-cyan); text-decoration: underline;">documentation technique complète</a>.
+            </p>
+            <div class="specs-grid">
+                <div class="spec-item">
+                    <div class="spec-label">Framework</div>
+                    <div class="spec-value">GKSC v5.0</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Objets Validés</div>
+                    <div class="spec-value">100</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Coefficient R²</div>
+                    <div class="spec-value">0.88</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">ThibScore Max</div>
+                    <div class="spec-value">10.0</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Sources de Données</div>
+                    <div class="spec-value">JPL, MPC, CNEOS</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-label">Technologie</div>
+                    <div class="spec-value">Flutter Web/Mobile</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- About -->
+        <section class="about">
+            <h2>À propos de l'Application</h2>
+            <p>
+                <strong>UFO Analytics Agent</strong> est une application scientifique mobile développée dans le cadre 
+                du projet <strong>ThibEquation</strong>, un laboratoire de recherche citoyenne québécois dirigé par 
+                Pascal "Thib" Thibodeau.
+            </p>
+            <p>
+                L'application permet d'appliquer le <strong>Framework GKSC v5.0</strong> (Gravitationnel, Kinétique, 
+                Spectroscopique, Contexte) pour quantifier scientifiquement les objets interstellaires et phénomènes 
+                spatiaux anomaux. Elle transforme des observations qualitatives en métriques reproductibles et auditables 
+                par la communauté scientifique.
+            </p>
+            <p>
+                Basée sur une base de données de <strong>100 objets validés</strong> avec un coefficient de corrélation 
+                <strong>R² = 0.88</strong>, l'application offre une interface intuitive pour calculer le 
+                <strong>ThibScore</strong> (Score d'Anomalie Global) et prioriser les cibles d'investigation scientifique.
+            </p>
+            <p>
+                <strong>Note importante :</strong> L'application est hébergée sur une infrastructure de développement. 
+                Le chargement initial peut prendre quelques secondes. Pour une expérience optimale, nous recommandons 
+                d'utiliser un navigateur moderne (Chrome, Firefox, Safari, Edge).
+            </p>
+            <p style="margin-top: 24px; text-align: center;">
+                <a href="ufo-analytics-roadmap.html" style="display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-cyan) 100%); color: white; font-weight: 600; padding: 12px 24px; border-radius: 8px; text-decoration: none; transition: all 0.3s;">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <span>Voir la Roadmap & Changelog</span>
+                </a>
+            </p>
+        </section>
+        
+        <!-- SOUS LES PROJECTEURS BIENTÔT -->
+        <section style="background: linear-gradient(135deg, rgba(0, 217, 255, 0.1) 0%, rgba(167, 139, 250, 0.1) 100%); border: 3px solid var(--primary-cyan); border-radius: 24px; padding: 50px 40px; margin-bottom: 60px; max-width: 1000px; margin-left: auto; margin-right: auto; text-align: center; position: relative; overflow: hidden;">
+            <!-- Effet lumineux -->
+            <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(0, 217, 255, 0.15) 0%, transparent 70%); animation: pulse 3s ease-in-out infinite; pointer-events: none;"></div>
+            
+            <div style="position: relative; z-index: 1;">
+                <div style="font-size: 64px; margin-bottom: 20px; animation: bounce 2s ease-in-out infinite;">🎯</div>
+                <h2 style="font-family: 'Orbitron', sans-serif; font-size: 36px; font-weight: 900; margin-bottom: 24px; background: linear-gradient(135deg, var(--primary-cyan), var(--primary-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    UFO Analytics Sous les Projecteurs Bientôt
+                </h2>
+                <p style="font-size: 20px; color: var(--text-primary); line-height: 1.8; max-width: 800px; margin: 0 auto 32px auto;">
+                    Ce framework <strong style="color: var(--primary-cyan);">révolutionnaire</strong> sera présenté prochainement à la communauté scientifique internationale. 
+                    Développé en <strong style="color: var(--primary-gold);">90 jours</strong> avec <strong style="color: var(--primary-purple);">zéro financement institutionnel</strong>, 
+                    UFO Analytics démontre qu'une <strong style="color: var(--primary-cyan);">approche citoyenne rigoureuse</strong> peut rivaliser avec les méthodes institutionnelles.
+                </p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin-bottom: 32px; max-width: 700px; margin-left: auto; margin-right: auto;">
+                    <div style="background: rgba(0, 217, 255, 0.1); border: 2px solid var(--primary-cyan); border-radius: 16px; padding: 20px;">
+                        <div style="font-size: 32px; font-weight: 900; color: var(--primary-cyan); margin-bottom: 8px;">R² = 0.88</div>
+                        <div style="font-size: 14px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Validation Empirique</div>
+                    </div>
+                    <div style="background: rgba(255, 184, 77, 0.1); border: 2px solid var(--primary-gold); border-radius: 16px; padding: 20px;">
+                        <div style="font-size: 32px; font-weight: 900; color: var(--primary-gold); margin-bottom: 8px;">100</div>
+                        <div style="font-size: 14px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Objets Validés</div>
+                    </div>
+                    <div style="background: rgba(167, 139, 250, 0.1); border: 2px solid var(--primary-purple); border-radius: 16px; padding: 20px;">
+                        <div style="font-size: 32px; font-weight: 900; color: var(--primary-purple); margin-bottom: 8px;">90 j</div>
+                        <div style="font-size: 14px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Développement</div>
+                    </div>
+                </div>
+                
+                <p style="font-size: 16px; color: var(--text-muted); font-style: italic; max-width: 700px; margin: 0 auto;">
+                    <i class="fas fa-quote-left"></i> 
+                    "La science ne repose pas sur l'autorité, mais sur la méthode critique. UFO Analytics incarne cette philosophie : données publiques, méthode reproductible, hypothèses falsifiables." 
+                    <i class="fas fa-quote-right"></i>
+                    <br><br>
+                    <strong style="color: var(--primary-cyan);">— Pascal Thibodeau, Créateur de ThibEquation</strong>
+                </p>
+            </div>
+        </section>
+        
+        <style>
+            @keyframes pulse {
+                0%, 100% { opacity: 0.3; transform: scale(1); }
+                50% { opacity: 0.6; transform: scale(1.1); }
+            }
+            @keyframes bounce {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-10px); }
+            }
+        </style>
+        
+        <!-- Launch Button (Bottom) -->
+        <div class="launch-button-wrapper" style="text-align: center; padding-bottom: 40px;">
+            <a href="calculateur-ufo-analytics.html" class="launch-button" style="text-decoration: none; display: inline-flex; font-size: 22px; padding: 22px 52px; background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple)); box-shadow: 0 10px 40px rgba(0, 217, 255, 0.5); transition: all 0.3s ease; border-radius: 50px; align-items: center; gap: 16px;">
+                <span class="launch-icon" style="font-size: 32px;">🚀</span>
+                <span style="font-weight: 900; font-family: 'Orbitron', sans-serif;">LANCER UFO ANALYTICS</span>
+            </a>
+            <p style="margin-top: 20px; font-size: 14px; color: var(--text-muted); font-style: italic;">
+                <i class="fas fa-clock"></i> Chargement initial : 5–10 secondes (application Flutter Web)
+            </p>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <div class="footer-container" id="footer-placeholder"></div>
+    
+    <script>
+        // Load Header and Footer Components
+        async function loadComponents() {
+            try {
+                const headerResponse = await fetch('components/header-navigation.html');
+                if (headerResponse.ok) {
+                    const headerHTML = await headerResponse.text();
+                    document.getElementById('header-placeholder').innerHTML = headerHTML;
+                }
+                
+                const footerResponse = await fetch('components/footer-global.html');
+                if (footerResponse.ok) {
+                    const footerHTML = await footerResponse.text();
+                    document.getElementById('footer-placeholder').innerHTML = footerHTML;
+                }
+            } catch (error) {
+                console.error('Erreur chargement composants:', error);
+            }
+        }
+        
+        // Load components on page load
+        document.addEventListener('DOMContentLoaded', loadComponents);
+    </script>
+</body>
+</html>

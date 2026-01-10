@@ -1,0 +1,773 @@
+/**
+ * ThibEquation Framework v5.0 - Modern Pale Theme
+ * Couleurs pâles et modernes pour toutes les pages
+ * Date: 2025-12-05
+ */
+
+:root {
+    /* Palette ÉQUILIBRÉE - Fond légèrement teinté + Textes très foncés */
+    --bg-primary: #f5f7fa;           /* Fond gris-bleu très pâle (moins éblouissant) */
+    --bg-secondary: #ffffff;         /* Blanc pur pour cards */
+    --bg-tertiary: #edf0f5;          /* Gris-bleu pâle pour sections */
+    --bg-accent: #e3e9f0;            /* Bleu-gris pâle pour accents */
+    
+    /* Textes - Noir profond pour lisibilité maximale (CONTRASTE 19:1) */
+    --text-primary: #0d1117;         /* Noir absolu pour contraste maximum */
+    --text-secondary: #1a1d23;       /* Noir doux */
+    --text-muted: #2d3748;           /* Gris ardoise foncé (contraste 13:1) */
+    
+    /* Accents vifs et élégants - Équilibre visibilité/esthétique */
+    --accent-gold: #b8860b;          /* Or foncé (contraste 7.2:1) */
+    --accent-blue: #2b6cb0;          /* Bleu profond élégant */
+    --accent-green: #2f855a;         /* Vert émeraude */
+    --accent-purple: #6b46c1;        /* Violet royal */
+    --accent-red: #c53030;           /* Rouge profond */
+    --warning: #d97706;              /* Orange avertissement (contraste 6.5:1) */
+    
+    /* Bordures et ombres élégantes */
+    --border-light: #d9e2ec;         /* Bordure bleu-gris claire */
+    --border-medium: #c1cfd9;        /* Bordure visible mais douce */
+    --border-accent: #a0aec0;        /* Bordure accentuée */
+    --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.08);
+    --shadow-strong: 0 8px 32px rgba(0, 0, 0, 0.12);
+    --shadow-glow: 0 0 20px rgba(193, 125, 17, 0.15);  /* Effet glow or doux */
+    
+    /* Alias pour compatibilité avec anciennes pages */
+    --deep-space: #f8fafb;
+    --navy-dark: #ffffff;
+    --navy-mid: #f3f6f9;
+    --gold: #b8860b;
+    --white: #0d1117;
+    --gray-light: #1a1d23;
+    --gray-mid: #2d3748;
+    
+    /* États interactifs */
+    --hover-bg: #f0f5f8;
+    --active-bg: #e5eef3;
+    
+    /* Fonts */
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+/* Reset et Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #ffffff 50%, #f8f9fb 100%);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Texture subtile de fond */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 20% 50%, rgba(193, 125, 17, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(43, 108, 176, 0.03) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Header Navigation ÉLÉGANT */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(24px) saturate(180%);
+    border-bottom: 1px solid var(--border-medium);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.header-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 16px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.logo-emblem {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.5s ease;
+    box-shadow: var(--shadow-medium);
+}
+
+.logo-emblem img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.logo-section:hover .logo-emblem {
+    transform: scale(1.05);
+}
+
+.logo-text {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: 0.5px;
+}
+
+/* Navigation Links */
+nav ul {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+}
+
+nav a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 8px 0;
+}
+
+nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent-gold);
+    transition: width 0.3s ease;
+}
+
+nav a:hover::after,
+nav a.active::after {
+    width: 100%;
+}
+
+nav a:hover,
+nav a.active {
+    color: var(--text-primary);
+}
+
+/* Container et Page Layout */
+.container {
+    position: relative;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 100px 40px 80px;
+}
+
+/* Page Headers */
+.page-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.page-title {
+    font-family: var(--font-display);
+    font-size: 52px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    line-height: 1.2;
+}
+
+.page-title .highlight {
+    background: linear-gradient(135deg, var(--accent-gold), var(--accent-blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.page-subtitle {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+/* Cards et Panels ÉLÉGANTS */
+.card,
+.panel,
+.section-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before,
+.panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-gold), var(--accent-blue));
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.card:hover,
+.panel:hover {
+    box-shadow: var(--shadow-medium);
+    border-color: var(--border-accent);
+    transform: translateY(-2px);
+}
+
+.card:hover::before,
+.panel:hover::before {
+    opacity: 1;
+}
+
+/* Buttons ÉLÉGANTS */
+.btn,
+button {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 14px 32px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 13px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--accent-gold) 0%, #d4a825 100%);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(193, 125, 17, 0.25);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #d4a825 0%, var(--accent-gold) 100%);
+    box-shadow: 0 8px 24px rgba(193, 125, 17, 0.35);
+    transform: translateY(-3px);
+}
+
+.btn-secondary {
+    background: var(--bg-accent);
+    color: var(--text-primary);
+    border: 1px solid var(--border-medium);
+}
+
+.btn-secondary:hover {
+    background: var(--hover-bg);
+    border-color: var(--accent-blue);
+}
+
+/* Inputs et Forms */
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+    font-family: var(--font-body);
+    font-size: 15px;
+    padding: 12px 16px;
+    border: 1px solid var(--border-medium);
+    border-radius: 10px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 0 3px rgba(232, 196, 104, 0.1);
+}
+
+/* Stats et Badges ÉLÉGANTS */
+.stat-box {
+    background: linear-gradient(135deg, #ffffff 0%, var(--bg-tertiary) 100%);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    padding: 32px;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-box::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(193, 125, 17, 0.05) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.stat-box:hover {
+    box-shadow: var(--shadow-glow);
+    transform: translateY(-5px) scale(1.02);
+    border-color: var(--accent-gold);
+}
+
+.stat-box:hover::before {
+    opacity: 1;
+}
+
+.stat-value {
+    font-size: 42px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-blue) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+}
+
+.badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.badge-gold {
+    background: rgba(232, 196, 104, 0.15);
+    color: #b8941c;
+}
+
+.badge-blue {
+    background: rgba(126, 183, 221, 0.15);
+    color: #4a8fb9;
+}
+
+.badge-green {
+    background: rgba(149, 217, 195, 0.15);
+    color: #45a985;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+}
+
+thead {
+    background: var(--bg-tertiary);
+}
+
+th {
+    padding: 16px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+td {
+    padding: 16px;
+    border-top: 1px solid var(--border-light);
+    color: var(--text-primary);
+}
+
+tr:hover {
+    background: var(--hover-bg);
+}
+
+/* Code Blocks */
+code,
+.code-block {
+    font-family: var(--font-mono);
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    padding: 3px 8px;
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+pre {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    padding: 20px;
+    overflow-x: auto;
+    margin: 20px 0;
+}
+
+/* Grid Layouts */
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+
+/* Animations subtiles */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.6s ease;
+}
+
+/* Scrollbar personnalisée */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-tertiary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-medium);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-gold);
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 80px 20px 60px;
+    }
+    
+    .page-title {
+        font-size: 36px;
+    }
+    
+    .grid-2,
+    .grid-3,
+    .grid-4 {
+        grid-template-columns: 1fr;
+    }
+    
+    nav ul {
+        gap: 16px;
+    }
+    
+    nav a {
+        font-size: 13px;
+    }
+}
+
+/* ===================================================================
+   RÈGLES DE CONTRASTE MAXIMUM - FORÇAGE GLOBAL ABSOLU
+   Appliqué à TOUTES les pages et TOUS les éléments
+   Date : 2025-12-05
+   =================================================================== */
+
+/* NAVIGATION HORIZONTALE - CONTRASTE MAXIMUM */
+header {
+    background: rgba(255, 255, 255, 0.98) !important;
+    border-bottom: 2px solid #c1cfd9 !important;
+}
+
+nav ul {
+    background: transparent !important;
+}
+
+nav a,
+nav li a,
+header nav a,
+header a {
+    color: #0d1117 !important;
+    font-weight: 600 !important;
+}
+
+nav a:hover,
+nav li a:hover {
+    color: #b8860b !important;
+}
+
+nav a.active {
+    color: #b8860b !important;
+}
+
+/* Logo et titre header */
+.logo-text,
+.header-title {
+    color: #0d1117 !important;
+}
+
+/* FORCER CONTRASTE TEXTES SUR ABSOLUMENT TOUS LES ÉLÉMENTS */
+body,
+body *,
+p, li, span, div, td, th, label,
+article, section, aside, footer {
+    color: #0d1117 !important;
+}
+
+/* Textes secondaires visibles */
+.metadata-label,
+.stat-label,
+small,
+.text-muted,
+.subtitle {
+    color: #2d3748 !important;
+}
+
+/* Titres toujours foncés */
+h1, h2, h3, h4, h5, h6 {
+    color: #0d1117 !important;
+}
+
+/* Sections avec fond clair - texte foncé */
+.atlas-summary,
+.atlas-summary p,
+.atlas-summary li,
+.atlas-highlights,
+.atlas-highlights p,
+.atlas-highlights li,
+.container,
+.content,
+.main-content {
+    color: #0d1117 !important;
+}
+
+/* Metadata avec fond pâle */
+.atlas-metadata {
+    background: #f8fafb !important;
+    border: 1px solid #e0e8ed !important;
+}
+
+.metadata-value {
+    color: #0d1117 !important;
+}
+
+/* Highlights avec fond chaud */
+.atlas-highlights {
+    background: #fffbf0 !important;
+    border: 1px solid rgba(212, 175, 55, 0.3) !important;
+}
+
+/* Avertissements orange visibles */
+.warning,
+[style*="var(--warning)"],
+[style*="color: var(--warning)"] {
+    color: #d97706 !important;
+}
+
+/* Strong toujours visible */
+strong, b {
+    color: #0d1117 !important;
+    font-weight: 700 !important;
+}
+
+/* Em (italique) visible */
+em, i {
+    color: #1a1d23 !important;
+}
+
+/* Links visibles sur TOUTES les pages */
+a:not(nav a):not(.btn):not(.button) {
+    color: #2b6cb0 !important;
+    text-decoration: underline !important;
+}
+
+a:not(nav a):not(.btn):not(.button):hover {
+    color: #b8860b !important;
+}
+
+/* Boutons navigation - exception pour garder style or */
+nav a,
+.nav-link,
+.navigation a {
+    text-decoration: none !important;
+}
+
+/* Section 3I/ATLAS - Résumé Exécutif */
+.atlas-summary h3 {
+    color: #b8860b !important;
+}
+
+/* Points clés */
+.atlas-highlights h4 {
+    color: #b8860b !important;
+}
+
+.atlas-highlights li strong {
+    color: #0d1117 !important;
+}
+
+.atlas-highlights li em {
+    color: #2d3748 !important;
+    font-style: italic !important;
+}
+
+/* Note scientifique */
+.atlas-highlights p[style*="background"] {
+    background: #fffbf0 !important;
+    border-left: 3px solid #d97706 !important;
+    color: #0d1117 !important;
+}
+
+/* Cartes et panels */
+.card,
+.panel,
+.box {
+    background: #ffffff !important;
+}
+
+.card *,
+.panel *,
+.box * {
+    color: #0d1117 !important;
+}
+
+/* Tableaux */
+table {
+    color: #0d1117 !important;
+}
+
+thead,
+thead th {
+    color: #0d1117 !important;
+    background: #f8fafb !important;
+}
+
+tbody td {
+    color: #0d1117 !important;
+}
+
+/* Forms */
+input,
+textarea,
+select,
+label {
+    color: #0d1117 !important;
+}
+
+/* Footer */
+footer,
+footer * {
+    color: #0d1117 !important;
+}
+
+/* Badges et tags */
+.badge,
+.tag,
+.label {
+    color: #0d1117 !important;
+    font-weight: 600 !important;
+}
+
+/* OVERRIDE ABSOLU - Forcer sur TOUT */
+* {
+    color: #0d1117 !important;
+}
+
+/* Exceptions pour éléments qui DOIVENT rester colorés */
+nav a,
+nav a *,
+.btn,
+.button,
+button {
+    color: inherit !important;
+}
+
+/* Or pour accents */
+.gold,
+.accent-gold,
+[class*="gold"] {
+    color: #b8860b !important;
+}
+
+/* Bleu pour liens */
+.link,
+[href]:not(nav a) {
+    color: #2b6cb0 !important;
+}
