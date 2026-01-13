@@ -926,7 +926,7 @@ GitHub Actions exécute **automatiquement chaque mois** :
 *Modernisation Interface : ✅ **13/13 OUTILS MODERNISÉS v5.0** (100% complet)*  
 *Version : v5.0.0-EMPIRICAL*
 
-# Build trigger - Config fix: Added --assets parameter
+# Build trigger - Config fix: Added --assets and --compatibility-date
 #   v 5 . 0   d e p l o y e d   -   T e r m i n a l   M a n i f e s t o 
  
  
